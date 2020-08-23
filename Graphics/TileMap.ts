@@ -1,0 +1,3 @@
+class TileMap extends Renderable {
+  
+}
