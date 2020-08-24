@@ -1,6 +1,14 @@
-import { MouseInput } from "../src/types";
+import { MouseInput, Tool } from "../types";
+import { App } from "../system/App";
 
-export abstract class ToolAction {
+export abstract class BaseTool implements Tool {
+  app: App;
+  isActive: boolean;
+
+  constructor(app: App) {
+    this.app = app;
+  }
+
   start(input: MouseInput) {
     this.onStart(input);
   };

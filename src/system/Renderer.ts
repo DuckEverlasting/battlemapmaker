@@ -1,7 +1,7 @@
-import Display from "./Display";
-import RenderQueue from "./RenderQueue";
+import { Display } from "./Display";
+import { RenderQueue } from "./RenderQueue";
 
-export default class Renderer {
+export class Renderer {
   // contains a RenderQueue.
   // when triggered, calls render for each item in RenderQueue
   private display: Display;

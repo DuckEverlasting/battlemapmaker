@@ -1,5 +1,5 @@
 import { Renderable } from "../types";
 
-export default class ImageObject implements Renderable {
+export class ImageObject implements Renderable {
   render() {}
 }

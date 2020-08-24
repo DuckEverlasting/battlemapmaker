@@ -1,24 +1,22 @@
-import Display from "./Display";
-import State from "./State";
-import Renderer from "./Renderer";
-import KeyEmitter from "../input/KeyEmitter";
-import MouseEmitter from "../input/MouseEmitter";
-import InputHandler from "../input/InputHandler";
+import { Display } from "./Display";
+import { State } from "./State";
+import { Renderer } from "./Renderer";
+import { EventEmitter, InputHandler } from "../input"
 import { AppType } from "../types";
+import { getToolbox, getKeyboard } from "../util/helpers";
 
-export default class App implements AppType {
+export class App implements AppType {
   public display: Display;
   public state: State;
   public renderer: Renderer;
-  public keyEmitter: KeyEmitter;
-  public mouseEmitter: MouseEmitter;
-  public inputHandler: InputHandler;
+  private eventEmitter: EventEmitter;
+  private inputHandler: InputHandler;
 
   constructor(containingElement: HTMLElement) {
     this.display = new Display(containingElement);
-    this.state = new State();
+    this.state = new State(getToolbox(this), getKeyboard(this));
     this.renderer = new Renderer(this.display);
-    this.keyEmitter = new KeyEmitter(this);
-    this.mouseEmitter = new MouseEmitter(this, this.display);
+    this.inputHandler = new InputHandler(this);
+    this.eventEmitter = new EventEmitter(this.inputHandler, this.display);
   }
 }

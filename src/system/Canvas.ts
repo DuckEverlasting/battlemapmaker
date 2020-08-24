@@ -1,4 +1,4 @@
-export default class Canvas {
+export class Canvas {
   public ctx: CanvasRenderingContext2D;
   public element: HTMLCanvasElement;
   

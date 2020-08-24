@@ -1,6 +1,12 @@
-import App from "../system/App";
+import { App } from "../system/App";
 import { Callable } from "../types";
 
-export default abstract class CalledAction implements Callable {
-  run(app: App) {}
+export abstract class CalledAction implements Callable {
+  app: App;
+
+  constructor(app: App) {
+    this.app = app;
+  }
+
+  run(params?: object) {}
 }

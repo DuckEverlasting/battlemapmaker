@@ -1,6 +1,6 @@
-import ImageSource from "./ImageSource";
+import { ImageSource } from "./ImageSource";
 
-export default class SpriteSheet extends ImageSource {
+export class SpriteSheet extends ImageSource {
   public readonly spriteWidth: number;
   public readonly spriteHeight: number;
   public readonly rows: number;

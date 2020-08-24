@@ -1,6 +1,6 @@
-import Canvas from "./Canvas";
+import { Canvas } from "./Canvas";
 
-export default class Display {
+export class Display {
   public canvas: Canvas;
   
   constructor(containingElement: HTMLElement) {

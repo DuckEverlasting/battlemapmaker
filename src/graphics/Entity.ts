@@ -1,5 +1,5 @@
-import Sprite from "./Sprite";
+import { Sprite } from "./Sprite";
 
-export default class Entity extends Sprite {
+export class Entity extends Sprite {
 
 }

@@ -1,5 +1,5 @@
 import { Renderable } from "../types";
 
-export default class TileMap implements Renderable {
+export class TileMap implements Renderable {
   render() {}
 }
