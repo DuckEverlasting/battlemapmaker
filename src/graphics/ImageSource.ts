@@ -1,4 +1,4 @@
-class ImageSource {
+export default class ImageSource {
   public readonly source: HTMLImageElement;
   public readonly width: number;
   public readonly height: number;

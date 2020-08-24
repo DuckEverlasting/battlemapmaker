@@ -1,3 +1,0 @@
-class ImageObject extends Renderable {
-  
-}
