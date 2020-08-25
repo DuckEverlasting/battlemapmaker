@@ -8,6 +8,5 @@ export class ChangeActiveTool extends CalledAction {
   }
 
   run(params: object) {
-    console.log()
   }
 }

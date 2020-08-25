@@ -1,6 +1,6 @@
 import { App } from "../system/App";
 import { KeyInput, MouseInput } from "../types";
-import { modKey } from "../util/helpers";
+import { parseKeyInput, parseMouseInput } from "./parseInput";
 
 export class InputHandler {
   app: App;
@@ -10,58 +10,56 @@ export class InputHandler {
   }
 
   keyDown(e: KeyboardEvent) {
-    const input: KeyInput = this.parseKeyInput(e);
-    if (!!input && input in this.app.state.keyboard) {
-      this.app.state.keyboard[input].run(this.app);
+    const input: KeyInput = parseKeyInput(e);
+    if (!!input && input in this.app.getState().keyboard) {
+      this.app.getState().keyboard[input].run(this.app);
     }
-    console.log({input});
   }
 
   mouseDown(e: MouseEvent) {
-    const input: MouseInput = this.parseMouseInput(e);
+    const input: MouseInput = parseMouseInput(e, this.app.getState().getTranslateData());
     if (e.button === 1) {
-      this.app.state.middleClickTool.start(input);
+      this.app.getState().middleClickTool.start(input);
     } else if (e.button === 0) {
-      if (this.app.state.activeTool === null) {return;}
-      this.app.state.activeTool.end(input);
+      if (this.app.getState().activeTool === null) {return;}
+      this.app.getState().activeTool.end(input);
     }
   }
 
   mouseUp(e: MouseEvent) {
     if (
-      this.app.state.activeTool === null
-      || !this.app.state.activeTool.isActive
+      this.app.getState().activeTool === null
+      || !this.app.getState().activeTool.isActive
     ) {return;}
-    const input: MouseInput = this.parseMouseInput(e);
-    this.app.state.activeTool.end(input);
+    const input: MouseInput = parseMouseInput(e, this.app.getState().getTranslateData());
+    this.app.getState().activeTool.end(input);
   }
 
   mouseMove(e: MouseEvent) {
-    if (this.app.state.activeTool === null) {return;}
-    const input: MouseInput = this.parseMouseInput(e);
-    this.app.state.activeTool.update(input);
+    const input: MouseInput = parseMouseInput(e, this.app.getState().getTranslateData());
+    if (this.app.getState().activeTool !== null) {
+      this.app.getState().activeTool.update(input);
+    }
+    this.app.getState().setCursorState(input);
+
+    this.app.getSprites().forEach(sprite => {
+      if (sprite.updateOnCursorMove) {
+        sprite.update(this.app.getState());
+      }
+    })
+
+    if (!this.app.getSprites()[0].getPosition().equals(input.tile)) {
+      this.app.getSprites().forEach(sprite => {
+        if (sprite.updateOnTileChange) {
+          sprite.update(this.app.getState());
+          this.app.getRenderer().flagForRender();
+        }
+      });
+    }
   }
 
   mouseWheel(e: WheelEvent) {
-    const input: MouseInput = this.parseMouseInput(e);
-    this.app.state.middleClickTool.wheel(input);
-  }
-
-  parseMouseInput(e: MouseEvent) {
-    let parsed: MouseInput; 
-    return parsed;
-  }
-
-  parseKeyInput(e: KeyboardEvent): KeyInput | null {
-    console.log(e)
-    if (["Alt", "Shift", "Control", "Meta"].includes(e.key)) {
-      return null;
-    }
-    let result: KeyInput = "";
-    if (modKey(e)) result += "mod-";
-    if (e.shiftKey) result += "shift-";
-    if (e.altKey) result += "alt-";
-    result += e.key;
-    return result;
+    const input: MouseInput = parseMouseInput(e, this.app.getState().getTranslateData());
+    this.app.getState().wheelTool.wheel(input);
   }
 }

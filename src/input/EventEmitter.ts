@@ -1,9 +1,10 @@
 import { Display } from "../system/Display";
 import { InputHandler } from "./InputHandler";
+import { DisplayCanvas } from "../types";
 
 export class EventEmitter {
   handler: InputHandler;
-  target: HTMLCanvasElement;
+  target: DisplayCanvas;
 
   constructor(handler: InputHandler, display: Display) {
     this.handler = handler;

@@ -7,4 +7,12 @@ export class RenderQueue {
   constructor() {
     this.array = [];
   }
+
+  get() {
+    return [...this.array];
+  }
+
+  add(object: Renderable) {
+    this.array.push(object);
+  }
 }
