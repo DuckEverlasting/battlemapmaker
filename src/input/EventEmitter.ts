@@ -1,14 +1,13 @@
 import { Display } from "../system/Display";
 import { InputHandler } from "./InputHandler";
-import { DisplayCanvas } from "../types";
 
 export class EventEmitter {
   handler: InputHandler;
-  target: DisplayCanvas;
+  target: HTMLElement;
 
   constructor(handler: InputHandler, display: Display) {
     this.handler = handler;
-    this.target = display.canvas.element;
+    this.target = display.containingElement;
     window.addEventListener("keydown", this.handleKeyDown.bind(this));
     this.target.addEventListener("mousedown", this.handleMouseDown.bind(this));
     this.target.addEventListener("mouseup", this.handleMouseUp.bind(this));

@@ -1,18 +1,54 @@
 import { Renderable } from "../types";
 
 export class RenderQueue {
-  // may contain some methods? clear method would be useful.
-  public array: Renderable[];
+  private layers: Set<Renderable>[];
+  private markedForRender: boolean[];
 
-  constructor() {
-    this.array = [];
+  constructor(layerCount: number) {
+    // [bg], [object1], [object2], [overlay1], [overlay2]
+    this.layers = [];
+    for (let i = 0; i < layerCount; i++) {
+      this.layers.push(new Set());
+    }
+    this.markedForRender = new Array(layerCount).fill(false);
   }
 
-  get() {
-    return [...this.array];
+  add(object: Renderable, layer: number) {
+    if (layer < 0 || layer > 4) {
+      throw new Error(`${layer} is not a valid layer.`);
+    }
+    this.layers[layer].add(object);
+    this.markForRender(layer);
   }
 
-  add(object: Renderable) {
-    this.array.push(object);
+  remove(renderable: Renderable, layer: number) {
+    this.layers[layer].delete(renderable);
+    this.markForRender(layer);
+  }
+
+  markForRender(layer: number) {
+    this.markedForRender[layer] = true;
+  }
+
+  clearMarkedForRender() {
+    this.markedForRender.fill(false);
+  }
+
+  getMarkedForRender(): Array<Set<Renderable>|null> {
+    return this.layers.map((layer, i) => !!this.markedForRender[i] ? layer : null);
+  }
+
+  isEmpty() {
+    return !this.layers.find(layer => !!layer.size);
+  }
+
+  reset() {
+    this.layers = [
+      new Set(),
+      new Set(),
+      new Set(),
+      new Set(),
+      new Set()
+    ];
   }
 }

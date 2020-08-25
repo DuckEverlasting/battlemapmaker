@@ -50,6 +50,7 @@ export type Callable = {
 
 export type Renderable = {
   id: string;
+  getLayer?(): number;
   render(Display?: Display, props?: RenderProps): void;
 };
 

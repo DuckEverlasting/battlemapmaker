@@ -1,8 +1,8 @@
 import { DisplayCanvas } from "../types";
 
 export class Canvas {
-  public ctx: CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D;
-  public element: DisplayCanvas;
+  public readonly ctx: CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D;
+  public readonly element: DisplayCanvas;
   
   constructor(containingElement: HTMLElement, offscreen?: "offscreen") {
     const { clientWidth: width, clientHeight: height } = containingElement;
@@ -11,6 +11,7 @@ export class Canvas {
       canvas = new OffscreenCanvas(width, height);
     } else {
       canvas = document.createElement('canvas');
+      canvas.className = "layer-canvas";
       canvas.width = width;
       canvas.height = width;
       containingElement.appendChild(canvas);

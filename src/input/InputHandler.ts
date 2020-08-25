@@ -1,65 +1,73 @@
 import { App } from "../system/App";
 import { KeyInput, MouseInput } from "../types";
 import { parseKeyInput, parseMouseInput } from "./parseInput";
+import { RenderQueue, State } from "../system";
 
 export class InputHandler {
-  app: App;
+  private app: App;
+  private queue: RenderQueue;
+  private state: State;
 
   constructor(app: App) {
     this.app = app;
+    this.queue = app.getQueue();
+    this.state = app.getState();
   }
 
   keyDown(e: KeyboardEvent) {
     const input: KeyInput = parseKeyInput(e);
-    if (!!input && input in this.app.getState().keyboard) {
-      this.app.getState().keyboard[input].run(this.app);
+    if (!!input && input in this.state.keyboard) {
+      this.state.keyboard[input].run(this.app);
     }
   }
 
   mouseDown(e: MouseEvent) {
-    const input: MouseInput = parseMouseInput(e, this.app.getState().getTranslateData());
+    const input: MouseInput = parseMouseInput(e, this.state.getTranslateData());
     if (e.button === 1) {
-      this.app.getState().middleClickTool.start(input);
+      this.state.middleClickTool.start(input);
     } else if (e.button === 0) {
-      if (this.app.getState().activeTool === null) {return;}
-      this.app.getState().activeTool.end(input);
+      if (this.state.activeTool === null) {return;}
+      this.state.activeTool.end(input);
     }
   }
 
   mouseUp(e: MouseEvent) {
     if (
-      this.app.getState().activeTool === null
-      || !this.app.getState().activeTool.isActive
+      this.state.activeTool === null
+      || !this.state.activeTool.isActive
     ) {return;}
-    const input: MouseInput = parseMouseInput(e, this.app.getState().getTranslateData());
-    this.app.getState().activeTool.end(input);
+    const input: MouseInput = parseMouseInput(e, this.state.getTranslateData());
+    this.state.activeTool.end(input);
   }
 
   mouseMove(e: MouseEvent) {
-    const input: MouseInput = parseMouseInput(e, this.app.getState().getTranslateData());
-    if (this.app.getState().activeTool !== null) {
-      this.app.getState().activeTool.update(input);
+    const input: MouseInput = parseMouseInput(e, this.state.getTranslateData());
+    if (this.state.activeTool !== null) {
+      this.state.activeTool.update(input);
     }
-    this.app.getState().setCursorState(input);
+    const tileChanged = !this.state.cursorTile.equals(input.tile);
+    this.state.setCursorState(input);
 
     this.app.getSprites().forEach(sprite => {
       if (sprite.updateOnCursorMove) {
-        sprite.update(this.app.getState());
+        sprite.update(this.state);
+        this.queue.markForRender(sprite.getLayer());
       }
     })
 
-    if (!this.app.getSprites()[0].getPosition().equals(input.tile)) {
+    if (tileChanged) {
       this.app.getSprites().forEach(sprite => {
         if (sprite.updateOnTileChange) {
-          sprite.update(this.app.getState());
-          this.app.getRenderer().flagForRender();
+          sprite.update(this.state);
+          this.queue.add(sprite, sprite.getLayer());
+          this.queue.markForRender(sprite.getLayer());
         }
       });
     }
   }
 
   mouseWheel(e: WheelEvent) {
-    const input: MouseInput = parseMouseInput(e, this.app.getState().getTranslateData());
-    this.app.getState().wheelTool.wheel(input);
+    const input: MouseInput = parseMouseInput(e, this.state.getTranslateData());
+    this.state.wheelTool.wheel(input);
   }
 }

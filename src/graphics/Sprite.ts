@@ -9,10 +9,18 @@ export class Sprite implements Renderable {
   public readonly updateOnCursorMove: boolean;
   public readonly updateOnTileChange: boolean;
   private tile: Vector;
+  private layer: number;
 
-  constructor(source: ImageSource, initX=0, initY=0, params: any={}) {
-    this.id = "SUPFIXTHIS";
+  constructor(
+    source: ImageSource,
+    layer: number,
+    initX = 0,
+    initY = 0,
+    params: any = {}
+  ) {
+    this.id = 'SUPFIXTHIS';
     this.source = source;
+    this.layer = layer;
     this.tile = new Vector(initX, initY);
     this.updateOnCursorMove = !!params.updateOnCursorMove;
     this.updateOnTileChange = !!params.updateOnTileChange;
@@ -21,7 +29,7 @@ export class Sprite implements Renderable {
   update(state: State) {}
 
   render(display: Display) {
-    display.renderAt(this.source, this.tile);
+    display.renderAt(this.source, this.layer, this.tile);
   }
 
   getPosition() {
@@ -29,11 +37,19 @@ export class Sprite implements Renderable {
   }
 
   moveTile(delta: Vector) {
-    this.tile.add(delta)
+    this.tile.add(delta);
   }
 
   moveToTile(dest: Vector) {
     this.tile.x = dest.x;
     this.tile.y = dest.y;
+  }
+
+  getLayer() {
+    return this.layer;
+  }
+
+  setLayer(newLayer: number) {
+    this.layer = newLayer;
   }
 }

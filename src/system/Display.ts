@@ -6,22 +6,33 @@ import { ImageSource } from "../graphics";
 
 export class Display implements Renderable {
   public readonly id: string;
-  public canvas: Canvas;
+  public readonly layers: Canvas[];
+  public readonly layerCount: number;
+  public readonly containingElement: HTMLElement;
   private state: State;
-  
-  constructor(state: State, containingElement: HTMLElement) {
-    this.id = "DISPLAY";
-    this.canvas = new Canvas(containingElement);
+
+  constructor(state: State, containingElement: HTMLElement, layerCount: number) {
+    this.id = "_DISPLAY_";
+    this.containingElement = containingElement;
+    this.layerCount = layerCount;
+    this.layers = new Array(layerCount);
+    for (let i = 0; i <= this.layerCount; i++) {
+      this.layers[i] = (new Canvas(containingElement));
+    }
     this.state = state;
+  }
+
+  clearLayer(number: number) {
+    this.layers[number].ctx.clearRect(0, 0, this.containingElement.clientWidth, this.containingElement.clientHeight)
   }
 
   render() {
     const t = this.state.getTranslateData();
-    this.canvas.ctx.fillStyle = "rgb(150, 180, 245)";
-    this.canvas.ctx.fillRect(t.offsetX, t.offsetY, t.width, t.height);
+    this.layers[0].ctx.fillStyle = "rgb(150, 180, 245)";
+    this.layers[0].ctx.fillRect(t.offsetX, t.offsetY, t.width, t.height);
   }
 
-  renderAt(source: ImageSource, position: Vector) {
+  renderAt(source: ImageSource, layer: number, position: Vector) {
     const t = this.state.getTranslateData();
     if (
       position.x < 0
@@ -31,7 +42,7 @@ export class Display implements Renderable {
     ) {
       return;
     }
-    this.canvas.ctx.drawImage(
+    this.layers[layer].ctx.drawImage(
       source.source,
       source.offsetX,
       source.offsetY,
