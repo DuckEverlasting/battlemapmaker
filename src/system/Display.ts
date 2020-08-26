@@ -7,11 +7,12 @@ import { ImageSource, Sprite } from "../graphics";
 export class Display implements Renderable {
   public readonly id: string;
   public readonly layers: Canvas[];
-  public readonly layerCount: number;
-  public readonly containingElement: HTMLElement;
-  private state: State;
 
-  constructor(state: State, containingElement: HTMLElement, layerCount: number) {
+  constructor(
+    private state: State,
+    public readonly containingElement: HTMLElement,
+    public readonly layerCount: number
+  ) {
     this.id = "_DISPLAY_";
     this.containingElement = containingElement;
     this.layerCount = layerCount;

@@ -2,69 +2,54 @@ import { Tool, PanZoomTool, Keyboard, Toolbox, TranslateData, MouseInput } from 
 import { Vector } from "../util/Vector";
 import { Rect } from "../util/Rect";
 import { ImageSource, Sprite } from "../graphics";
-import { TileGraph } from "./TileGraph";
+import { TileMap } from "./TileMap";
 
 export class State {
-  rect: Rect;
-  zoom: number;
-  tileWidth: number;
-  tileHeight: number;
-  layerCount: number;
-  media: ImageSource[];
-  sprites: Sprite[];
-  tileGraph: TileGraph;
-  cursorPosition: Vector;
-  cursorTile: Vector;
-  cursorButtons: boolean[];
-  toolbox: Toolbox;
-  keyboard: Keyboard;
-  activeTool: Tool | null;
-  middleClickTool: PanZoomTool;
-  wheelTool: PanZoomTool;
-  altWheelTool: PanZoomTool;
-  isDrawing: boolean;
-  renderNeeded: boolean;
-  // selection: Selection;
-  // selectionIsActive: boolean;
+  public rect: Rect;
+  public zoom: number = 1;
+  public media: {[key: string]: ImageSource};
+  public sprites: {[key: string]: Sprite};
+  public map: TileMap;
+  public cursorPosition = new Vector(0, 0);
+  public cursorTile = new Vector(-1, -1);
+  public cursorButtons = [false, false, false];
+  public activeTool: Tool | null = null;
+  public isDrawing = false;
+  // public selection: Selection;
+  // public selectionIsActive = false;
+  public middleClickTool: PanZoomTool;
+  public wheelTool: PanZoomTool;
+  public altWheelTool: PanZoomTool;
 
   mouseIsInside: boolean;
 
   constructor(
-    initWidth: number,
-    initHeight: number,
-    initTileWidth: number,
-    initTileHeight: number,
-    layerCount: number,
-    toolbox: Toolbox,
-    keyboard: Keyboard
+    width: number,
+    height: number,
+    public tileWidth: number,
+    public tileHeight: number,
+    public layerCount: number,
+    public toolbox: Toolbox,
+    public keyboard: Keyboard
   ) {
-    const clientRect = document.getElementById("project_container").getBoundingClientRect();
+    const clientRect = document
+      .getElementById("project_container")
+      .getBoundingClientRect();
     this.zoom = 1;
     this.rect = new Rect(
-      Math.floor((clientRect.width - initWidth) / 2),
-      Math.floor((clientRect.height - initHeight) / 2),
-      initWidth,
-      initHeight
+      Math.floor((clientRect.width - width) / 2),
+      Math.floor((clientRect.height - height) / 2),
+      width,
+      height
     );
-    this.tileWidth = initTileWidth;
-    this.tileHeight = initTileHeight;
-    this.layerCount = layerCount;
-    this.media = [];
-    this.sprites = [];
-    const rows = Math.floor(this.rect.height / this.tileHeight),
-      columns = Math.floor(this.rect.width / this.tileWidth);
-    this.tileGraph = new TileGraph(rows, columns, layerCount);
-    this.cursorPosition = new Vector(0, 0);
-    this.cursorTile = new Vector(-1, -1);
-    this.cursorButtons = [false, false, false];
-    this.toolbox = toolbox;
-    this.keyboard = keyboard;
-    this.activeTool = null;
+    this.map = new TileMap(
+      Math.floor(this.rect.height / this.tileHeight),
+      Math.floor(this.rect.width / this.tileWidth),
+      this.layerCount
+    );
     this.middleClickTool = this.toolbox.move;
     this.wheelTool = this.toolbox.move;
     this.altWheelTool = this.toolbox.zoom;
-    this.isDrawing = false;
-    this.renderNeeded = false;
   }
 
   getTranslateData(): TranslateData {

@@ -3,8 +3,6 @@ import { RenderQueue } from "./RenderQueue";
 import { App } from ".";
 
 export class Renderer {
-  // contains a RenderQueue.
-  // when triggered, calls render for each item in RenderQueue
   private display: Display;
   private queue: RenderQueue;
   private frameRate: number;

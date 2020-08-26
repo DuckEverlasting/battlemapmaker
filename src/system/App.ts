@@ -18,8 +18,7 @@ export class App implements AppType {
   private eventEmitter: EventEmitter;
   private inputHandler: InputHandler;
 
-  constructor(containingElement: HTMLElement) {
-    const layerCount = 5;
+  constructor(containingElement: HTMLElement, layerCount: number = 5) {
     this.state = new State(
       960, 640, 64, 64, 5,
       getToolbox(this),
@@ -39,9 +38,10 @@ export class App implements AppType {
     temp.getContext('2d').strokeStyle = "white";
     temp.getContext('2d').lineWidth = 2;
     temp.getContext('2d').strokeRect(0, 0, temp.width, temp.height);
-    this.state.media.push(new ImageSource(temp));
+    const tempImageSrc = new ImageSource(temp);
+    this.state.media[tempImageSrc.id] = tempImageSrc;
     const tempSprite = new TileOutline(this.state.media[0], 3);
-    this.state.sprites.push(tempSprite);
+    this.state.sprites[tempSprite.id] = tempSprite;
     this.queue.add(this.display, 0);
     this.queue.add(this.state.sprites[0], 4);
 
@@ -49,7 +49,9 @@ export class App implements AppType {
     image.src = SpriteSheet_1;
 
     const tempSpriteSheet = new SpriteSheet(image, 32, 32);
-    this.state.sprites.push(tempSpriteSheet.sprites[1]);
+    this.state.sprites[
+      tempSpriteSheet.sprites[1].id
+    ] = (tempSpriteSheet.sprites[1]);
     this.state.sprites[1].moveToTile(new Vector(3, 3));
     this.queue.add(this.state.sprites[1], 2);
   };
@@ -63,11 +65,11 @@ export class App implements AppType {
   } 
   
   getMedia() {
-    return [...this.state.media];
+    return {...this.state.media};
   }
   
   getSprites() {
-    return [...this.state.sprites];
+    return {...this.state.sprites};
   }
 
   getRenderer() {

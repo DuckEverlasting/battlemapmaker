@@ -1,5 +1,4 @@
 import { CalledAction } from "./CalledAction";
-
 import { App } from "../system";
 
 export class ChangeActiveTool extends CalledAction {

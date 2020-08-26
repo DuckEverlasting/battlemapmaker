@@ -48,14 +48,17 @@ export type Callable = {
 
 export type Renderable = {
   id: string;
-  getLayer?(): number;
-  setLayer?(layer: number): void;
   render(Display?: Display, props?: RenderProps): void;
+};
+
+export type Queueable = Renderable & {
+  clearMarkedForRender(): void;
+  getMarkedForRender(): Array<Set<Renderable>|null>;
 };
 
 export type CanvasSource = HTMLImageElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas;
 
-export type RenderProps = {};
+export type RenderProps = any;
 
 export type SpriteParams = {
   rect?: Rect;
