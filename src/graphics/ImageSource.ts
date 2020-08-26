@@ -1,24 +1,17 @@
 import { CanvasSource } from "../types";
+import { Rect } from "../util/Rect";
 
 export class ImageSource {
   public readonly id: string;
   public readonly source: CanvasSource;
-  public readonly offsetX: number;
-  public readonly offsetY: number;
-  public readonly width: number;
-  public readonly height: number;
+  public readonly rect: Rect;
 
   constructor(
     source: CanvasSource,
-    offsetX: number=0,
-    offsetY: number=0,
-    width: number=source.width,
-    height: number=source.height,
+    rect: Rect = new Rect(0, 0, source.width, source.height)
   ) {
+    console.log(source);
     this.source = source;
-    this.offsetX = Math.floor(offsetX);
-    this.offsetY = Math.floor(offsetY);
-    this.width = Math.floor(width);
-    this.height = Math.floor(height);
+    this.rect = rect;
   }
 }

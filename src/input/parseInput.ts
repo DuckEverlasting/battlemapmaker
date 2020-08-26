@@ -32,13 +32,13 @@ export function parseMouseInput(e: MouseEvent, t: TranslateData) {
   }
 
   const isInside = (
-    e.offsetX >= t.offsetX
-    && e.offsetX < t.offsetX + t.width
-    && e.offsetY >= t.offsetY
-    && e.offsetY < t.offsetY + t.height
+    e.offsetX >= t.rect.offsetX
+    && e.offsetX < t.rect.offsetX + t.rect.width
+    && e.offsetY >= t.rect.offsetY
+    && e.offsetY < t.rect.offsetY + t.rect.height
   ),
-    x = Math.floor((e.offsetX - t.offsetX) / t.tileWidth),
-    y = Math.floor((e.offsetY - t.offsetY) / t.tileHeight),
+    x = Math.floor((e.offsetX - t.rect.offsetX) / t.tileWidth),
+    y = Math.floor((e.offsetY - t.rect.offsetY) / t.tileHeight),
     position = new Vector(Math.floor(e.offsetX), Math.floor(e.offsetY)),
     tile = isInside ? new Vector(x, y) : new Vector(-1, -1),
     result: MouseInput = { position, tile, buttons };

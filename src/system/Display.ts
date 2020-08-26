@@ -2,7 +2,7 @@ import { Canvas } from "./Canvas";
 import { Renderable } from "../types";
 import { State } from "./State";
 import { Vector } from "../util/Vector";
-import { ImageSource } from "../graphics";
+import { ImageSource, Sprite } from "../graphics";
 
 export class Display implements Renderable {
   public readonly id: string;
@@ -27,31 +27,33 @@ export class Display implements Renderable {
   }
 
   render() {
-    const t = this.state.getTranslateData();
+    const rect = this.state.getTranslateData().rect;
     this.layers[0].ctx.fillStyle = "rgb(150, 180, 245)";
-    this.layers[0].ctx.fillRect(t.offsetX, t.offsetY, t.width, t.height);
+    this.layers[0].ctx.fillRect(rect.offsetX, rect.offsetY, rect.width, rect.height);
   }
 
-  renderAt(source: ImageSource, layer: number, position: Vector) {
-    const t = this.state.getTranslateData();
+  renderSprite(sprite: Sprite) {
+    const t = this.state.getTranslateData(),
+      position = sprite.getPosition(),
+      layer = sprite.getLayer();
     if (
       position.x < 0
-      || position.x >= t.width / t.tileWidth
+      || position.x >= t.rect.width / t.tileWidth
       || position.y < 0
-      || position.y >= t.height / t.tileHeight
+      || position.y >= t.rect.height / t.tileHeight
     ) {
       return;
     }
     this.layers[layer].ctx.drawImage(
-      source.source,
-      source.offsetX,
-      source.offsetY,
-      source.width,
-      source.height,
-      t.offsetX + (position.x) * t.tileWidth,
-      t.offsetY + (position.y) * t.tileHeight,
-      source.width,
-      source.height
+      sprite.imageSource.source,
+      sprite.rect.offsetX,
+      sprite.rect.offsetY,
+      sprite.rect.width,
+      sprite.rect.height,
+      t.rect.offsetX + (position.x) * t.tileWidth,
+      t.rect.offsetY + (position.y) * t.tileHeight,
+      t.tileWidth,
+      t.tileHeight
     );
   }
 }

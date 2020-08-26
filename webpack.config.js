@@ -14,6 +14,18 @@ module.exports = {
         use: 'ts-loader',
         exclude: /node_modules/,
       },
+      {
+        test: /\.(png|jpe?g|svg)$/i,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              name: 'images/[hash]-[name].[ext]',
+              publicPath: 'assets',
+            }
+          }
+        ]
+      }
     ],
   },
   resolve: {

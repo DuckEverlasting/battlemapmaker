@@ -1,5 +1,6 @@
 import { Display } from './system';
 import { Vector } from './util/Vector';
+import { Rect } from './util/Rect';
 
 export type AppType = {};
 
@@ -14,10 +15,7 @@ export type MouseInput = {
 export type KeyInput = string;
 
 export type TranslateData = {
-  width: number;
-  height: number;
-  offsetX: number;
-  offsetY: number;
+  rect: Rect;
   zoom: number;
   tileWidth: number;
   tileHeight: number;
@@ -51,9 +49,26 @@ export type Callable = {
 export type Renderable = {
   id: string;
   getLayer?(): number;
+  setLayer?(layer: number): void;
   render(Display?: Display, props?: RenderProps): void;
 };
 
 export type CanvasSource = HTMLImageElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas;
 
 export type RenderProps = {};
+
+export type SpriteParams = {
+  rect?: Rect;
+  type?: string;
+  initPosition?: Vector;
+  updateOnCursorMove?: boolean;
+  updateOnTileChange?: boolean;
+}
+
+export type SpriteMap = {
+  row: number;
+  column: number;
+  width: number;
+  height: number;
+  params?: SpriteParams; 
+}[];

@@ -13,11 +13,14 @@ export class RenderQueue {
     this.markedForRender = new Array(layerCount).fill(false);
   }
 
-  add(object: Renderable, layer: number) {
-    if (layer < 0 || layer > 4) {
+  add(renderable: Renderable, layer: number) {
+    if (layer < 0 || layer >= this.layers.length) {
       throw new Error(`${layer} is not a valid layer.`);
     }
-    this.layers[layer].add(object);
+    this.layers[layer].add(renderable);
+    if (renderable.setLayer) {
+      renderable.setLayer(layer);
+    }
     this.markForRender(layer);
   }
 

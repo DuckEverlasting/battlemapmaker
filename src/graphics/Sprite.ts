@@ -1,27 +1,30 @@
-import { Renderable } from '../types';
+import { Renderable, SpriteParams } from '../types';
 import { ImageSource } from './ImageSource';
 import { Vector } from '../util/Vector';
 import { Display, State } from '../system';
+import { Rect } from '../util/Rect';
 
+
+/* TODO:
+  - FIX THINGS
+  - Sprite image isn't being cropped out of spritesheet correctly
+  - need to zoom sprites to fit properly into tiles (tilewidth property?)
+*/
 export class Sprite implements Renderable {
   public readonly id: string;
-  public readonly source: ImageSource;
+  public readonly imageSource: ImageSource;
+  public readonly rect: Rect;
   public readonly updateOnCursorMove: boolean;
   public readonly updateOnTileChange: boolean;
   private tile: Vector;
-  private layer: number;
+  private layer: number | null;
 
-  constructor(
-    source: ImageSource,
-    layer: number,
-    initX = 0,
-    initY = 0,
-    params: any = {}
-  ) {
-    this.id = 'SUPFIXTHIS';
-    this.source = source;
-    this.layer = layer;
-    this.tile = new Vector(initX, initY);
+  constructor(source: ImageSource, params: SpriteParams) {
+    this.id = `${Date.now()}`;
+    this.imageSource = source;
+    this.rect = params.rect || new Rect(0, 0, this.imageSource.rect.width, this.imageSource.rect.height);
+    this.layer = null;
+    this.tile = params.initPosition || new Vector(0, 0);
     this.updateOnCursorMove = !!params.updateOnCursorMove;
     this.updateOnTileChange = !!params.updateOnTileChange;
   }
@@ -29,7 +32,7 @@ export class Sprite implements Renderable {
   update(state: State) {}
 
   render(display: Display) {
-    display.renderAt(this.source, this.layer, this.tile);
+    display.renderSprite(this);
   }
 
   getPosition() {

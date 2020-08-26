@@ -4,14 +4,15 @@ import { Renderer } from "./Renderer";
 import { EventEmitter, InputHandler } from "../input"
 import { AppType } from "../types";
 import { getToolbox, getKeyboard } from "../util/helpers";
-import { Sprite, ImageSource, TileOutline } from "../graphics";
+import { ImageSource, TileOutline, SpriteSheet } from "../graphics";
 import { RenderQueue } from "./RenderQueue";
+
+import SpriteSheet_1 from "../media/spritesheets/SpriteSheet_1.png"
+import { Vector } from "../util/Vector";
 
 export class App implements AppType {
   private display: Display;
   private state: State;
-  private media: ImageSource[];
-  private sprites: Sprite[];
   private renderer: Renderer;
   private queue: RenderQueue;
   private eventEmitter: EventEmitter;
@@ -19,15 +20,18 @@ export class App implements AppType {
 
   constructor(containingElement: HTMLElement) {
     const layerCount = 5;
-    this.state = new State(getToolbox(this), getKeyboard(this));
+    this.state = new State(
+      960, 640, 64, 64, 5,
+      getToolbox(this),
+      getKeyboard(this)
+    );
     this.display = new Display(this.state, containingElement, layerCount);
     this.queue = new RenderQueue(layerCount);
     this.renderer = new Renderer(this);
     this.inputHandler = new InputHandler(this);
     this.eventEmitter = new EventEmitter(this.inputHandler, this.display);
-    this.media = [];
-    this.sprites = [];
 
+    // CONTENT BUILDING FOR TESTING PURPOSES - TEMP
     const temp = new OffscreenCanvas(this.state.tileWidth, this.state.tileHeight);
     temp.getContext('2d').strokeStyle = "black";
     temp.getContext('2d').lineWidth = 4;
@@ -35,12 +39,20 @@ export class App implements AppType {
     temp.getContext('2d').strokeStyle = "white";
     temp.getContext('2d').lineWidth = 2;
     temp.getContext('2d').strokeRect(0, 0, temp.width, temp.height);
-    this.media.push(new ImageSource(temp));
-    const tempSprite = new TileOutline(this.media[0], 3);
-    this.sprites.push(tempSprite);
+    this.state.media.push(new ImageSource(temp));
+    const tempSprite = new TileOutline(this.state.media[0], 3);
+    this.state.sprites.push(tempSprite);
     this.queue.add(this.display, 0);
-    this.queue.add(this.sprites[0], 3);
-  }
+    this.queue.add(this.state.sprites[0], 4);
+
+    const image = new Image(SpriteSheet_1.width, SpriteSheet_1.height);
+    image.src = SpriteSheet_1;
+
+    const tempSpriteSheet = new SpriteSheet(image, 32, 32);
+    this.state.sprites.push(tempSpriteSheet.sprites[1]);
+    this.state.sprites[1].moveToTile(new Vector(3, 3));
+    this.queue.add(this.state.sprites[1], 2);
+  };
   
   getDisplay() {
     return this.display;
@@ -51,11 +63,11 @@ export class App implements AppType {
   } 
   
   getMedia() {
-    return [...this.media];
+    return [...this.state.media];
   }
   
   getSprites() {
-    return [...this.sprites];
+    return [...this.state.sprites];
   }
 
   getRenderer() {
@@ -74,7 +86,7 @@ export class App implements AppType {
     delete(this.renderer);
     delete(this.inputHandler);
     delete(this.eventEmitter);
-    delete(this.media);
-    delete(this.sprites);
+    delete(this.state.media);
+    delete(this.state.sprites);
   }
 }

@@ -1,14 +1,18 @@
 import { Tool, PanZoomTool, Keyboard, Toolbox, TranslateData, MouseInput } from "../types";
 import { Vector } from "../util/Vector";
+import { Rect } from "../util/Rect";
+import { ImageSource, Sprite } from "../graphics";
+import { TileGraph } from "./TileGraph";
 
 export class State {
-  offsetX: number;
-  offsetY: number;
-  width: number;
-  height: number;
+  rect: Rect;
   zoom: number;
   tileWidth: number;
   tileHeight: number;
+  layerCount: number;
+  media: ImageSource[];
+  sprites: Sprite[];
+  tileGraph: TileGraph;
   cursorPosition: Vector;
   cursorTile: Vector;
   cursorButtons: boolean[];
@@ -25,15 +29,31 @@ export class State {
 
   mouseIsInside: boolean;
 
-  constructor(toolbox: Toolbox, keyboard: Keyboard) {
-    const rect = document.getElementById("project_container").getBoundingClientRect();
+  constructor(
+    initWidth: number,
+    initHeight: number,
+    initTileWidth: number,
+    initTileHeight: number,
+    layerCount: number,
+    toolbox: Toolbox,
+    keyboard: Keyboard
+  ) {
+    const clientRect = document.getElementById("project_container").getBoundingClientRect();
     this.zoom = 1;
-    this.width = 800;
-    this.height = 500;
-    this.offsetX = Math.floor((rect.width - this.width) / 2);
-    this.offsetY = Math.floor((rect.height - this.height) / 2);
-    this.tileWidth = 50;
-    this.tileHeight = 50;
+    this.rect = new Rect(
+      Math.floor((clientRect.width - initWidth) / 2),
+      Math.floor((clientRect.height - initHeight) / 2),
+      initWidth,
+      initHeight
+    );
+    this.tileWidth = initTileWidth;
+    this.tileHeight = initTileHeight;
+    this.layerCount = layerCount;
+    this.media = [];
+    this.sprites = [];
+    const rows = Math.floor(this.rect.height / this.tileHeight),
+      columns = Math.floor(this.rect.width / this.tileWidth);
+    this.tileGraph = new TileGraph(rows, columns, layerCount);
     this.cursorPosition = new Vector(0, 0);
     this.cursorTile = new Vector(-1, -1);
     this.cursorButtons = [false, false, false];
@@ -50,10 +70,7 @@ export class State {
   getTranslateData(): TranslateData {
     return {
       zoom: this.zoom,
-      offsetX: this.offsetX,
-      offsetY: this.offsetY,
-      width: this.width,
-      height: this.height,
+      rect: this.rect,
       tileWidth: this.tileWidth,
       tileHeight: this.tileHeight,
     }
@@ -64,5 +81,4 @@ export class State {
     this.cursorTile = input.tile;
     this.cursorButtons = input.buttons;
   }
-  // loadedTilesets: TileSet[]; ???
 }

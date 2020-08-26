@@ -7,3 +7,5 @@ export class TileMap implements Renderable {
 
   render() {}
 }
+
+// This may not be needed
