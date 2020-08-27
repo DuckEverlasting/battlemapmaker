@@ -1,4 +1,4 @@
-import { Display } from './system';
+import { Display, State } from './system';
 import { Vector } from './util/Vector';
 import { Rect } from './util/Rect';
 
@@ -53,8 +53,12 @@ export type Renderable = {
 
 export type Queueable = Renderable & {
   clearMarkedForRender(): void;
-  getMarkedForRender(): Array<Set<Renderable>|null>;
+  getMarkedForRender(): Array<Set<Renderable>|null> | {layer: number, set: Set<Renderable>} | null;
+  getFlags(): QueueableFlag[];
+  update(state: State): void;
 };
+
+export type QueueableFlag = "updateOnTileChange"|"updateOnCursorMove";
 
 export type CanvasSource = HTMLImageElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas;
 

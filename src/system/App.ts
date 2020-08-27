@@ -40,9 +40,8 @@ export class App implements AppType {
     temp.getContext('2d').strokeRect(0, 0, temp.width, temp.height);
     const tempImageSrc = new ImageSource(temp);
     this.state.media[tempImageSrc.id] = tempImageSrc;
-    const tempSprite = new TileOutline(this.state.media[0], 3);
+    const tempSprite = new TileOutline(this.state.media[0]);
     this.state.sprites[tempSprite.id] = tempSprite;
-    this.queue.add(this.display, 0);
     this.queue.add(this.state.sprites[0], 4);
 
     const image = new Image(SpriteSheet_1.width, SpriteSheet_1.height);
@@ -78,17 +77,5 @@ export class App implements AppType {
 
   getQueue() {
     return this.queue;
-  }
-
-  reset() {
-    this.eventEmitter.destroy();
-    this.queue.reset();
-    delete(this.state);
-    delete(this.display);
-    delete(this.renderer);
-    delete(this.inputHandler);
-    delete(this.eventEmitter);
-    delete(this.state.media);
-    delete(this.state.sprites);
   }
 }

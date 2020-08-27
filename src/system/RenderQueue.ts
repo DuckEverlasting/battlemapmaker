@@ -1,4 +1,5 @@
-import { Renderable, Queueable } from "../types";
+import { Renderable, Queueable, QueueableFlag } from "../types";
+import { State } from ".";
 
 export class RenderQueue {
   private queue = new Set<Queueable>();
@@ -11,6 +12,14 @@ export class RenderQueue {
 
   remove(queueable: Queueable) {
     this.queue.delete(queueable);
+  }
+
+  triggerFlag(flag: QueueableFlag, state: State) {
+    this.queue.forEach(queueable => {
+      if (queueable.getFlags().includes(flag)) {
+        queueable.update(state)
+      }
+    })
   }
 
   getAllMarkedForRender() {
@@ -70,8 +79,23 @@ export class RenderQueue {
       not currently using them optimally.
     */
     this.queue.forEach(queueable => {
-      queueable.getMarkedForRender();
+      const marked = queueable.getMarkedForRender();
+      if (marked === null) {
+        return;
+      } else if (marked instanceof Array) {
+        marked.forEach((set, i) => {
+          set.forEach(item => result[i].add(item));
+        })
+      } else {
+        marked.set.forEach(item => result[marked.layer].add(item));
+      }
     });
     return result;
+  }
+
+  clearAllMarkedForRender() {
+    this.queue.forEach(queueable => {
+      queueable.clearMarkedForRender();
+    });
   }
 }

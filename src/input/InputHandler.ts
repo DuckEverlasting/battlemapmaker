@@ -47,22 +47,10 @@ export class InputHandler {
     }
     const tileChanged = !this.state.cursorTile.equals(input.tile);
     this.state.setCursorState(input);
-
-    this.app.getSprites().forEach(sprite => {
-      if (sprite.updateOnCursorMove) {
-        sprite.update(this.state);
-        this.queue.markForRender(sprite.getLayer());
-      }
-    })
+    this.queue.triggerFlag("updateOnCursorMove", this.state);
 
     if (tileChanged) {
-      this.app.getSprites().forEach(sprite => {
-        if (sprite.updateOnTileChange) {
-          sprite.update(this.state);
-          this.queue.add(sprite, sprite.getLayer());
-          this.queue.markForRender(sprite.getLayer());
-        }
-      });
+      this.queue.triggerFlag("updateOnTileChange", this.state);
     }
   }
 

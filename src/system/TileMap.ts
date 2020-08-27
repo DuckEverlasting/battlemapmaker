@@ -1,6 +1,6 @@
 import { Sprite } from "../graphics";
-import { SpriteManifest, Display } from "."
-import { Renderable } from "../types";
+import { SpriteManifest, Display, State } from "."
+import { Renderable, Queueable, QueueableFlag } from "../types";
 
 /* Notes / further musings.
   - Need a plan for this section, and how it relates to RenderQueue
@@ -24,11 +24,12 @@ import { Renderable } from "../types";
     - Hey wait is this the damn TileMap? A collection of them I guess. Oy. I suppose a map would be getting it into a json.
 */
 
-export class TileMap implements Renderable {
+export class TileMap implements Queueable {
   public readonly id: string;
   private graph: (Sprite | null)[];
   private manifest: SpriteManifest;
   private markedForRender: boolean[];
+  public flags: QueueableFlag[];
   
   constructor(
     public readonly rows: number,
@@ -98,5 +99,13 @@ export class TileMap implements Renderable {
 
   render(display: Display) {
 
+  }
+
+  update(state: State) {
+    
+  }
+
+  getFlags() {
+    return [...this.flags]
   }
 }

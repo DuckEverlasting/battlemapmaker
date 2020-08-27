@@ -16,23 +16,41 @@ export class Sprite implements Renderable {
   public readonly rect: Rect;
   public readonly updateOnCursorMove: boolean;
   public readonly updateOnTileChange: boolean;
-  private tile: Vector;
-  private layer: number | null;
+  protected tile: Vector;
+  protected layer: number | null;
 
-  constructor(source: ImageSource, params: SpriteParams) {
+  constructor(source: ImageSource, params?: SpriteParams) {
     this.id = `${Date.now()}`;
     this.imageSource = source;
     this.rect = params.rect || new Rect(0, 0, this.imageSource.rect.width, this.imageSource.rect.height);
     this.layer = null;
     this.tile = params.initPosition || new Vector(0, 0);
-    this.updateOnCursorMove = !!params.updateOnCursorMove;
-    this.updateOnTileChange = !!params.updateOnTileChange;
   }
 
   update(state: State) {}
 
   render(display: Display) {
-    display.renderSprite(this);
+    if (!this.layer) {return;}
+    const t = display.getTranslateData()
+    if (
+      this.tile.x < 0
+      || this.tile.x >= t.rect.width / t.tileWidth
+      || this.tile.y < 0
+      || this.tile.y >= t.rect.height / t.tileHeight
+    ) {
+      return;
+    }
+    display.getLayers()[this.layer].ctx.drawImage(
+      this.imageSource.source,
+      this.rect.offsetX,
+      this.rect.offsetY,
+      this.rect.width,
+      this.rect.height,
+      t.rect.offsetX + (this.tile.x) * t.tileWidth,
+      t.rect.offsetY + (this.tile.y) * t.tileHeight,
+      t.tileWidth,
+      t.tileHeight
+    );
   }
 
   getPosition() {

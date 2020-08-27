@@ -1,6 +1,7 @@
 import { Display } from "./Display";
 import { RenderQueue } from "./RenderQueue";
 import { App } from ".";
+import { Renderable } from "../types";
 
 export class Renderer {
   private display: Display;
@@ -12,29 +13,31 @@ export class Renderer {
     this.display = app.getDisplay();
     this.queue = app.getQueue();
     this.frameRate = 1000 / 60;
-    this.render();
+    this.render(this.queue.getAllMarkedForRender());
     requestAnimationFrame(this.renderLoop.bind(this));
   }
 
   renderLoop() {
+    const markedForRender = this.queue.getAllMarkedForRender();
     if (
-      !this.queue.isEmpty()
+      markedForRender.some(set => set.size > 0)
       && Date.now() - this.lastRender > this.frameRate
     ) {
-      this.render();
+      this.render(markedForRender);
     }
     requestAnimationFrame(this.renderLoop.bind(this));
   }
 
-  render() {
+  render(markedForRender: Set<Renderable>[]) {
     this.lastRender = Date.now();
-    this.queue.getMarkedForRender().forEach((layer, i) => {
+    markedForRender.forEach((layer, i) => {
       if (layer === null) {return;}
       layer.forEach(renderable => {
         this.display.clearLayer(i);
         renderable.render(this.display);
       });
     });
-    this.queue.clearMarkedForRender();
+    this.display.print();
+    this.queue.clearAllMarkedForRender();
   }
 }
