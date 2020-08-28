@@ -1,7 +1,7 @@
 import { ImageSource } from "./ImageSource";
-import { Sprite } from ".";
-import { Rect } from "../util/Rect";
-import { SpriteMap } from "../types";
+import { Sprite } from "..";
+import { Rect } from "../../util/Rect";
+import { SpriteMap } from "../../types";
 
 export class SpriteSheet extends ImageSource {
   public readonly spriteWidth: number;
@@ -23,14 +23,12 @@ export class SpriteSheet extends ImageSource {
     const array: Sprite[] = [];
     for (let i = 0; i < this.rows; i++) {
       for (let j = 0; j < this.columns; j++) {
-        array.push(new Sprite(this, {
-          rect: new Rect(
-            j * this.spriteWidth,
-            i * this.spriteHeight,
-            this.spriteWidth,
-            this.spriteHeight
-          )
-        }));
+        array.push(new Sprite(this, new Rect(
+          j * this.spriteWidth,
+          i * this.spriteHeight,
+          this.spriteWidth,
+          this.spriteHeight
+        ), 1, 1));
       }
     }
     return array;
@@ -39,14 +37,12 @@ export class SpriteSheet extends ImageSource {
   generateSpritesFromMap(map: SpriteMap) {
     const array: Sprite[] = [];
     map.forEach(sprite => {
-      array.push(new Sprite(this, {
-        rect: new Rect (
-          sprite.row * this.spriteWidth,
-          sprite.column * this.spriteHeight,
-          sprite.width * this.spriteWidth,
-          sprite.height * this.spriteHeight
-        )}
-      ));
+      array.push(new Sprite(this, new Rect(
+        sprite.row * this.spriteWidth,
+        sprite.column * this.spriteHeight,
+        sprite.width * this.spriteWidth,
+        sprite.height * this.spriteHeight
+      ), sprite.width, sprite.height));
     });
     return array;
   }

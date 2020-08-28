@@ -1,5 +1,5 @@
-import { CanvasSource } from "../types";
-import { Rect } from "../util/Rect";
+import { CanvasSource } from "../../types";
+import { Rect } from "../../util/Rect";
 
 export class ImageSource {
   public readonly id: string;

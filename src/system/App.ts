@@ -29,30 +29,6 @@ export class App implements AppType {
     this.renderer = new Renderer(this);
     this.inputHandler = new InputHandler(this);
     this.eventEmitter = new EventEmitter(this.inputHandler, this.display);
-
-    // CONTENT BUILDING FOR TESTING PURPOSES - TEMP
-    const temp = new OffscreenCanvas(this.state.tileWidth, this.state.tileHeight);
-    temp.getContext('2d').strokeStyle = "black";
-    temp.getContext('2d').lineWidth = 4;
-    temp.getContext('2d').strokeRect(0, 0, temp.width, temp.height);
-    temp.getContext('2d').strokeStyle = "white";
-    temp.getContext('2d').lineWidth = 2;
-    temp.getContext('2d').strokeRect(0, 0, temp.width, temp.height);
-    const tempImageSrc = new ImageSource(temp);
-    this.state.media[tempImageSrc.id] = tempImageSrc;
-    const tempSprite = new TileOutline(this.state.media[0]);
-    this.state.sprites[tempSprite.id] = tempSprite;
-    this.queue.add(this.state.sprites[0], 4);
-
-    const image = new Image(SpriteSheet_1.width, SpriteSheet_1.height);
-    image.src = SpriteSheet_1;
-
-    const tempSpriteSheet = new SpriteSheet(image, 32, 32);
-    this.state.sprites[
-      tempSpriteSheet.sprites[1].id
-    ] = (tempSpriteSheet.sprites[1]);
-    this.state.sprites[1].moveToTile(new Vector(3, 3));
-    this.queue.add(this.state.sprites[1], 2);
   };
   
   getDisplay() {

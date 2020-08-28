@@ -1,4 +1,4 @@
-import { Sprite } from "../graphics";
+import { Sprite } from "..";
 
 export class SpriteManifest {
   private all = new Set<Sprite>();

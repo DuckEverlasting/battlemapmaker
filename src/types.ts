@@ -48,7 +48,7 @@ export type Callable = {
 
 export type Renderable = {
   id: string;
-  render(Display?: Display, props?: RenderProps): void;
+  render(display?: Display, props?: RenderProps): void;
 };
 
 export type Queueable = Renderable & {

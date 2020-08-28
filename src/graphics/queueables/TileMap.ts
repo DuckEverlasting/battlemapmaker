@@ -1,6 +1,6 @@
-import { Sprite } from "../graphics";
-import { SpriteManifest, Display, State } from "."
-import { Renderable, Queueable, QueueableFlag } from "../types";
+import { Sprite } from "..";
+import { Display, State, SpriteManifest } from "../../system"
+import { Queueable, QueueableFlag } from "../../types";
 
 /* Notes / further musings.
   - Need a plan for this section, and how it relates to RenderQueue

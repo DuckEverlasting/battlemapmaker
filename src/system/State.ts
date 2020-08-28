@@ -2,7 +2,7 @@ import { Tool, PanZoomTool, Keyboard, Toolbox, TranslateData, MouseInput } from 
 import { Vector } from "../util/Vector";
 import { Rect } from "../util/Rect";
 import { ImageSource, Sprite } from "../graphics";
-import { TileMap } from "./TileMap";
+import { TileMap } from "../graphics/queueables/TileMap";
 
 export class State {
   public rect: Rect;
