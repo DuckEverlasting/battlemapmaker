@@ -38,6 +38,9 @@
       padding: 10px;
       margin: 2px 0;
     }
+    button.active {
+      background: rgb(255, 234, 48);
+    }
     .main {
       width: 100%;
       height: 100%;
@@ -62,20 +65,12 @@
       width: 100%;
       height: calc(100% - 100px);
     }
-    .left-box {
+    .side-box {
       display: flex;
       flex-direction: column;
       padding-top: 5px;
       align-items: center;
       background: #7DA253;
-      width: 100px;
-    }
-    .right-box {
-      display: flex;
-      flex-direction: column;
-      padding-top: 5px;
-      align-items: center;
-      background: #D8838A;
       width: 100px;
     }
     .tool-button {
@@ -86,14 +81,14 @@
     <section class="main">
       <h1>PROTOTYYYYYYYYYPE</h1>
       <div class="main-container">
-        <div class="left-box">
-          <button class="tool-button" id="pencil-button">Draw</button>
-          <button class="tool-button" id="marquee-fill-button">Box</button>
-          <button class="tool-button" id="bucket-fill-button">Fill</button>
-          <button class="tool-button" id="eraser-button">Erase</button>
+        <div class="side-box">
+          <button class="tool-button" id="freehand-button">Draw</button>
+          <button class="tool-button" id="shape-button">Box</button>
+          <button class="tool-button" id="fill-button">Fill</button>
+          <button class="tool-button" id="erase-button">Erase</button>
         </div>
         <div id="project_container"></div>
-        <div class="right-box">
+        <div class="side-box">
           <button class="layer-button" id="layer-button-1">Layer 1</button>
           <button class="layer-button" id="layer-button-2">Layer 2</button>
           <button class="layer-button" id="layer-button-3">Layer 3</button>

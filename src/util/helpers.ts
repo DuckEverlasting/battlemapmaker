@@ -3,6 +3,7 @@ import * as Tools from '../tools';
 import { Toolbox, Keyboard } from "../types";
 import { MoveTool } from "../tools";
 import { ZoomTool } from "../tools/zoom/ZoomTool";
+import { State } from "../system";
 
 export function modKey(e: KeyboardEvent) {
   return navigator.appVersion.indexOf("Mac") !== -1
@@ -62,3 +63,29 @@ export async function loadImage(imageSource: string) {
   await wait;
   return img;
 };
+
+export function attachButtons(
+  toolButtons: {[key: string]: HTMLElement},
+  layerButtons: HTMLElement[],
+  state: State
+) {
+  const toolButtonsArray = Object.entries(toolButtons);
+  toolButtonsArray.forEach(entry => {
+    entry[1].onclick = () => {
+      state.setActiveTool(entry[0]);
+      toolButtonsArray.forEach(en => {
+        en[1].classList.remove("active");
+      });
+      entry[1].classList.add("active");
+    };
+  });
+  layerButtons.forEach((element, layer) => {
+    element.onclick = () => {
+      state.setActiveLayer(layer)
+      layerButtons.forEach(el => {
+        el.classList.remove("active");
+      });
+      element.classList.add("active");
+    };
+  });
+}

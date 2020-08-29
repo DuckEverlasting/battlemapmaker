@@ -3,7 +3,7 @@ import { State } from "./State";
 import { Renderer } from "./Renderer";
 import { EventEmitter, InputHandler } from "../input"
 import { AppType } from "../types";
-import { getToolbox, getKeyboard } from "../util/helpers";
+import { getToolbox, getKeyboard, attachButtons } from "../util/helpers";
 import { RenderQueue } from "./RenderQueue";
 import { testRun } from "../temp/testRun";
 
@@ -16,7 +16,12 @@ export class App implements AppType {
   private eventEmitter: EventEmitter;
   private inputHandler: InputHandler;
 
-  constructor(containingElement: HTMLElement, layerCount: number = 5) {
+  constructor(
+    containingElement: HTMLElement,
+    toolButtons: {[key: string]: HTMLElement},
+    layerButtons: HTMLElement[],
+    layerCount: number = 5
+  ) {
     this.state = new State(
       960, 640, 64, 64, 5,
       getToolbox(this),
@@ -27,25 +32,26 @@ export class App implements AppType {
     this.renderer = new Renderer(this);
     this.inputHandler = new InputHandler(this);
     this.eventEmitter = new EventEmitter(this.inputHandler, this.display);
+    attachButtons(toolButtons, layerButtons, this.state);
 
     // test run
     testRun(this);
-  };
-  
+  }
+
   getDisplay() {
     return this.display;
   }
-  
+
   getState() {
     return this.state;
-  } 
-  
-  getMedia() {
-    return {...this.state.media};
   }
-  
+
+  getMedia() {
+    return { ...this.state.media };
+  }
+
   getSprites() {
-    return {...this.state.sprites};
+    return { ...this.state.sprites };
   }
 
   getRenderer() {

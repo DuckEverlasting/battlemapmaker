@@ -14,6 +14,7 @@ export class State {
   public cursorTile = new Vector(-1, -1);
   public cursorButtons = [false, false, false];
   public activeTool: Tool | null = null;
+  public activeLayer = 1;
   public isDrawing = false;
   // public selection: Selection;
   // public selectionIsActive = false;
@@ -32,6 +33,7 @@ export class State {
     public toolbox: Toolbox,
     public keyboard: Keyboard
   ) {
+    console.log(this.toolbox)
     const clientRect = document
       .getElementById("project_container")
       .getBoundingClientRect();
@@ -65,5 +67,13 @@ export class State {
     this.cursorPosition = input.position;
     this.cursorTile = input.tile;
     this.cursorButtons = input.buttons;
+  }
+
+  setActiveTool(name: string) {
+    this.activeTool = this.toolbox[name];
+  }
+
+  setActiveLayer(num: number) {
+    this.activeLayer = num;
   }
 }
