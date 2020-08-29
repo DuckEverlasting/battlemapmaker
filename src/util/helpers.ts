@@ -51,3 +51,14 @@ export function getRange(low: number, high: number) {
   }
   return result;
 }
+
+export async function loadImage(imageSource: string) {
+  let img;
+  const wait = new Promise(resolve => {
+    img = new Image();
+    img.onload = resolve;
+    img.src = imageSource;
+  });
+  await wait;
+  return img;
+};
