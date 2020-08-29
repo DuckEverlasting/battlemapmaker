@@ -4,11 +4,9 @@ import { Renderer } from "./Renderer";
 import { EventEmitter, InputHandler } from "../input"
 import { AppType } from "../types";
 import { getToolbox, getKeyboard } from "../util/helpers";
-import { ImageSource, TileOutline, SpriteSheet } from "../graphics";
 import { RenderQueue } from "./RenderQueue";
+import { testRun } from "../temp/testRun";
 
-import SpriteSheet_1 from "../media/spritesheets/SpriteSheet_1.png"
-import { Vector } from "../util/Vector";
 
 export class App implements AppType {
   private display: Display;
@@ -29,6 +27,9 @@ export class App implements AppType {
     this.renderer = new Renderer(this);
     this.inputHandler = new InputHandler(this);
     this.eventEmitter = new EventEmitter(this.inputHandler, this.display);
+
+    // test run
+    testRun(this);
   };
   
   getDisplay() {

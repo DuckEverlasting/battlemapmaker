@@ -1,5 +1,6 @@
 import { Canvas } from "./Canvas";
 import { State } from "./State";
+import { TranslateData } from "../types";
 
 export class Display {
   public readonly id: string;
@@ -16,7 +17,7 @@ export class Display {
     this.layerCount = layerCount;
     this.layers = new Array(layerCount);
     for (let i = 0; i <= this.layerCount; i++) {
-      this.layers[i] = (new Canvas(containingElement, "offscreen"));
+      this.layers[i] = (new Canvas("offscreen", this.state.rect.width, this.state.rect.height));
     }
     this.main = new Canvas(containingElement)
     this.state = state;
@@ -27,9 +28,10 @@ export class Display {
   }
 
   print() {
+    const t = this.state.getTranslateData();
     this.layers.forEach(layer => {
-      this.main.ctx.drawImage(layer.element, 0, 0);
-    })
+      this.main.ctx.drawImage(layer.element, t.rect.offsetX, t.rect.offsetY);
+    });
   }
 
   clearLayer(number: number) {

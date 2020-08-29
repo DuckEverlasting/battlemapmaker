@@ -1,8 +1,8 @@
-import { Renderable, Queueable } from '../../types';
+import { Renderable, SpriteRenderProps } from '../../types';
 import { ImageSource } from '../sources/ImageSource';
 import { Display } from '../../system';
 import { Rect } from '../../util/Rect';
-import { Vector } from '../../util/Vector';
+import { Queueable } from '../queueables/Queueable';
 
 export class Sprite implements Renderable {
   public readonly id: string;
@@ -10,17 +10,18 @@ export class Sprite implements Renderable {
 
   constructor(
     public readonly imageSource: ImageSource,
-    public readonly rect: Rect,
-    public readonly widthInTiles: number,
-    public readonly heightInTiles: number
+    public readonly rect: Rect = new Rect(0, 0, imageSource.rect.width, imageSource.rect.height),
+    public readonly widthInTiles: number = 1,
+    public readonly heightInTiles: number = 1
   ) {
-    this.id = `${Date.now()}`;
-    this.rect =
-      rect ||
-      new Rect(0, 0, this.imageSource.rect.width, this.imageSource.rect.height);
+    this.id = `${Math.random()}`;
   }
 
-  render(display: Display, props: {tile: Vector, layer: number}) {
+  copy() {
+    return new Sprite(this.imageSource, this.rect, this.widthInTiles, this.heightInTiles);
+  }
+
+  render(display: Display, props: SpriteRenderProps) {
     const t = display.getTranslateData()
     if (
       props.tile.x < 0
@@ -36,8 +37,8 @@ export class Sprite implements Renderable {
       this.rect.offsetY,
       this.rect.width,
       this.rect.height,
-      t.rect.offsetX + (props.tile.x) * t.tileWidth,
-      t.rect.offsetY + (props.tile.y) * t.tileHeight,
+      props.tile.x * t.tileWidth,
+      props.tile.y * t.tileHeight,
       t.tileWidth * this.widthInTiles,
       t.tileHeight * this.heightInTiles
     );

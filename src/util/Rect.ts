@@ -1,4 +1,4 @@
-import { RectArgs } from "./types";
+import { RectArgs } from "../types";
 
 function isRectArray(args: RectArgs): args is Rect[] {
   return (<Rect[]>args)[0].offsetX !== undefined;

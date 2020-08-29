@@ -8,7 +8,7 @@ export class SpriteSheet extends ImageSource {
   public readonly spriteHeight: number;
   public readonly rows: number;
   public readonly columns: number;
-  public readonly sprites: Sprite[];
+  private sprites: Sprite[];
 
   constructor(source: HTMLImageElement, spriteWidth: number, spriteHeight: number, map?: SpriteMap) {
     super(source);
@@ -19,7 +19,15 @@ export class SpriteSheet extends ImageSource {
     this.sprites = map ? this.generateSpritesFromMap(map) : this.generateSprites();
   }
 
-  generateSprites() {
+  getSprite(index: number) {
+    if (index < 0 || index >= this.sprites.length) {
+      console.log(this.sprites)
+      throw new Error("Index error: no sprite at index " + index);
+    }
+    return this.sprites[index].copy();
+  }
+
+  private generateSprites() {
     const array: Sprite[] = [];
     for (let i = 0; i < this.rows; i++) {
       for (let j = 0; j < this.columns; j++) {
@@ -28,13 +36,13 @@ export class SpriteSheet extends ImageSource {
           i * this.spriteHeight,
           this.spriteWidth,
           this.spriteHeight
-        ), 1, 1));
+        )));
       }
     }
     return array;
   }
 
-  generateSpritesFromMap(map: SpriteMap) {
+  private generateSpritesFromMap(map: SpriteMap) {
     const array: Sprite[] = [];
     map.forEach(sprite => {
       array.push(new Sprite(this, new Rect(

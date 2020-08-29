@@ -4,6 +4,8 @@ import { Rect } from './util/Rect';
 
 export type AppType = {};
 
+export type RectArgs = Rect[]|number[];
+
 export type DisplayCanvas = HTMLCanvasElement | OffscreenCanvas;
 
 export type MouseInput = {
@@ -51,13 +53,6 @@ export type Renderable = {
   render(display?: Display, props?: RenderProps): void;
 };
 
-export type Queueable = Renderable & {
-  clearMarkedForRender(): void;
-  getMarkedForRender(): Array<Set<Renderable>|null> | {layer: number, set: Set<Renderable>} | null;
-  getFlags(): QueueableFlag[];
-  update(state: State): void;
-};
-
 export type QueueableFlag = "updateOnTileChange"|"updateOnCursorMove";
 
 export type CanvasSource = HTMLImageElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas;
@@ -71,6 +66,8 @@ export type SpriteParams = {
   updateOnCursorMove?: boolean;
   updateOnTileChange?: boolean;
 }
+
+export type SpriteRenderProps = {tile: Vector, layer: number}
 
 export type SpriteMap = {
   row: number;

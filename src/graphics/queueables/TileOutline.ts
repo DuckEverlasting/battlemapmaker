@@ -1,17 +1,20 @@
 import { Sprite } from "..";
 import { State, Display } from "../../system";
-import { Queueable, Renderable, QueueableFlag } from "../../types";
+import { QueueableFlag } from "../../types";
 import { Vector } from "../../util/Vector";
+import { Queueable } from "./Queueable";
 
-export class TileOutline implements Queueable {
-  public readonly id: string = `${Date.now()}`;
-  private flags: QueueableFlag[] = ["updateOnTileChange"];
-  private markedForRender: boolean = false;
+export class TileOutline extends Queueable {
+  protected flags: QueueableFlag[] = ["updateOnTileChange"];
+  private markedForRender: boolean = false; // Does not render until triggered
   private tile = new Vector(-1, -1);
 
-  constructor(private sprite: Sprite, private layer: number) {}
+  constructor(private sprite: Sprite, private layer: number) {
+    super(new Set([layer]));
+  }
 
-  render(display: Display) {
+  render(display: Display, props: {layer: number}) {
+    if (this.layer !== props.layer) {return;}
     this.sprite.render(display, {tile: this.tile, layer: this.layer})
   }
 
@@ -28,15 +31,8 @@ export class TileOutline implements Queueable {
     this.markedForRender = false;
   }
 
-  getMarkedForRender() {
-    const renderSet = new Set<Renderable>();
-    if (this.markedForRender) {
-      renderSet.add(this);
-    }
-    return {
-      layer: this.layer,
-      set: renderSet
-    }
+  isMarkedForRender() {
+    return this.markedForRender ? new Set([this.layer]) : new Set<number>();
   }
 
   getFlags() {

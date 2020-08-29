@@ -1,6 +1,8 @@
 import { Sprite } from "..";
 import { Display, State, SpriteManifest } from "../../system"
-import { Queueable, QueueableFlag } from "../../types";
+import { Queueable } from "./Queueable";
+import { Vector } from "../../util/Vector";
+import { getRange } from "../../util/helpers";
 
 /* Notes / further musings.
   - Need a plan for this section, and how it relates to RenderQueue
@@ -24,19 +26,17 @@ import { Queueable, QueueableFlag } from "../../types";
     - Hey wait is this the damn TileMap? A collection of them I guess. Oy. I suppose a map would be getting it into a json.
 */
 
-export class TileMap implements Queueable {
-  public readonly id: string;
+export class TileMap extends Queueable {
   private graph: (Sprite | null)[];
   private manifest: SpriteManifest;
   private markedForRender: boolean[];
-  public flags: QueueableFlag[];
-  
+
   constructor(
     public readonly rows: number,
     public readonly columns: number,
-    public readonly layerCount: number
+    public readonly layerCount: number,
   ) {
-    this.id = `${Date.now()}`;
+    super(new Set(getRange(0, layerCount)));
     this.graph = new Array<Sprite | null>(rows * columns * layerCount).fill(null);
     this.manifest = new SpriteManifest(layerCount);
     this.markedForRender = new Array(layerCount).fill(false);
@@ -48,7 +48,7 @@ export class TileMap implements Queueable {
 
   public add(sprite: Sprite, x: number, y: number, layer: number) {
     const index = this.ind(x, y, layer);
-    this.manifest.add(sprite, layer);
+    this.manifest.add(sprite, layer, new Vector(x, y));
     if (this.graph[index] !== null) {
       this.manifest.remove(this.graph[index], layer);
     }
@@ -87,22 +87,23 @@ export class TileMap implements Queueable {
     this.markedForRender.fill(false);
   }
 
-  public getMarkedForRender(): Array<Set<Sprite>|null> {
-    return this.manifest.getLayers().map(
-      (layer, i) => !!this.markedForRender[i] ? layer : null
-    );
+  public isMarkedForRender(): Set<number> {
+    const result = new Set<number>();
+    this.markedForRender.forEach((marked, i) => {
+      if (marked) {result.add(i)}
+    })
+    return result;
   }
 
   private markForRender(layer: number) {
     this.markedForRender[layer] = true;
   }
 
-  render(display: Display) {
-
-  }
-
-  update(state: State) {
-    
+  render(display: Display, props: {layer: number}) {
+    const data = this.manifest.getSpritesAndVectorsFrom(props.layer);
+    data.forEach(tuple => {
+      tuple[0].render(display, {tile: tuple[1], layer: props.layer});
+    })
   }
 
   getFlags() {

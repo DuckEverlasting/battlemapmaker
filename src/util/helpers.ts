@@ -33,3 +33,21 @@ export function getKeyboard(app: App) {
   }
   return keyboard; 
 }
+
+export function getOffscreenCanvas(width: number, height: number) {
+  if (typeof OffscreenCanvas !== 'undefined') {
+    return new OffscreenCanvas(width, height);
+  }
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = width;
+  return canvas;
+}
+
+export function getRange(low: number, high: number) {
+  const result = [];
+  for (let i = low; i < high; i++) {
+    result.push(i);
+  }
+  return result;
+}

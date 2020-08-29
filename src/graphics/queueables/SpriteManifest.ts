@@ -1,40 +1,63 @@
 import { Sprite } from "..";
+import { Vector } from "../../util/Vector";
+import { SpriteRenderProps } from "../../types";
 
 export class SpriteManifest {
-  private all = new Set<Sprite>();
-  private layers = new Array<Set<Sprite>>();
+  private all: {[id: string]: Sprite} = {};
+  private layers = new Array<{[id: string]: Vector}>();
 
   constructor(layerCount: number) {
     for (let i = 0; i < layerCount; i++) {
-      this.layers.push(new Set<Sprite>());
+      this.layers.push({});
     }
   }
 
   has(sprite: Sprite) {
-    return this.all.has(sprite);
+    return !!this.all[sprite.id];
   }
 
   layerHas(sprite: Sprite, layer: number) {
-    return this.layers[layer].has(sprite);
+    return !!this.layers[layer][sprite.id];
   }
 
-  getLayers() {
-    return this.layers;
+  getLayerOf(sprite: Sprite) {
+    return this.layers.findIndex(layer => !!layer[sprite.id]);
   }
 
-  add(sprite: Sprite, layer: number) {
+  getSpriteVector(sprite: Sprite, layer?: number) {
+    if (!this.has(sprite)) {
+      throw new Error("TileMap does not contains sprite " + sprite.id);
+    }
+    if (!layer) {
+      layer = this.getLayerOf(sprite);
+    }
+    return this.layers[layer][sprite.id];
+  }
+
+  getSpritesAndVectorsFrom(layer: number) {
+    const result: [Sprite, Vector][] = [];
+    Object.keys(this.layers[layer]).forEach(id => {(
+      result.push([this.all[id], this.layers[layer][id]])
+    )});
+    return result;
+  }
+
+  add(sprite: Sprite, layer: number, vector: Vector) {
     if (this.has(sprite)) {
       throw new Error("Error: TileMap already contains sprite " + sprite.id);
     }
-    this.all.add(sprite);
-    this.layers[layer].add(sprite);
+    this.all[sprite.id] = sprite;
+    this.layers[layer][sprite.id] = vector;
   }
 
   remove(sprite: Sprite, layer: number) {
     if (!this.has(sprite)) {
       throw new Error("Error: TileMap does not contains sprite " + sprite.id);
     }
-    this.all.delete(sprite);
-    this.layers[layer].delete(sprite);
+    if (!layer) {
+      layer = this.layers.findIndex(layer => !!layer[sprite.id])
+    }
+    delete this.all[sprite.id];
+    delete this.layers[layer][sprite.id];
   }
 }
