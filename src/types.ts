@@ -1,10 +1,10 @@
-import { Display, State } from './system';
+import { Display } from './system';
 import { Vector } from './util/Vector';
 import { Rect } from './util/Rect';
 
 export type AppType = {};
 
-export type RectArgs = Rect[]|number[];
+export type RectArgs = Rect[] | number[];
 
 export type DisplayCanvas = HTMLCanvasElement | OffscreenCanvas;
 
@@ -67,7 +67,7 @@ export type SpriteParams = {
   updateOnTileChange?: boolean;
 }
 
-export type SpriteRenderProps = {tile: Vector, layer: number}
+export type SpriteRenderProps = {tile: Vector, layer: number, staging?: boolean}
 
 export type SpriteMap = {
   row: number;

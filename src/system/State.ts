@@ -3,6 +3,7 @@ import { Vector } from "../util/Vector";
 import { Rect } from "../util/Rect";
 import { ImageSource, Sprite } from "../graphics";
 import { TileMap } from "../graphics/queueables/TileMap";
+import { Canvas } from ".";
 
 export class State {
   public rect: Rect;
@@ -15,7 +16,10 @@ export class State {
   public cursorButtons = [false, false, false];
   public activeTool: Tool | null = null;
   public activeLayer = 1;
+  public activeSprite: Sprite | null = null;
+  public activeSpriteCanvas: Canvas;
   public isDrawing = false;
+  public loadedSprites: Sprite[] = [];
   // public selection: Selection;
   // public selectionIsActive = false;
   public middleClickTool: PanZoomTool;
@@ -75,5 +79,26 @@ export class State {
 
   setActiveLayer(num: number) {
     this.activeLayer = num;
+  }
+
+  setActiveSprite(sprite: Sprite) {
+    this.activeSprite = sprite;
+    this.activeSpriteCanvas.ctx.clearRect(
+      0,
+      0,
+      this.activeSpriteCanvas.element.width,
+      this.activeSpriteCanvas.element.height
+    );
+    this.activeSpriteCanvas.ctx.drawImage(
+      sprite.imageSource.source,
+      sprite.rect.offsetX,
+      sprite.rect.offsetY,
+      sprite.rect.width,
+      sprite.rect.height,
+      0,
+      0,
+      this.activeSpriteCanvas.element.width,
+      this.activeSpriteCanvas.element.height
+    );
   }
 }

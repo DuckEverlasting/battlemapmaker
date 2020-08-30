@@ -1,13 +1,14 @@
 import { Display } from "../../system";
 import { ImageObject } from "../renderables/ImageObject";
 import { Queueable } from "./Queueable";
+import { LAYER } from "../../enums";
 
 export class BGImage extends Queueable {
   private markedForRender: boolean = true;
-  private layer: number = 0;
+  private layer = LAYER.BG;
   
   constructor(private content: ImageObject) {
-    super(new Set([0]));
+    super(new Set([LAYER.BG]));
   }
 
   render(display: Display, props: {layer: number}) {

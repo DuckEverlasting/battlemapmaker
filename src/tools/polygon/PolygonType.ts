@@ -1,5 +1,5 @@
 import { BaseTool } from "../BaseTool";
 
-export class PolygonType extends BaseTool {
+export abstract class PolygonType extends BaseTool {
   
 }

@@ -1,5 +1,5 @@
 import { BaseTool } from "../BaseTool";
 
-export class ShapeType extends BaseTool {
+export abstract class ShapeType extends BaseTool {
   
 }

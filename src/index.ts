@@ -15,4 +15,6 @@ const layerButtons = [
   document.getElementById('layer-button-3'),
 ];
 
-new App(container, toolButtons, layerButtons);
+const activeSpriteContainer = document.getElementById('active_sprite_container');
+
+new App(container, toolButtons, layerButtons, activeSpriteContainer);

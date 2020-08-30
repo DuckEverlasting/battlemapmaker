@@ -20,10 +20,12 @@ export class App implements AppType {
     containingElement: HTMLElement,
     toolButtons: {[key: string]: HTMLElement},
     layerButtons: HTMLElement[],
-    layerCount: number = 5
+    activeSpriteContainer: HTMLElement,
+    layerCount: number = 7
   ) {
     this.state = new State(
-      960, 640, 64, 64, 5,
+      960, 640, 64, 64,
+      layerCount,
       getToolbox(this),
       getKeyboard(this)
     );
@@ -32,7 +34,7 @@ export class App implements AppType {
     this.renderer = new Renderer(this);
     this.inputHandler = new InputHandler(this);
     this.eventEmitter = new EventEmitter(this.inputHandler, this.display);
-    attachButtons(toolButtons, layerButtons, this.state);
+    attachButtons(toolButtons, layerButtons, activeSpriteContainer, this.state);
 
     // test run
     testRun(this);

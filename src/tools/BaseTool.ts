@@ -11,15 +11,18 @@ export abstract class BaseTool implements Tool {
 
   start(input: MouseInput) {
     this.onStart(input);
+    this.isActive = true;
   };
   update(input: MouseInput) {
+    console.log("Hey")
     this.onUpdate(input);
   };
   end(input: MouseInput) {
     this.onEnd(input);
+    this.isActive = false;
   };
 
-  onStart(input: MouseInput) {};
-  onUpdate(input: MouseInput) {};
-  onEnd(input: MouseInput) {};
+  onStart(input: MouseInput) {}
+  onUpdate(input: MouseInput) {}
+  onEnd(input: MouseInput) {}
 }

@@ -3,7 +3,7 @@ import * as Tools from '../tools';
 import { Toolbox, Keyboard } from "../types";
 import { MoveTool } from "../tools";
 import { ZoomTool } from "../tools/zoom/ZoomTool";
-import { State } from "../system";
+import { State, Canvas } from "../system";
 
 export function modKey(e: KeyboardEvent) {
   return navigator.appVersion.indexOf("Mac") !== -1
@@ -67,6 +67,7 @@ export async function loadImage(imageSource: string) {
 export function attachButtons(
   toolButtons: {[key: string]: HTMLElement},
   layerButtons: HTMLElement[],
+  activeSpriteContainer: HTMLElement,
   state: State
 ) {
   const toolButtonsArray = Object.entries(toolButtons);
@@ -88,4 +89,5 @@ export function attachButtons(
       element.classList.add("active");
     };
   });
+  state.activeSpriteCanvas = new Canvas(activeSpriteContainer);
 }

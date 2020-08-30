@@ -45,7 +45,7 @@ export class InputHandler {
       this.state.middleClickTool.start(input);
     } else if (e.button === 0) {
       if (this.state.activeTool === null) {return;}
-      this.state.activeTool.end(input);
+      this.state.activeTool.start(input);
     }
   }
 
@@ -60,15 +60,15 @@ export class InputHandler {
 
   mouseMove(e: MouseEvent) {
     const input: MouseInput = parseMouseInput(e, this.state.getTranslateData());
-    if (this.state.activeTool !== null) {
-      this.state.activeTool.update(input);
-    }
     const tileChanged = !this.state.cursorTile.equals(input.tile);
     this.state.setCursorState(input);
     this.queue.triggerFlag("updateOnCursorMove", this.state);
 
     if (tileChanged) {
       this.queue.triggerFlag("updateOnTileChange", this.state);
+      if (this.state.activeTool !== null && this.state.activeTool.isActive) {
+        this.state.activeTool.update(input);
+      }
     }
   }
 

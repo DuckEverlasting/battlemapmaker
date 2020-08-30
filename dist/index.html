@@ -55,6 +55,10 @@
       padding: 0;
       flex-grow: 1;
     }
+    #active_sprite_container {
+      width: 100px;
+      height: 100px;
+    }
     .layer-canvas {
       position: absolute;
     }
@@ -73,9 +77,6 @@
       background: #7DA253;
       width: 100px;
     }
-    .tool-button {
-
-    }
   </style>
   <body>
     <section class="main">
@@ -86,6 +87,7 @@
           <button class="tool-button" id="shape-button">Box</button>
           <button class="tool-button" id="fill-button">Fill</button>
           <button class="tool-button" id="erase-button">Erase</button>
+          <div id="active_sprite_container"></div>
         </div>
         <div id="project_container"></div>
         <div class="side-box">
