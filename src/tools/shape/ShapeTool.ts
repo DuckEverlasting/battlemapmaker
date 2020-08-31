@@ -4,33 +4,30 @@ import { vect } from "../../util/Vector";
 
 export class ShapeTool extends ShapeType {
   private sprite: Sprite | null;
-  protected originalGraph: (Sprite|null)[];
 
   commitStart() {
     this.sprite = this.app.getState().activeSprite;
-    this.originalGraph = this.tileMap.getLayerGraph(this.layer);
+    this.tileMap.save();
     this.tileMap.add(this.sprite.copy(), vect(this.origin), this.layer);
   }
 
   commitUpdate() {
-    const nextGraph = this.originalGraph.map((item, i) => { 
-      if (item === null && this.tileIndecies.has(i)) {
-        return this.sprite.copy();
-      }
-      return item;
+    this.tileMap.restore();
+    this.tileMap.save();
+    this.tiles.forEach(tile => {
+      this.tileMap.add(this.sprite.copy(), tile, this.layer);
     })
-    this.tileMap.replaceLayer(this.layer, nextGraph);
   }
   
   commitEnd() {
+    this.tileMap.clearSave();
     this.reset();
   }
 
   reset() {
-    this.originalGraph = [];
     this.layer = null;
     this.sprite = null;
-    this.tileIndecies.clear();
+    this.tiles.clear();
     this.origin = null;
     this.dest = null;
   }
