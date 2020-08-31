@@ -42,7 +42,6 @@ export class SpriteManifest {
   }
 
   add(sprite: Sprite, layer: number, vector: Vector) {
-    console.log("ADDING", sprite)
     if (this.has(sprite)) {
       throw new Error("Error: TileMap already contains sprite " + sprite.id);
     }
@@ -51,10 +50,9 @@ export class SpriteManifest {
   }
 
   remove(sprite: Sprite, layer: number) {
-    console.log("REMOVING", sprite)
-    // if (!this.has(sprite)) {
-    //   throw new Error("Error: TileMap does not contains sprite " + sprite.id);
-    // }
+    if (!this.has(sprite)) {
+      throw new Error("Error: TileMap does not contains sprite " + sprite.id);
+    }
     if (!layer) {
       layer = this.layers.findIndex(layer => !!layer[sprite.id])
     }

@@ -21,12 +21,15 @@ export class FreehandTool extends FreehandType {
 
   commitEnd() {
     this.app.getDisplay().setStagingPosition(null);
-    this.staging.get()
+    this.tiles.forEach(vector => {
+      this.tileMap.add(this.staging.get(vector), vector, this.layer);
+    });
     this.reset();
   }
 
   reset() {
     this.latest = [];
+    this.tiles = new Set();
     this.layer = null;
     this.sprite = null;
     this.staging.clear();

@@ -34,6 +34,7 @@ export class RenderQueue {
   }
 
   render(display: Display, layers?: Set<number|"staging">) {
+    console.log(layers)
     layers.forEach(layer => {
       display.clearLayer(layer);
       this.queue.forEach(queueable => {
