@@ -4,11 +4,9 @@ import { Vector, vect } from "../../util/Vector";
 
 export class FreehandTool extends FreehandType {
   private sprite: Sprite | null;
-  private layer: number | null;
 
   commitStart() {
     this.sprite = this.app.getState().activeSprite;
-    this.layer = this.app.getState().activeLayer;
     this.tileMap.add(this.sprite.copy(), vect(this.latest[0]), this.layer);
   }
 
@@ -24,7 +22,6 @@ export class FreehandTool extends FreehandType {
 
   reset() {
     this.latest = [];
-    this.tiles = new Set();
     this.layer = null;
     this.sprite = null;
   }

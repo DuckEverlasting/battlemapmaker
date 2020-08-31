@@ -3,7 +3,11 @@ import { Vector } from "../../util/Vector";
 
 export class SpriteManifest {
   private all: {[id: string]: Sprite} = {};
-  private layers = new Array<{[id: string]: Vector}>();
+  private layers: {[id: string]: Vector}[] = [];
+  private saveStack: {
+    all: {[id: string]: Sprite},
+    layers: {[id: string]: Vector}[]
+  }[] = [];
 
   constructor(layerCount: number) {
     for (let i = 0; i < layerCount; i++) {
@@ -63,5 +67,24 @@ export class SpriteManifest {
   clear() {
     this.all = {};
     this.layers = this.layers.map(() => ({}));
+  }
+
+  save() {
+    const savedLayers: {[id: string]: Vector}[] = [];
+    this.layers.forEach(layer => {
+      savedLayers.push({...layer})
+    })
+    const toSave = {all: {...this.all}, layers: savedLayers};
+    this.saveStack.push(toSave);
+  }
+
+  restore() {
+    const toRestore = this.saveStack.pop();
+    this.all = toRestore.all;
+    this.layers = toRestore.layers;
+  }
+
+  clearSave() {
+    this.saveStack = [];
   }
 }

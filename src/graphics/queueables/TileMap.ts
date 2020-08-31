@@ -8,6 +8,7 @@ export class TileMap extends Queueable {
   protected graph: (Sprite | null)[];
   protected manifest: SpriteManifest;
   protected markedForRender: boolean[];
+  protected saveStack: (Sprite | null)[][] = [];
 
   constructor(
     public readonly rows: number,
@@ -22,23 +23,39 @@ export class TileMap extends Queueable {
 
   public get(v: Vector, layer: number) {
     if (!this.vectorInBounds(v)) {return;}
-    return this.graph[this.ind(v, layer)];
+    return this.graph[this.getInd(v, layer)];
+  }
+
+  public getLayerGraph(layer: number): (Sprite|null)[] {
+    return this.graph.filter((tile, i) => i % this.layerCount === layer);
+  }
+
+  public replaceLayer(layer: number, graph: (Sprite|null)[]) {
+    graph.forEach((item, i) => {
+      if (item === null) {
+        this.remove(this.getVec(i), layer);
+      } else if (this.manifest.has(item)) {
+        return;
+      } else {
+        this.add(item, this.getVec(i), layer);
+      }
+    })
   }
 
   public add(sprite: Sprite, v: Vector, layer: number) {
     if (!this.vectorInBounds(v)) {return;}
-    const index = this.ind(v, layer);
-    this.manifest.add(sprite, layer, vect(v));
+    const index = this.getInd(v, layer);
     if (this.graph[index] !== null) {
       this.manifest.remove(this.graph[index], layer);
     }
-    this.graph[this.ind(v, layer)] = sprite;
+    this.manifest.add(sprite, layer, vect(v));
+    this.graph[this.getInd(v, layer)] = sprite;
     this.markForRender(layer);
   }
 
   public remove(v: Vector, layer: number) {
     if (!this.vectorInBounds(v)) {return;}
-    const index = this.ind(v, layer);
+    const index = this.getInd(v, layer);
     const sprite = this.graph[index];
     if (sprite !== null) {
       this.manifest.remove(sprite, layer);
@@ -65,8 +82,15 @@ export class TileMap extends Queueable {
     this.add(sprite, dest, destLayer);
   }
 
-  protected ind(v: Vector, layer: number) {
+  protected getInd(v: Vector, layer: number) {
     return (this.columns * v.y + v.x) * this.layerCount + layer;
+  }
+
+  protected getVec(i: number) {
+    const layerInd = (i - i % this.layerCount) / this.layerCount,
+      x = layerInd % this.columns,
+      y = Math.floor(layerInd / this.columns);
+    return vect(x, y);
   }
 
   protected vectorInBounds(v: Vector) {
@@ -105,5 +129,22 @@ export class TileMap extends Queueable {
 
   getFlags() {
     return [...this.flags]
+  }
+
+  save() {
+    this.manifest.save();
+    const toSave = [...this.graph];
+    this.saveStack.push(toSave);
+  }
+
+  restore() {
+    this.manifest.restore();
+    const toRestore = this.saveStack.pop();
+    this.graph = toRestore;
+  }
+
+  clearSave() {
+    this.manifest.clearSave();
+    this.saveStack = [];
   }
 }
