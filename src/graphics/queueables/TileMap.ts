@@ -21,10 +21,12 @@ export class TileMap extends Queueable {
   }
 
   public get(v: Vector, layer: number) {
+    if (!this.vectorInBounds(v)) {return;}
     return this.graph[this.ind(v, layer)];
   }
 
   public add(sprite: Sprite, v: Vector, layer: number) {
+    if (!this.vectorInBounds(v)) {return;}
     const index = this.ind(v, layer);
     this.manifest.add(sprite, layer, vect(v));
     if (this.graph[index] !== null) {
@@ -35,6 +37,7 @@ export class TileMap extends Queueable {
   }
 
   public remove(v: Vector, layer: number) {
+    if (!this.vectorInBounds(v)) {return;}
     const index = this.ind(v, layer);
     const sprite = this.graph[index];
     if (sprite !== null) {
@@ -57,22 +60,34 @@ export class TileMap extends Queueable {
     origLayer: number,
     destLayer: number
   ) {
+    if (!this.vectorInBounds(orig) || !this.vectorInBounds(dest)) {return;}
     const sprite = this.remove(orig, origLayer);
     this.add(sprite, dest, destLayer);
   }
 
   protected ind(v: Vector, layer: number) {
-    return (this.columns * v.x + v.y) * layer;
+    return (this.columns * v.y + v.x) * this.layerCount + layer;
   }
 
-  public clearMarkedForRender() {
-    this.markedForRender.fill(false);
+  protected vectorInBounds(v: Vector) {
+    return (
+      v.x >= 0
+      && v.y >= 0
+      && v.x < this.columns
+      && v.y < this.columns
+    );
   }
 
-  public isMarkedForRender(): Set<number|"staging"> {
-    const result = new Set<number|"staging">();
+  public clearMarkedForRender(layer: number) {
+    this.markedForRender[layer] = false;
+  }
+
+  public isMarkedForRender(): Set<number> {
+    const result = new Set<number>();
     this.markedForRender.forEach((marked, i) => {
-      if (marked) {result.add(i)}
+      if (marked) {
+        result.add(i)
+      }
     })
     return result;
   }

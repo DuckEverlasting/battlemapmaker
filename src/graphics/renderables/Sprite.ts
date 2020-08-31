@@ -31,10 +31,7 @@ export class Sprite implements Renderable {
     ) {
       return;
     }
-    let ctx = props.layer === "staging"
-      ? display.getStaging().ctx
-      : display.getLayers()[props.layer].ctx;
-    ctx.drawImage(
+    display.getLayers()[props.layer].ctx.drawImage(
       this.imageSource.source,
       this.rect.offsetX,
       this.rect.offsetY,

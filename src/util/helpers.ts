@@ -4,7 +4,7 @@ import { Toolbox, Keyboard } from "../types";
 import { MoveTool } from "../tools";
 import { ZoomTool } from "../tools/zoom/ZoomTool";
 import { State, Canvas } from "../system";
-import { TileMap, StagingTileMap } from "../graphics";
+import { TileMap } from "../graphics";
 import { Rect } from "./Rect";
 
 export function modKey(e: KeyboardEvent) {
@@ -94,13 +94,13 @@ export function attachButtons(
   state.activeSpriteCanvas = new Canvas(activeSpriteContainer);
 }
 
-export function generateMaps(
+export function generateRectAndMap(
   width: number,
   height: number,
   tileHeight: number,
   tileWidth: number,
   layerCount: number
-): [Rect, TileMap, StagingTileMap] {
+): [Rect, TileMap] {
   const clientRect = document
       .getElementById('project_container')
       .getBoundingClientRect(),
@@ -113,11 +113,7 @@ export function generateMaps(
     tileMap: TileMap = new TileMap(
       Math.floor(rect.height / tileHeight),
       Math.floor(rect.width / tileWidth),
-      layerCount
-    ),
-    stagingMap: StagingTileMap = new StagingTileMap(
-      Math.floor(rect.height / tileHeight),
-      Math.floor(rect.width / tileWidth)
-    );
-  return [rect, tileMap, stagingMap];
+      layerCount - 2
+    )
+  return [rect, tileMap];
 }

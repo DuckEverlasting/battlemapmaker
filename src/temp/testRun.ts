@@ -22,10 +22,7 @@ export async function testRun(app: App) {
   // spriteSheetImg.src = SpriteSheet_1;
   
   const spriteSheetImg = await loadImage(SpriteSheet_1),
-    spriteSheet = new SpriteSheet(spriteSheetImg, 32, 32),
-    rows = Math.floor(app.getState().rect.height / app.getState().tileHeight),
-    columns = Math.floor(app.getState().rect.width / app.getState().tileWidth),
-    tileMap = new TileMap(rows, columns, app.getState().layerCount);
+    spriteSheet = new SpriteSheet(spriteSheetImg, 32, 32);
   
   app.getState().loadedSprites.push(
     spriteSheet.getSprite(1),
@@ -37,11 +34,12 @@ export async function testRun(app: App) {
 
   app.getState().setActiveSprite(app.getState().loadedSprites[3]);
 
+  const tileMap = app.getTileMap();
   tileMap.add(spriteSheet.getSprite(1), vect(3, 5), 2);
   tileMap.add(spriteSheet.getSprite(1), vect(4, 7), 2);
   tileMap.add(spriteSheet.getSprite(3), vect(1, 0), 2);
   tileMap.add(spriteSheet.getSprite(4), vect(1, 0), 2);
 
   // add TileMap, CursorOutline, ImageObject to queue
-  app.getQueue().add(tileOutline, bgImage, tileMap);
+  app.getQueue().add(tileOutline, bgImage);
 }

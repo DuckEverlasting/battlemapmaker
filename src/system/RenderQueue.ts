@@ -24,7 +24,7 @@ export class RenderQueue {
   }
 
   getMarkedForRender() {
-    let result = new Set<number|"staging">();
+    let result = new Set<number>();
     this.queue.forEach(queueable => {
       queueable.isMarkedForRender().forEach(i => {
         result.add(i);
@@ -33,8 +33,7 @@ export class RenderQueue {
     return result;
   }
 
-  render(display: Display, layers?: Set<number|"staging">) {
-    console.log(layers)
+  render(display: Display, layers?: Set<number>) {
     layers.forEach(layer => {
       display.clearLayer(layer);
       this.queue.forEach(queueable => {
@@ -45,9 +44,13 @@ export class RenderQueue {
     })
   }
 
-  clearAllMarkedForRender() {
-    this.queue.forEach(queueable => {
-      queueable.clearMarkedForRender();
-    });
+  clearAllMarkedForRender(layers: Set<number>) {
+    layers.forEach(layer => {
+      this.queue.forEach(queueable => {
+        if (queueable.onLayers.has(layer)) {
+          queueable.clearMarkedForRender(layer);
+        }
+      })
+    })
   }
 }

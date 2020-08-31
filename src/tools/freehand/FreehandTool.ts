@@ -9,21 +9,16 @@ export class FreehandTool extends FreehandType {
   commitStart() {
     this.sprite = this.app.getState().activeSprite;
     this.layer = this.app.getState().activeLayer;
-    this.app.getDisplay().setStagingPosition(this.layer);
-    this.staging.add(this.sprite.copy(), vect(this.latest[0]));
+    this.tileMap.add(this.sprite.copy(), vect(this.latest[0]), this.layer);
   }
 
   commitUpdate() {
     this.latest.forEach(v => {
-      this.staging.add(this.sprite.copy(), vect(v))
+      this.tileMap.add(this.sprite.copy(), vect(v), this.layer);
     });
   }
 
   commitEnd() {
-    this.app.getDisplay().setStagingPosition(null);
-    this.tiles.forEach(vector => {
-      this.tileMap.add(this.staging.get(vector), vector, this.layer);
-    });
     this.reset();
   }
 
@@ -32,6 +27,5 @@ export class FreehandTool extends FreehandType {
     this.tiles = new Set();
     this.layer = null;
     this.sprite = null;
-    this.staging.clear();
   }
 }

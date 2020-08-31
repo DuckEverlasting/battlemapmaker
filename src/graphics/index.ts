@@ -2,7 +2,6 @@ export * from './queueables/BGImage';
 export * from './queueables/Queueable';
 export * from './queueables/SpriteManifest';
 export * from './queueables/TileMap';
-export * from './queueables/StagingTileMap';
 export * from './queueables/TileOutline';
 export * from './renderables/ImageObject';
 export * from './renderables/Sprite';

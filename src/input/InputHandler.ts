@@ -65,10 +65,10 @@ export class InputHandler {
     this.queue.triggerFlag("updateOnCursorMove", this.state);
 
     if (tileChanged) {
-      this.queue.triggerFlag("updateOnTileChange", this.state);
       if (this.state.activeTool !== null && this.state.activeTool.isActive) {
         this.state.activeTool.update(input);
       }
+      this.queue.triggerFlag("updateOnTileChange", this.state);
     }
   }
 

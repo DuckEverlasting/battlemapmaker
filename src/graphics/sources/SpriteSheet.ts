@@ -21,7 +21,6 @@ export class SpriteSheet extends ImageSource {
 
   getSprite(index: number) {
     if (index < 0 || index >= this.sprites.length) {
-      console.log(this.sprites)
       throw new Error("Index error: no sprite at index " + index);
     }
     return this.sprites[index].copy();

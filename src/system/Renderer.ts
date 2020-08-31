@@ -28,13 +28,13 @@ export class Renderer {
     requestAnimationFrame(this.renderLoop.bind(this));
   }
 
-  render(layers?: Set<number|"staging">) {
+  render(layers?: Set<number>) {
     if (!layers) {
       layers = new Set(getRange(0, this.display.layerCount))
     }
     this.lastRender = Date.now();
     this.queue.render(this.display, layers);
     this.display.print();
-    this.queue.clearAllMarkedForRender();
+    this.queue.clearAllMarkedForRender(layers);
   }
 }
