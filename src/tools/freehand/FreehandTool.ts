@@ -1,36 +1,27 @@
 import { FreehandType } from "./FreehandType";
 import { Sprite } from "../../graphics";
+import { Vector, vect } from "../../util/Vector";
 
 export class FreehandTool extends FreehandType {
   private sprite: Sprite | null;
   private layer: number | null;
 
   commitStart() {
-    this.sprite = this.app.getState().activeSprite.copy();
+    this.sprite = this.app.getState().activeSprite;
     this.layer = this.app.getState().activeLayer;
     this.app.getDisplay().setStagingPosition(this.layer);
-    this.sprite.render(this.app.getDisplay(), {
-      tile: this.latest[0],
-      layer: this.app.getState().activeLayer,
-      staging: true
-    });
+    this.staging.add(this.sprite.copy(), vect(this.latest[0]));
   }
 
   commitUpdate() {
-    this.latest.forEach(vector => {
-      this.sprite.render(this.app.getDisplay(), {
-        tile: vector,
-        layer: this.layer,
-        staging: true
-      });
-    })
-    this.app.getDisplay().print();
+    this.latest.forEach(v => {
+      this.staging.add(this.sprite.copy(), vect(v))
+    });
   }
 
   commitEnd() {
-
     this.app.getDisplay().setStagingPosition(null);
-    this.app.getDisplay().print();
+    this.staging.get()
     this.reset();
   }
 
@@ -38,5 +29,6 @@ export class FreehandTool extends FreehandType {
     this.latest = [];
     this.layer = null;
     this.sprite = null;
+    this.staging.clear();
   }
 }

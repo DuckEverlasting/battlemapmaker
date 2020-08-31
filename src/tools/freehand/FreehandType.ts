@@ -7,14 +7,14 @@ export abstract class FreehandType extends BaseTool {
   protected latest: Vector[];
 
   onStart(input: MouseInput) {
-    this.tiles.add(input.position);
-    this.latest = [input.position];
+    this.tiles.add(input.tile);
+    this.latest = [input.tile];
     this.commitStart();
   }
 
   onUpdate(input: MouseInput) {
-    const newLatest = [input.position];
-    this.tiles.add(input.position);
+    const newLatest = [input.tile];
+    this.tiles.add(input.tile);
     this.commitUpdate();
     this.latest = newLatest;
   }
@@ -23,7 +23,7 @@ export abstract class FreehandType extends BaseTool {
   //   const newLatest = this.latest[
   //     this.latest.length - 1
   //   ].lineTo(
-  //     input.position
+  //     input.tile
   //   );
   //   newLatest.forEach((vector) => {
   //     this.tiles.add(vector);

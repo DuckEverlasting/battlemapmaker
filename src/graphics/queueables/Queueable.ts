@@ -1,11 +1,11 @@
-import { QueueableFlag, Renderable } from "../../types";
+import { QueueableFlag } from "../../types";
 import { Display, State } from "../../system";
 
 export abstract class Queueable {
   public readonly id = `${Math.random()}`;
   protected flags: QueueableFlag[] = [];
 
-  constructor(public readonly onLayers: Set<number>){}
+  constructor(public readonly onLayers: Set<number|"staging">){}
 
   render(display?: Display, props?: any): void {
     throw new Error('Method "render" not implemented.');
@@ -17,7 +17,7 @@ export abstract class Queueable {
     throw new Error('Method "clearMarkedForRender" not implemented.');
   }
 
-  isMarkedForRender(): Set<number> {
+  isMarkedForRender(): Set<number|"staging"> {
     throw new Error('Method "isMarkedForRender" not implemented.');
   }
 

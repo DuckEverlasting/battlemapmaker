@@ -1,12 +1,17 @@
 import { MouseInput, Tool } from "../types";
 import { App } from "../system/App";
+import { TileMap, StagingTileMap } from "../graphics";
 
 export abstract class BaseTool implements Tool {
   app: App;
   isActive: boolean;
+  tileMap: TileMap;
+  staging: StagingTileMap;
 
   constructor(app: App) {
     this.app = app;
+    this.tileMap = app.getTileMap();
+    this.staging = app.getStagingMap();
   }
 
   start(input: MouseInput) {

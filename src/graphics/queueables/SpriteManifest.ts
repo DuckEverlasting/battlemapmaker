@@ -1,6 +1,5 @@
 import { Sprite } from "..";
 import { Vector } from "../../util/Vector";
-import { SpriteRenderProps } from "../../types";
 
 export class SpriteManifest {
   private all: {[id: string]: Sprite} = {};
@@ -43,6 +42,7 @@ export class SpriteManifest {
   }
 
   add(sprite: Sprite, layer: number, vector: Vector) {
+    console.log("ADDING", sprite)
     if (this.has(sprite)) {
       throw new Error("Error: TileMap already contains sprite " + sprite.id);
     }
@@ -51,13 +51,19 @@ export class SpriteManifest {
   }
 
   remove(sprite: Sprite, layer: number) {
-    if (!this.has(sprite)) {
-      throw new Error("Error: TileMap does not contains sprite " + sprite.id);
-    }
+    console.log("REMOVING", sprite)
+    // if (!this.has(sprite)) {
+    //   throw new Error("Error: TileMap does not contains sprite " + sprite.id);
+    // }
     if (!layer) {
       layer = this.layers.findIndex(layer => !!layer[sprite.id])
     }
     delete this.all[sprite.id];
     delete this.layers[layer][sprite.id];
+  }
+
+  clear() {
+    this.all = {};
+    this.layers = this.layers.map(() => ({}));
   }
 }

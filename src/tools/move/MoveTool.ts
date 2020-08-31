@@ -1,6 +1,7 @@
 import { App } from "../../system/App";
 import { BaseTool } from "../BaseTool";
 import { MouseInput, PanZoomTool } from "../../types";
+import { TileMap, StagingTileMap } from "../../graphics";
 
 export class MoveTool extends BaseTool implements PanZoomTool {
   constructor(app: App) {

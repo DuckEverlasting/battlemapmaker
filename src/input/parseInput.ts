@@ -1,6 +1,6 @@
 import { modKey } from "../util/helpers";
 import { MouseInput, KeyInput, TranslateData } from "../types";
-import { Vector } from "../util/Vector";
+import { Vector, vect } from "../util/Vector";
 
 export function parseMouseInput(e: MouseEvent, t: TranslateData) {
   let buttons: boolean[];
@@ -39,8 +39,8 @@ export function parseMouseInput(e: MouseEvent, t: TranslateData) {
   ),
     x = Math.floor((e.offsetX - t.rect.offsetX) / t.tileWidth),
     y = Math.floor((e.offsetY - t.rect.offsetY) / t.tileHeight),
-    position = new Vector(Math.floor(e.offsetX), Math.floor(e.offsetY)),
-    tile = isInside ? new Vector(x, y) : new Vector(-1, -1),
+    position = vect(Math.floor(e.offsetX), Math.floor(e.offsetY)),
+    tile = isInside ? vect(x, y) : vect(-1, -1),
     result: MouseInput = { position, tile, buttons };
   return result;
 }

@@ -28,7 +28,7 @@ export class Renderer {
     requestAnimationFrame(this.renderLoop.bind(this));
   }
 
-  render(layers?: Set<number>) {
+  render(layers?: Set<number|"staging">) {
     if (!layers) {
       layers = new Set(getRange(0, this.display.layerCount))
     }

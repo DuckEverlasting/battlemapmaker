@@ -1,9 +1,8 @@
 import SpriteSheet_1 from "../media/spritesheets/SpriteSheet_1.png"
-import { ImageSource, TileOutline, SpriteSheet } from "../graphics";
-import { App, Canvas, TileMap } from "../system";
-import { ImageObject } from "../graphics/renderables/ImageObject";
-import { BGImage } from "../graphics/queueables/BGImage";
+import { ImageSource, ImageObject, TileOutline, SpriteSheet, BGImage, TileMap } from "../graphics";
+import { App, Canvas } from "../system";
 import { loadImage } from "../util/helpers";
+import { Vector, vect } from "../util/Vector";
 
 export async function testRun(app: App) {
   // make CursorOutline with Sprite using canvas imagesource
@@ -38,10 +37,10 @@ export async function testRun(app: App) {
 
   app.getState().setActiveSprite(app.getState().loadedSprites[3]);
 
-  tileMap.add(spriteSheet.getSprite(1), 3, 5, 2);
-  tileMap.add(spriteSheet.getSprite(1), 4, 7, 2);
-  tileMap.add(spriteSheet.getSprite(3), 1, 0, 2);
-  tileMap.add(spriteSheet.getSprite(4), 1, 0, 2);
+  tileMap.add(spriteSheet.getSprite(1), vect(3, 5), 2);
+  tileMap.add(spriteSheet.getSprite(1), vect(4, 7), 2);
+  tileMap.add(spriteSheet.getSprite(3), vect(1, 0), 2);
+  tileMap.add(spriteSheet.getSprite(4), vect(1, 0), 2);
 
   // add TileMap, CursorOutline, ImageObject to queue
   app.getQueue().add(tileOutline, bgImage, tileMap);

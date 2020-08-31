@@ -67,7 +67,7 @@ export type SpriteParams = {
   updateOnTileChange?: boolean;
 }
 
-export type SpriteRenderProps = {tile: Vector, layer: number, staging?: boolean}
+export type SpriteRenderProps = {tile: Vector, layer: number|"staging"}
 
 export type SpriteMap = {
   row: number;

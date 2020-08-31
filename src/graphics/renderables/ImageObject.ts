@@ -2,7 +2,7 @@ import { Renderable } from '../../types';
 import { ImageSource } from '../sources/ImageSource';
 import { Display } from '../../system';
 import { Rect } from '../../util/Rect';
-import { Queueable } from '../queueables/Queueable';
+import { Queueable } from '../';
 
 export class ImageObject implements Renderable {
   public readonly id: string;

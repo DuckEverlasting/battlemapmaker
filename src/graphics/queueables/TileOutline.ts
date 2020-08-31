@@ -1,14 +1,14 @@
 import { Sprite, ImageSource } from "..";
 import { State, Display, Canvas, App } from "../../system";
 import { QueueableFlag } from "../../types";
-import { Vector } from "../../util/Vector";
+import { Vector, vect } from "../../util/Vector";
 import { Queueable } from "./Queueable";
 import { LAYER } from "../../enums";
 
 export class TileOutline extends Queueable {
   protected flags: QueueableFlag[] = ["updateOnTileChange"];
   private markedForRender: boolean = false; // Does not render until triggered
-  private tile = new Vector(-1, -1);
+  private tile = vect(-1, -1);
   private layer = LAYER.EFFECT_2;
   private sprite: Sprite;
 
@@ -32,12 +32,12 @@ export class TileOutline extends Queueable {
   }
 
   update(state: State) {
-    this.tile = new Vector(state.cursorTile);
+    this.tile = vect(state.cursorTile);
     this.markedForRender = true;
   }
 
   getPosition() {
-    return new Vector(this.tile);
+    return vect(this.tile);
   }
 
   clearMarkedForRender() {

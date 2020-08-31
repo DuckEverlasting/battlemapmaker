@@ -1,6 +1,6 @@
 import { QueueableFlag } from "../types";
 import { State, Display } from ".";
-import { Queueable } from "../graphics/queueables/Queueable";
+import { Queueable } from "../graphics";
 
 export class RenderQueue {
   private queue = new Set<Queueable>();
@@ -24,7 +24,7 @@ export class RenderQueue {
   }
 
   getMarkedForRender() {
-    let result = new Set<number>();
+    let result = new Set<number|"staging">();
     this.queue.forEach(queueable => {
       queueable.isMarkedForRender().forEach(i => {
         result.add(i);
@@ -33,7 +33,7 @@ export class RenderQueue {
     return result;
   }
 
-  render(display: Display, layers?: Set<number>) {
+  render(display: Display, layers?: Set<number|"staging">) {
     layers.forEach(layer => {
       display.clearLayer(layer);
       this.queue.forEach(queueable => {

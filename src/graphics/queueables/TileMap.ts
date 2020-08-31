@@ -1,13 +1,13 @@
-import { Sprite } from "..";
-import { Display, State, SpriteManifest } from "../../system"
+import { Sprite, SpriteManifest } from "../";
+import { Display } from "../../system"
 import { Queueable } from "./Queueable";
-import { Vector } from "../../util/Vector";
+import { Vector, vect } from "../../util/Vector";
 import { getRange } from "../../util/helpers";
 
 export class TileMap extends Queueable {
-  private graph: (Sprite | null)[];
-  private manifest: SpriteManifest;
-  private markedForRender: boolean[];
+  protected graph: (Sprite | null)[];
+  protected manifest: SpriteManifest;
+  protected markedForRender: boolean[];
 
   constructor(
     public readonly rows: number,
@@ -20,22 +20,22 @@ export class TileMap extends Queueable {
     this.markedForRender = new Array(layerCount).fill(false);
   }
 
-  public get(x: number, y: number, layer: number) {
-    return this.graph[this.ind(x, y, layer)];
+  public get(v: Vector, layer: number) {
+    return this.graph[this.ind(v, layer)];
   }
 
-  public add(sprite: Sprite, x: number, y: number, layer: number) {
-    const index = this.ind(x, y, layer);
-    this.manifest.add(sprite, layer, new Vector(x, y));
+  public add(sprite: Sprite, v: Vector, layer: number) {
+    const index = this.ind(v, layer);
+    this.manifest.add(sprite, layer, vect(v));
     if (this.graph[index] !== null) {
       this.manifest.remove(this.graph[index], layer);
     }
-    this.graph[this.ind(x, y, layer)] = sprite;
+    this.graph[this.ind(v, layer)] = sprite;
     this.markForRender(layer);
   }
 
-  public remove(x: number, y: number, layer: number) {
-    const index = this.ind(x, y, layer);
+  public remove(v: Vector, layer: number) {
+    const index = this.ind(v, layer);
     const sprite = this.graph[index];
     if (sprite !== null) {
       this.manifest.remove(sprite, layer);
@@ -45,35 +45,39 @@ export class TileMap extends Queueable {
     return sprite;
   }
 
-  public move(
-    origX: number,
-    origY: number,
-    origLayer: number,
-    destX: number,
-    destY: number,
-    destLayer: number
-  ) {
-    const sprite = this.remove(origX, origY, origLayer);
-    this.add(sprite, destX, destY, destLayer);
+  public clear() {
+    this.graph.fill(null);
+    this.manifest.clear();
+    this.markedForRender.fill(true);
   }
 
-  private ind(x: number, y: number, layer: number) {
-    return (this.columns * x + y) * layer;
+  public move(
+    orig: Vector,
+    dest: Vector,
+    origLayer: number,
+    destLayer: number
+  ) {
+    const sprite = this.remove(orig, origLayer);
+    this.add(sprite, dest, destLayer);
+  }
+
+  protected ind(v: Vector, layer: number) {
+    return (this.columns * v.x + v.y) * layer;
   }
 
   public clearMarkedForRender() {
     this.markedForRender.fill(false);
   }
 
-  public isMarkedForRender(): Set<number> {
-    const result = new Set<number>();
+  public isMarkedForRender(): Set<number|"staging"> {
+    const result = new Set<number|"staging">();
     this.markedForRender.forEach((marked, i) => {
       if (marked) {result.add(i)}
     })
     return result;
   }
 
-  private markForRender(layer: number) {
+  protected markForRender(layer: number) {
     this.markedForRender[layer] = true;
   }
 

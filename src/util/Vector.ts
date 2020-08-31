@@ -66,3 +66,7 @@ export class Vector {
     return `${this.x}_${this.y}`;
   }
 }
+
+export function vect(a: number|Vector|string, b?: number) {
+  return new Vector(a, b);
+}

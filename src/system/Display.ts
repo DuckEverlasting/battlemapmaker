@@ -1,5 +1,5 @@
 import { Canvas } from "./Canvas";
-import { State } from "./State";
+import { State } from "./";
 
 export class Display {
   public readonly id: string;
@@ -37,19 +37,16 @@ export class Display {
     return [...this.layers];
   }
 
+  getActiveLayer() {
+    return this.state.activeLayer;
+  }
+
   getStaging() {
     return this.staging;
   }
 
   setStagingPosition(num: number | null) {
     this.renderStagingAt = num;
-  }
-
-  mergeStagingWith(layer: number) {
-    this.layers[layer].ctx.drawImage(
-      this.staging.element, 0, 0
-    );
-    this.clearLayer("staging");
   }
 
   print() {
@@ -61,7 +58,7 @@ export class Display {
         t.rect.offsetY
       );
       if (this.renderStagingAt === i) {
-        console.log("STAAAAAAGING")
+        console.log("STAAAAAAGING: ", i)
         this.main.ctx.drawImage(
           this.staging.element,
           t.rect.offsetX,
