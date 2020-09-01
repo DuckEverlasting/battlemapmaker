@@ -3,20 +3,20 @@ import { MouseInput } from '../../types';
 import { Vector } from '../../util/Vector';
 
 export abstract class FreehandType extends BaseTool {
-  protected latest: Vector[];
+  protected latest: Vector | null;
 
   onStart(input: MouseInput) {
-    this.latest = [input.tile];
+    this.latest = input.tile;
     this.commitStart();
   }
 
   onUpdate(input: MouseInput) {
-    const newLatest = [input.tile];
+    const newLatest = input.tile;
     this.commitUpdate();
     this.latest = newLatest;
   }
 
-  onEnd(input: MouseInput) {
+  onEnd() {
     this.commitEnd();
   }
 

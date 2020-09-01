@@ -40,7 +40,7 @@ export function parseMouseInput(e: MouseEvent, t: TranslateData) {
     x = Math.floor((e.offsetX - t.rect.offsetX) / t.tileWidth),
     y = Math.floor((e.offsetY - t.rect.offsetY) / t.tileHeight),
     position = vect(Math.floor(e.offsetX), Math.floor(e.offsetY)),
-    tile = isInside ? vect(x, y) : vect(-1, -1),
+    tile = isInside ? vect(x, y) : null,
     result: MouseInput = { position, tile, buttons };
   return result;
 }

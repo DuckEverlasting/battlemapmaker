@@ -45,10 +45,12 @@ export class TileMap extends Queueable {
   public add(sprite: Sprite, v: Vector, layer: number) {
     if (!this.vectorInBounds(v)) {return;}
     const index = this.getInd(v, layer);
+    console.log(sprite, v, layer)
+    console.log(this.manifest);
+    this.manifest.add(sprite, layer, vect(v));
     if (this.graph[index] !== null) {
       this.manifest.remove(this.graph[index], layer);
     }
-    this.manifest.add(sprite, layer, vect(v));
     this.graph[this.getInd(v, layer)] = sprite;
     this.markForRender(layer);
   }
@@ -141,10 +143,12 @@ export class TileMap extends Queueable {
     this.manifest.restore();
     const toRestore = this.saveStack.pop();
     this.graph = toRestore;
+    this.markedForRender.fill(true);
   }
 
   clearSave() {
     this.manifest.clearSave();
     this.saveStack = [];
+    this.markedForRender.fill(true);
   }
 }

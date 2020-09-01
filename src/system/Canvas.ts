@@ -4,6 +4,7 @@ import { getOffscreenCanvas } from "../util/helpers";
 export class Canvas {
   public readonly ctx: CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D;
   public readonly element: DisplayCanvas;
+  public opacity: number = 1;
   
   constructor(containingElement: HTMLElement | "offscreen", width?: number, height?: number) {
     let canvas;

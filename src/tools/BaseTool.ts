@@ -11,10 +11,10 @@ export abstract class BaseTool implements Tool {
   constructor(app: App) {
     this.app = app;
     this.tileMap = app.getTileMap();
-    this.layer = this.app.getState().activeLayer;
   }
 
   start(input: MouseInput) {
+    this.layer = this.app.getState().activeLayer;
     this.onStart(input);
     this.isActive = true;
   };

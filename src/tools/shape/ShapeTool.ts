@@ -6,7 +6,7 @@ export class ShapeTool extends ShapeType {
   private sprite: Sprite | null;
 
   commitStart() {
-    this.sprite = this.app.getState().activeSprite;
+    this.sprite = this.app.getState().activeSprite.copy();
     this.tileMap.save();
     this.tileMap.add(this.sprite.copy(), vect(this.origin), this.layer);
   }

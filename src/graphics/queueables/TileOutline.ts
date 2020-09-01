@@ -8,7 +8,7 @@ import { LAYER } from "../../enums";
 export class TileOutline extends Queueable {
   protected flags: QueueableFlag[] = ["updateOnTileChange"];
   private markedForRender: boolean = false; // Does not render until triggered
-  private tile = vect(-1, -1);
+  private tile: Vector = null;
   private layer = LAYER.EFFECT_2;
   private sprite: Sprite;
 

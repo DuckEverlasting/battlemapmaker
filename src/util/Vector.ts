@@ -39,6 +39,7 @@ export class Vector {
   }
 
   equals(v: Vector) {
+    if (v === null) {return false;}
     return this.x === v.x && this.y === v.y
   }
 

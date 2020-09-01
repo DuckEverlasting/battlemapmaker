@@ -37,11 +37,15 @@ export class Display {
   print() {
     const t = this.state.getTranslateData();
     this.layers.forEach((layer, i) => {
+      if (layer.opacity !== 1) {
+        this.main.ctx.globalAlpha = layer.opacity;
+      }
       this.main.ctx.drawImage(
         layer.element,
         t.rect.offsetX,
         t.rect.offsetY
       );
+      this.main.ctx.globalAlpha = 1;
     });
   }
 

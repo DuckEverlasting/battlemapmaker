@@ -26,13 +26,12 @@ export abstract class ShapeType extends BaseTool {
 
   getSquare() {
     const result = new Set<Vector>();
-    console.log(this.origin, this.dest)
     const x1 = Math.min(this.origin.x, this.dest.x),
       x2 = Math.max(this.origin.x, this.dest.x),
       y1 = Math.min(this.origin.y, this.dest.y),
       y2 = Math.max(this.origin.y, this.dest.y);
     for (let x = x1; x <= x2; x++) {
-      for (let y = y1; y < y2; y++) {
+      for (let y = y1; y <= y2; y++) {
         result.add(vect(x, y));
       }
     }

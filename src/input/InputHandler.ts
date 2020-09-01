@@ -60,7 +60,12 @@ export class InputHandler {
 
   mouseMove(e: MouseEvent) {
     const input: MouseInput = parseMouseInput(e, this.state.getTranslateData());
-    const tileChanged = !this.state.cursorTile.equals(input.tile);
+    let tileChanged;
+    if (this.state.cursorTile === null) {
+      tileChanged = input.tile !== null
+    } else {
+      tileChanged = !this.state.cursorTile.equals(input.tile);
+    }
     this.state.setCursorState(input);
     this.queue.triggerFlag("updateOnCursorMove", this.state);
 

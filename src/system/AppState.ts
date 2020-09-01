@@ -1,5 +1,5 @@
 import { Tool, PanZoomTool, Keyboard, Toolbox, TranslateData, MouseInput } from "../types";
-import { vect } from "../util/Vector";
+import { vect, Vector } from "../util/Vector";
 import { Rect } from "../util/Rect";
 import { ImageSource, Sprite } from "../graphics";
 import { Canvas } from ".";
@@ -9,7 +9,7 @@ export class State {
   public media: {[key: string]: ImageSource};
   public sprites: {[key: string]: Sprite};
   public cursorPosition = vect(0, 0);
-  public cursorTile = vect(-1, -1);
+  public cursorTile: Vector = null;
   public cursorButtons = [false, false, false];
   public activeTool: Tool | null = null;
   public activeLayer = 2;
