@@ -6,6 +6,8 @@ import { ZoomTool } from "../tools/zoom/ZoomTool";
 import { State, Canvas } from "../system";
 import { TileMap } from "../graphics";
 import { Rect } from "./Rect";
+import { undo } from "../actions/undo";
+import { redo } from "../actions/redo";
 
 export function modKey(e: KeyboardEvent) {
   return navigator.appVersion.indexOf("Mac") !== -1
@@ -32,7 +34,8 @@ export function getToolbox(app: App) {
 
 export function getKeyboard(app: App) {
   const keyboard: Keyboard = {
-
+    'mod-z': () => undo(app),
+    'mod-shift-z': () => redo(app)
   }
   return keyboard; 
 }

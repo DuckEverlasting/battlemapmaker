@@ -9,6 +9,7 @@ export class TileMap extends Queueable {
   protected manifest: SpriteManifest;
   protected markedForRender: boolean[];
   protected saveStack: (Sprite | null)[][] = [];
+  protected redoStack: (Sprite | null)[][] = [];
 
   constructor(
     public readonly rows: number,
@@ -133,20 +134,21 @@ export class TileMap extends Queueable {
 
   save() {
     this.manifest.save();
-    const toSave = [...this.graph];
-    this.saveStack.push(toSave);
+    this.redoStack = [];
+    this.saveStack.push([...this.graph]);
   }
 
-  restore() {
-    this.manifest.restore();
-    const toRestore = this.saveStack.pop();
-    this.graph = toRestore;
+  undo() {
+    this.manifest.undo();
+    this.redoStack.push([...this.graph]);
+    this.graph = this.saveStack.pop();
     this.markedForRender.fill(true);
   }
 
-  clearSave() {
-    this.manifest.clearSave();
-    this.saveStack = [];
+  redo() {
+    console.log("WHAAAAAT")
+    this.manifest.redo();
+    this.graph = this.redoStack.pop();
     this.markedForRender.fill(true);
   }
 }

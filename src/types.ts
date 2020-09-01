@@ -24,7 +24,7 @@ export type TranslateData = {
 };
 
 export type Keyboard = {
-  [key: string]: Callable;
+  [key: string]: Function;
 };
 
 export type Tool = {

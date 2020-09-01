@@ -4,6 +4,7 @@ import { Vector, vect } from "../../util/Vector";
 
 export class FreehandTool extends FreehandType {
   private sprite: Sprite | null;
+  protected writesToTileMap = true;
 
   commitStart() {
     this.sprite = this.app.getState().activeSprite.copy();

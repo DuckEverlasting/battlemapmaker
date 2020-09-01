@@ -3,6 +3,7 @@ import { Sprite } from "../../graphics";
 
 export class FillTool extends FillType {
   private sprite: Sprite | null;
+  protected writesToTileMap = true;
 
   commitStart() {
     console.log(this.tiles);

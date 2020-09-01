@@ -53,6 +53,6 @@ export function parseKeyInput(e: KeyboardEvent): KeyInput | null {
   if (modKey(e)) result += "mod-";
   if (e.shiftKey) result += "shift-";
   if (e.altKey) result += "alt-";
-  result += e.key;
+  result += e.key.toLowerCase();
   return result;
 }

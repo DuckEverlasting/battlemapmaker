@@ -8,6 +8,10 @@ export class SpriteManifest {
     all: {[id: string]: Sprite},
     layers: {[id: string]: Vector}[]
   }[] = [];
+  private redoStack: {
+    all: {[id: string]: Sprite},
+    layers: {[id: string]: Vector}[]
+  }[] = [];
 
   constructor(layerCount: number) {
     for (let i = 0; i < layerCount; i++) {
@@ -69,22 +73,29 @@ export class SpriteManifest {
     this.layers = this.layers.map(() => ({}));
   }
 
-  save() {
+  getCurrentState() {
     const savedLayers: {[id: string]: Vector}[] = [];
     this.layers.forEach(layer => {
       savedLayers.push({...layer})
     })
-    const toSave = {all: {...this.all}, layers: savedLayers};
-    this.saveStack.push(toSave);
+    return {all: {...this.all}, layers: savedLayers};
   }
 
-  restore() {
-    const toRestore = this.saveStack.pop();
-    this.all = toRestore.all;
-    this.layers = toRestore.layers;
+  save() {
+    this.redoStack = [];
+    this.saveStack.push(this.getCurrentState());
   }
 
-  clearSave() {
-    this.saveStack = [];
+  undo() {
+    this.redoStack.push(this.getCurrentState());
+    const data = this.saveStack.pop();
+    this.all = data.all;
+    this.layers = data.layers;
+  }
+
+  redo() {
+    const data = this.redoStack.pop();
+    this.all = data.all;
+    this.layers = data.layers;
   }
 }

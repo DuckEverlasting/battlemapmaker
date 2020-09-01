@@ -4,23 +4,21 @@ import { vect } from "../../util/Vector";
 
 export class ShapeTool extends ShapeType {
   private sprite: Sprite | null;
+  protected writesToTileMap = true;
+  protected clearsOnUpdate = true;
 
   commitStart() {
     this.sprite = this.app.getState().activeSprite.copy();
-    this.tileMap.save();
     this.tileMap.add(this.sprite.copy(), vect(this.origin), this.layer);
   }
 
   commitUpdate() {
-    this.tileMap.restore();
-    this.tileMap.save();
     this.tiles.forEach(tile => {
       this.tileMap.add(this.sprite.copy(), tile, this.layer);
     })
   }
   
   commitEnd() {
-    this.tileMap.clearSave();
     this.reset();
   }
 

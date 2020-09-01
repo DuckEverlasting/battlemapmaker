@@ -5,7 +5,9 @@ import { TileMap } from "../graphics";
 export abstract class BaseTool implements Tool {
   app: App;
   isActive: boolean;
-  tileMap: TileMap;
+  protected writesToTileMap = false;
+  protected clearsOnUpdate = false;
+  protected tileMap: TileMap;
   protected layer: number | null;
 
   constructor(app: App) {
@@ -16,10 +18,17 @@ export abstract class BaseTool implements Tool {
 
   start(input: MouseInput) {
     this.layer = this.app.getState().activeLayer;
+    if (this.writesToTileMap) {
+      this.tileMap.save();
+    }
     this.onStart(input);
     this.isActive = true;
   };
   update(input: MouseInput) {
+    if (this.writesToTileMap && this.clearsOnUpdate) {
+      this.tileMap.undo();
+      this.tileMap.save();
+    }
     this.onUpdate(input);
   };
   end(input: MouseInput) {
