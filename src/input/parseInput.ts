@@ -12,16 +12,16 @@ export function parseMouseInput(e: MouseEvent, t: TranslateData) {
       buttons = [true, false, false];
       break;
     case 2:
-      buttons = [false, true, false];
-      break;
-    case 3:
-      buttons = [true, true, false];
-      break;
-    case 4:
       buttons = [false, false, true];
       break;
-    case 5:
+    case 3:
       buttons = [true, false, true];
+      break;
+    case 4:
+      buttons = [false, true, false];
+      break;
+    case 5:
+      buttons = [true, true, false];
       break;
     case 6:
       buttons = [false, true, true];
@@ -46,7 +46,8 @@ export function parseMouseInput(e: MouseEvent, t: TranslateData) {
       alt: e.altKey,
       mod: modKey(e)
     },
-    result: MouseInput = { position, tile, buttons, modifiers };
+    screen = vect(e.screenX, e.screenY),
+    result: MouseInput = { position, tile, buttons, modifiers, screen };
   return result;
 }
 

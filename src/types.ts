@@ -12,7 +12,8 @@ export type MouseInput = {
   position: Vector;
   tile: Vector;
   buttons: boolean[];
-  modifiers: {[key: string]: boolean}
+  modifiers: {[key: string]: boolean};
+  screen: Vector;
 };
 
 export type KeyInput = string;
@@ -30,6 +31,7 @@ export type Keyboard = {
 
 export type Tool = {
   isActive: boolean;
+  triggersOn: "cursorMove" | "tileChange";
   start(input: MouseInput): void;
   update(input: MouseInput): void;
   end(input: MouseInput): void;

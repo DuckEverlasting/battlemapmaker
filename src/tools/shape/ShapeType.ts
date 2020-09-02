@@ -1,7 +1,6 @@
 import { BaseTool } from "../BaseTool";
 import { Vector, vect } from "../../util/Vector";
 import { MouseInput } from "../../types";
-import { Sprite } from "../../graphics";
 
 export abstract class ShapeType extends BaseTool {
   protected tiles: Set<Vector>;

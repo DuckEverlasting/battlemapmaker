@@ -1,19 +1,29 @@
-import { App } from "../../system/App";
 import { BaseTool } from "../BaseTool";
 import { MouseInput, PanZoomTool } from "../../types";
-import { attachButtons } from "../../util/helpers";
+import { Vector, vect } from "../../util/Vector";
 
 export class MoveTool extends BaseTool implements PanZoomTool {
-  onStart(input: MouseInput) {
+  private origin: Vector;
+  private originOffsetX: number;
+  private originOffsetY: number;
+  public triggersOn: "tileChange" | "cursorMove" = "cursorMove";
 
+  onStart(input: MouseInput) {
+    this.origin = input.position;
+    this.originOffsetX = this.app.getState().rect.offsetX;
+    this.originOffsetY = this.app.getState().rect.offsetY;
   }
 
   onUpdate(input: MouseInput) {
-
+    const diff = vect(input.position.x - this.origin.x, input.position.y - this.origin.y),
+      rect = this.app.getState().rect;
+    rect.offsetX = this.originOffsetX + diff.x;
+    rect.offsetY = this.originOffsetY + diff.y;
+    this.app.getDisplay().mainMarkedForRender = true;
   }
 
   onEnd(input: MouseInput) {
-
+    this.origin = null;
   }
 
   wheel(input: MouseInput, direction: number) {

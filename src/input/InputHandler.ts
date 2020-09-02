@@ -31,31 +31,52 @@ export class InputHandler {
     }
   }
 
-  mouseUp(e: MouseEvent) {
-    if (
-      this.state.activeTool === null
-      || !this.state.activeTool.isActive
-    ) {return;}
-    const input: MouseInput = parseMouseInput(e, this.state.getTranslateData());
-    this.state.activeTool.end(input);
-  }
-
   mouseMove(e: MouseEvent) {
     const input: MouseInput = parseMouseInput(e, this.state.getTranslateData());
-    let tileChanged;
+    let tileChanged, tool = null;
     if (this.state.cursorTile === null) {
       tileChanged = input.tile !== null
     } else {
       tileChanged = !this.state.cursorTile.equals(input.tile);
     }
     this.state.setCursorState(input);
-    this.queue.triggerFlag("updateOnCursorMove", this.state);
+    if (input.buttons[1]) {
+      tool = this.state.middleClickTool;
+    }
+    if (input.buttons[0]) {
+      tool = this.state.activeTool;
+    }
+    if (
+      tool !== null
+      && tool.isActive
+      && tool.triggersOn === "cursorMove"
+    ) {
+      tool.update(input);
+      this.queue.triggerFlag("updateOnCursorMove", this.state);
+    }
 
     if (tileChanged) {
-      if (this.state.activeTool !== null && this.state.activeTool.isActive) {
-        this.state.activeTool.update(input);
+      if (
+        tool !== null
+        && tool.isActive
+        && tool.triggersOn === "tileChange"
+      ) {
+        tool.update(input);
       }
       this.queue.triggerFlag("updateOnTileChange", this.state);
+    }
+  }
+
+  mouseUp(e: MouseEvent) {
+    if (
+      this.state.activeTool === null
+      || !this.state.activeTool.isActive
+    ) {return;}
+    const input: MouseInput = parseMouseInput(e, this.state.getTranslateData());
+    if (e.button === 1) {
+      this.state.middleClickTool.end(input);
+    } else if (e.button === 0) {
+      this.state.activeTool.end(input);
     }
   }
 
