@@ -12,6 +12,7 @@ export type MouseInput = {
   position: Vector;
   tile: Vector;
   buttons: boolean[];
+  modifiers: {[key: string]: boolean}
 };
 
 export type KeyInput = string;
@@ -35,7 +36,7 @@ export type Tool = {
 };
 
 export type PanZoomTool = Tool & {
-  wheel(input: MouseInput): void;
+  wheel(input: MouseInput, direction: number): void;
 };
 
 export type Toolbox = {

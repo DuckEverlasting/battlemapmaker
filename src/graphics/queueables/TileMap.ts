@@ -10,6 +10,9 @@ export class TileMap extends Queueable {
   protected markedForRender: boolean[];
   protected saveStack: (Sprite | null)[][] = [];
   protected redoStack: (Sprite | null)[][] = [];
+  protected count = 0;
+  protected countUndo:number[] = [];
+  protected countRedo:number[] = [];
 
   constructor(
     public readonly rows: number,
@@ -136,9 +139,11 @@ export class TileMap extends Queueable {
     this.manifest.save();
     this.redoStack = [];
     this.saveStack.push([...this.graph]);
+    
   }
 
   undo() {
+    if (this.saveStack.length === 0) {return;}
     this.manifest.undo();
     this.redoStack.push([...this.graph]);
     this.graph = this.saveStack.pop();
@@ -146,8 +151,9 @@ export class TileMap extends Queueable {
   }
 
   redo() {
-    console.log("WHAAAAAT")
+    if (this.redoStack.length === 0) {return;}
     this.manifest.redo();
+    this.saveStack.push([...this.graph]);
     this.graph = this.redoStack.pop();
     this.markedForRender.fill(true);
   }

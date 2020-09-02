@@ -12,7 +12,7 @@ export class EventEmitter {
     this.target.addEventListener("mousedown", this.handleMouseDown.bind(this));
     this.target.addEventListener("mouseup", this.handleMouseUp.bind(this));
     this.target.addEventListener("mousemove", this.handleMouseMove.bind(this));
-    this.target.addEventListener("onwheel", this.handleMouseMove.bind(this));
+    this.target.addEventListener("wheel", this.handleMouseWheel.bind(this));
   }
 
   handleKeyDown(e: KeyboardEvent) {
@@ -29,6 +29,10 @@ export class EventEmitter {
 
   handleMouseMove(e: MouseEvent) {
     this.handler.mouseMove(e);
+  }
+
+  handleMouseWheel(e: WheelEvent) {
+    this.handler.mouseWheel(e);
   }
 
   destroy() {

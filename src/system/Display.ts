@@ -3,6 +3,7 @@ import { State } from "./";
 
 export class Display {
   public readonly id: string;
+  public mainMarkedForRender = false;
   private main: Canvas;
   private layers: Canvas[];
 
@@ -36,6 +37,14 @@ export class Display {
 
   print() {
     const t = this.state.getTranslateData();
+    if (this.mainMarkedForRender) {
+      this.main.ctx.clearRect(
+        0, 0,
+        this.containingElement.clientWidth,
+        this.containingElement.clientHeight
+      )
+      this.mainMarkedForRender = false;
+    }
     this.layers.forEach((layer, i) => {
       if (layer.opacity !== 1) {
         this.main.ctx.globalAlpha = layer.opacity;
@@ -52,8 +61,8 @@ export class Display {
   clearLayer(layer: number) {
     this.layers[layer].ctx.clearRect(
       0, 0,
-      this.containingElement.clientWidth,
-      this.containingElement.clientHeight
+      this.layers[layer].element.width,
+      this.layers[layer].element.height
     )
   }
 

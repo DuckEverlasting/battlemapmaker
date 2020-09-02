@@ -9,7 +9,7 @@ import { Rect } from "./Rect";
 import { undo } from "../actions/undo";
 import { redo } from "../actions/redo";
 
-export function modKey(e: KeyboardEvent) {
+export function modKey(e: KeyboardEvent | MouseEvent) {
   return navigator.appVersion.indexOf("Mac") !== -1
     ? !!e.metaKey
     : !!e.ctrlKey;

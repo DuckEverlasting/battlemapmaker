@@ -20,7 +20,7 @@ export class Renderer {
   renderLoop() {
     const toRender = this.queue.getMarkedForRender();
     if (
-      toRender.size > 0
+      (toRender.size > 0 || this.display.mainMarkedForRender)
       && Date.now() - this.lastRender > this.frameRate
     ) {
       this.render(toRender);

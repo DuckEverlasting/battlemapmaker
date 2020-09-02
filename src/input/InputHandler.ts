@@ -60,7 +60,10 @@ export class InputHandler {
   }
 
   mouseWheel(e: WheelEvent) {
+    if (!e.deltaY) {return;}
+    e.preventDefault();
     const input: MouseInput = parseMouseInput(e, this.state.getTranslateData());
-    this.state.wheelTool.wheel(input);
+    let direction = e.deltaY > 0 ? 1 : -1;
+    this.state.wheelTool.wheel(input, direction);
   }
 }

@@ -94,6 +94,7 @@ export class SpriteManifest {
   }
 
   redo() {
+    this.saveStack.push(this.getCurrentState());
     const data = this.redoStack.pop();
     this.all = data.all;
     this.layers = data.layers;
