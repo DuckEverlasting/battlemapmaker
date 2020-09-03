@@ -55,7 +55,7 @@ export async function testRun(app: App) {
   app.getState().setPalleteSprite(SPRITE_TYPE.OBJECT, 6, base.getSprite(155));
   app.getState().setPalleteSprite(SPRITE_TYPE.OBJECT, 7, base.getSprite(163));
 
-  app.getState().setActiveSprite(1);
+  app.getState().setActiveSprite(0);
   // CursorOutline, ImageObject to queue
   app.getQueue().add(tileOutline, bgImage);
 }
