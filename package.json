@@ -5,7 +5,8 @@
   "author": "Matt Klein <mklein246@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "webpack-dev-server --open"
+    "start": "webpack-dev-server --open",
+    "build": "webpack -p"
   },
   "dependencies": {
     "ts-loader": "^8.0.2",
