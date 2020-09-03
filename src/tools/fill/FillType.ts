@@ -1,25 +1,23 @@
 import { BaseTool } from "../BaseTool";
 import { MouseInput } from "../../types";
 import { Vector, vect } from "../../util/Vector";
-import { ImageSource } from "../../graphics";
 
 export class FillType extends BaseTool {
   protected tiles: Set<Vector>;
-  protected targetSourceId: string;
+  protected targetSpriteId: string;
 
   onStart(input: MouseInput) {
     const target = this.tileMap.get(input.tile, this.layer);
     if (target === null) {
-      this.targetSourceId = "";
+      this.targetSpriteId = "";
     } else {
-      this.targetSourceId = target.imageSource.id;
+      this.targetSpriteId = target.spriteId;
     }
     this.tiles = new Set([input.tile])
     const visited = new Set<string>([input.tile.toString()]);
     const stack = [input.tile];
     while(stack.length > 0) {
       const current = stack.pop();
-      console.log("CHECKING: ", current)
       if (this.isEdge(current)) {continue;}
       this.tiles.add(current);
       this.getSurrounding(current).forEach(v => {
@@ -32,13 +30,13 @@ export class FillType extends BaseTool {
     }
     this.commitStart();
     this.tiles.clear();
-    this.targetSourceId = "";
+    this.targetSpriteId = "";
   }
 
   isEdge(v: Vector) {
-    const source = this.tileMap.get(v, this.layer);
-    const sourceId = source === null ? "" : source.imageSource.id;
-    return sourceId !== this.targetSourceId;
+    const instance = this.tileMap.get(v, this.layer);
+    const spriteId = instance === null ? "" : instance.spriteId;
+    return spriteId !== this.targetSpriteId;
   }
 
   getSurrounding(v: Vector) {

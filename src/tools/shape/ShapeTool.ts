@@ -1,6 +1,7 @@
 import { ShapeType } from "./ShapeType";
 import { Sprite } from "../../graphics";
 import { vect } from "../../util/Vector";
+import { LAYER_TYPE } from "../../enums";
 
 export class ShapeTool extends ShapeType {
   private sprite: Sprite | null;
@@ -8,13 +9,13 @@ export class ShapeTool extends ShapeType {
   protected clearsOnUpdate = true;
 
   commitStart() {
-    this.sprite = this.app.getState().activeSprite.copy();
-    this.tileMap.add(this.sprite.copy(), vect(this.origin), this.layer);
+    this.sprite = this.app.getState().getActiveSprite();
+    this.tileMap.add(this.sprite, vect(this.origin), this.layer);
   }
 
   commitUpdate() {
     this.tiles.forEach(tile => {
-      this.tileMap.add(this.sprite.copy(), tile, this.layer);
+      this.tileMap.add(this.sprite, tile, this.layer);
     })
   }
   

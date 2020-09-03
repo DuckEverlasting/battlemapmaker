@@ -6,10 +6,9 @@ export class FillTool extends FillType {
   protected writesToTileMap = true;
 
   commitStart() {
-    console.log(this.tiles);
-    this.sprite = this.app.getState().activeSprite.copy();
+    this.sprite = this.app.getState().getActiveSprite();
     this.tiles.forEach(v => {
-      this.tileMap.add(this.sprite.copy(), v, this.layer);
+      this.tileMap.add(this.sprite, v, this.layer);
     })
     this.sprite = null;
   }

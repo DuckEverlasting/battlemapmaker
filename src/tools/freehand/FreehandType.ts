@@ -11,9 +11,8 @@ export abstract class FreehandType extends BaseTool {
   }
 
   onUpdate(input: MouseInput) {
-    const newLatest = input.tile;
+    this.latest = input.tile;
     this.commitUpdate();
-    this.latest = newLatest;
   }
 
   onEnd() {

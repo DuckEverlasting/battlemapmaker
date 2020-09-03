@@ -1,15 +1,15 @@
-import { Sprite, SpriteManifest } from "../";
+import { Sprite, SpriteInstance, SpriteManifest } from "../";
 import { Display } from "../../system"
 import { Queueable } from "./Queueable";
 import { Vector, vect } from "../../util/Vector";
 import { getRange } from "../../util/helpers";
 
 export class TileMap extends Queueable {
-  protected graph: (Sprite | null)[];
+  protected graph: (SpriteInstance | null)[];
   protected manifest: SpriteManifest;
   protected markedForRender: boolean[];
-  protected saveStack: (Sprite | null)[][] = [];
-  protected redoStack: (Sprite | null)[][] = [];
+  protected saveStack: (SpriteInstance | null)[][] = [];
+  protected redoStack: (SpriteInstance | null)[][] = [];
   protected count = 0;
   protected countUndo:number[] = [];
   protected countRedo:number[] = [];
@@ -20,7 +20,7 @@ export class TileMap extends Queueable {
     public readonly layerCount: number,
   ) {
     super(new Set(getRange(0, layerCount)));
-    this.graph = new Array<Sprite | null>(rows * columns * layerCount).fill(null);
+    this.graph = new Array<SpriteInstance | null>(rows * columns * layerCount).fill(null);
     this.manifest = new SpriteManifest(layerCount);
     this.markedForRender = new Array(layerCount).fill(false);
   }
@@ -30,11 +30,11 @@ export class TileMap extends Queueable {
     return this.graph[this.getInd(v, layer)];
   }
 
-  public getLayerGraph(layer: number): (Sprite|null)[] {
+  public getLayerGraph(layer: number): (SpriteInstance | null)[] {
     return this.graph.filter((tile, i) => i % this.layerCount === layer);
   }
 
-  public replaceLayer(layer: number, graph: (Sprite|null)[]) {
+  public replaceLayer(layer: number, graph: (SpriteInstance | null)[]) {
     graph.forEach((item, i) => {
       if (item === null) {
         this.remove(this.getVec(i), layer);
@@ -46,27 +46,28 @@ export class TileMap extends Queueable {
     })
   }
 
-  public add(sprite: Sprite, v: Vector, layer: number) {
+  public add(sprite: Sprite | SpriteInstance, v: Vector, layer: number) {
     if (!this.vectorInBounds(v)) {return;}
+    const instance = sprite instanceof Sprite ? new SpriteInstance(sprite) : sprite;
     const index = this.getInd(v, layer);
-    this.manifest.add(sprite, layer, vect(v));
+    this.manifest.add(instance, layer, vect(v));
     if (this.graph[index] !== null) {
       this.manifest.remove(this.graph[index], layer);
     }
-    this.graph[this.getInd(v, layer)] = sprite;
+    this.graph[this.getInd(v, layer)] = instance;
     this.markForRender(layer);
   }
 
   public remove(v: Vector, layer: number) {
     if (!this.vectorInBounds(v)) {return;}
     const index = this.getInd(v, layer);
-    const sprite = this.graph[index];
-    if (sprite !== null) {
-      this.manifest.remove(sprite, layer);
+    const instance = this.graph[index];
+    if (instance !== null) {
+      this.manifest.remove(instance, layer);
       this.graph[index] = null;
       this.markForRender(layer);
     }
-    return sprite;
+    return instance;
   }
 
   public clear() {
@@ -82,8 +83,8 @@ export class TileMap extends Queueable {
     destLayer: number
   ) {
     if (!this.vectorInBounds(orig) || !this.vectorInBounds(dest)) {return;}
-    const sprite = this.remove(orig, origLayer);
-    this.add(sprite, dest, destLayer);
+    const instance = this.remove(orig, origLayer);
+    this.add(instance, dest, destLayer);
   }
 
   protected getInd(v: Vector, layer: number) {
@@ -125,7 +126,7 @@ export class TileMap extends Queueable {
   }
 
   render(display: Display, props: {layer: number}) {
-    const data = this.manifest.getSpritesAndVectorsFrom(props.layer);
+    const data = this.manifest.getInstancesAndVectorsFrom(props.layer);
     data.forEach(tuple => {
       tuple[0].render(display, {tile: tuple[1], layer: props.layer});
     })

@@ -1,15 +1,15 @@
-import { Sprite } from "..";
+import { SpriteInstance } from "..";
 import { Vector } from "../../util/Vector";
 
 export class SpriteManifest {
-  private all: {[id: string]: Sprite} = {};
+  private all: {[id: string]: SpriteInstance} = {};
   private layers: {[id: string]: Vector}[] = [];
   private saveStack: {
-    all: {[id: string]: Sprite},
+    all: {[id: string]: SpriteInstance},
     layers: {[id: string]: Vector}[]
   }[] = [];
   private redoStack: {
-    all: {[id: string]: Sprite},
+    all: {[id: string]: SpriteInstance},
     layers: {[id: string]: Vector}[]
   }[] = [];
 
@@ -19,53 +19,53 @@ export class SpriteManifest {
     }
   }
 
-  has(sprite: Sprite) {
-    return !!this.all[sprite.id];
+  has(instance: SpriteInstance) {
+    return !!this.all[instance.id];
   }
 
-  layerHas(sprite: Sprite, layer: number) {
-    return !!this.layers[layer][sprite.id];
+  layerHas(instance: SpriteInstance, layer: number) {
+    return !!this.layers[layer][instance.id];
   }
 
-  getLayerOf(sprite: Sprite) {
-    return this.layers.findIndex(layer => !!layer[sprite.id]);
+  getLayerOf(instance: SpriteInstance) {
+    return this.layers.findIndex(layer => !!layer[instance.id]);
   }
 
-  getSpriteVector(sprite: Sprite, layer?: number) {
-    if (!this.has(sprite)) {
-      throw new Error("TileMap does not contains sprite " + sprite.id);
+  getInstanceVector(instance: SpriteInstance, layer?: number) {
+    if (!this.has(instance)) {
+      throw new Error("TileMap does not contains instance " + instance.id);
     }
     if (!layer) {
-      layer = this.getLayerOf(sprite);
+      layer = this.getLayerOf(instance);
     }
-    return this.layers[layer][sprite.id];
+    return this.layers[layer][instance.id];
   }
 
-  getSpritesAndVectorsFrom(layer: number) {
-    const result: [Sprite, Vector][] = [];
+  getInstancesAndVectorsFrom(layer: number) {
+    const result: [SpriteInstance, Vector][] = [];
     Object.keys(this.layers[layer]).forEach(id => {(
       result.push([this.all[id], this.layers[layer][id]])
     )});
     return result;
   }
 
-  add(sprite: Sprite, layer: number, vector: Vector) {
-    if (this.has(sprite)) {
-      throw new Error("Error: TileMap already contains sprite " + sprite.id);
+  add(instance: SpriteInstance, layer: number, vector: Vector) {
+    if (this.has(instance)) {
+      throw new Error("Error: TileMap already contains instance " + instance.id);
     }
-    this.all[sprite.id] = sprite;
-    this.layers[layer][sprite.id] = vector;
+    this.all[instance.id] = instance;
+    this.layers[layer][instance.id] = vector;
   }
 
-  remove(sprite: Sprite, layer: number) {
-    if (!this.has(sprite)) {
-      throw new Error("Error: TileMap does not contains sprite " + sprite.id);
+  remove(instance: SpriteInstance, layer: number) {
+    if (!this.has(instance)) {
+      throw new Error("Error: TileMap does not contains instance " + instance.id);
     }
     if (!layer) {
-      layer = this.layers.findIndex(layer => !!layer[sprite.id])
+      layer = this.layers.findIndex(layer => !!layer[instance.id])
     }
-    delete this.all[sprite.id];
-    delete this.layers[layer][sprite.id];
+    delete this.all[instance.id];
+    delete this.layers[layer][instance.id];
   }
 
   clear() {

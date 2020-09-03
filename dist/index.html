@@ -7,7 +7,7 @@
     <title>Look it is some tiles</title>
   </head>
   <style>
-    /* 
+    /*
     black - 291F1E
     blue - 477998
     redorange - F64740
@@ -48,17 +48,6 @@
       padding: 0;
       overflow: hidden;
     }
-    #project_container {
-      position: relative;
-      background: #477998;
-      margin: 0;
-      padding: 0;
-      flex-grow: 1;
-    }
-    #active_sprite_container {
-      width: 100px;
-      height: 100px;
-    }
     .layer-canvas {
       position: absolute;
     }
@@ -77,6 +66,54 @@
       background: #7DA253;
       width: 100px;
     }
+    .center-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0;
+      padding: 0;
+      flex-grow: 1;
+    }
+    .pallete {
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      bottom: 0;
+      height: 120px;
+      padding: 10px 10px 0;
+      background: #291F1E;
+    }
+    .pallete-button {
+      margin: 10px 5px;
+      width: 75px;
+      height: 75px;
+      border: 1px solid white;
+      background: #291F1E;
+      cursor: pointer;
+    }
+    .pallete-button:hover {
+      box-shadow: 0 0 2px 1px white;
+    }
+    .pallete-button:focus {
+      outline: none;
+      box-shadow: 0 0 2px 1px white;
+    }
+    #project_container {
+      position: relative;
+      align-self: stretch;
+      background: #477998;
+      margin: 0;
+      padding: 0;
+      flex-grow: 1;
+    }
+    #active_sprite_container {
+      width: 80px;
+      height: 80px;
+      margin: 10px 0;
+      border: 1px solid #291F1E;
+      background: #291F1E;
+    }
   </style>
   <body>
     <section class="main">
@@ -87,13 +124,27 @@
           <button class="tool-button" id="shape-button">Box</button>
           <button class="tool-button" id="fill-button">Fill</button>
           <button class="tool-button" id="erase-button">Erase</button>
+          <button class="tool-button" id="move-button">Move</button>
           <div id="active_sprite_container"></div>
         </div>
-        <div id="project_container"></div>
+        <div class="center-box">
+          <div id="project_container"></div>
+          <div class="pallete">
+            <div class="pallete-button" id="pallete-button-0" tabindex="0"></div>
+            <div class="pallete-button" id="pallete-button-1" tabindex="0"></div>
+            <div class="pallete-button" id="pallete-button-2" tabindex="0"></div>
+            <div class="pallete-button" id="pallete-button-3" tabindex="0"></div>
+            <div class="pallete-button" id="pallete-button-4" tabindex="0"></div>
+            <div class="pallete-button" id="pallete-button-5" tabindex="0"></div>
+            <div class="pallete-button" id="pallete-button-6" tabindex="0"></div>
+            <div class="pallete-button" id="pallete-button-7" tabindex="0"></div>
+          </div>
+        </div>
         <div class="side-box">
-          <button class="layer-button" id="layer-button-1">Ground Layer</button>
-          <button class="layer-button active" id="layer-button-2">Object Layer 1</button>
-          <button class="layer-button" id="layer-button-3">Object Layer 2</button>
+          <button class="layer-button active" id="layer-button-terrain-1">Terrain Layer 1</button>
+          <button class="layer-button" id="layer-button-terrain-2">Terrain Layer 2</button>
+          <button class="layer-button" id="layer-button-object-1">Object Layer 1</button>
+          <button class="layer-button" id="layer-button-object-2">Object Layer 2</button>
         </div>
       </div>
     </section>

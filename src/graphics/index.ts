@@ -5,5 +5,6 @@ export * from './queueables/TileMap';
 export * from './queueables/TileOutline';
 export * from './renderables/ImageObject';
 export * from './renderables/Sprite';
+export * from './renderables/SpriteInstance';
 export * from './sources/ImageSource';
 export * from './sources/SpriteSheet';

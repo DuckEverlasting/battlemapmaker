@@ -1,18 +1,19 @@
 import { FreehandType } from "./FreehandType";
 import { Sprite } from "../../graphics";
-import { Vector, vect } from "../../util/Vector";
+import { vect } from "../../util/Vector";
+import { LAYER_TYPE } from "../../enums";
 
 export class FreehandTool extends FreehandType {
   private sprite: Sprite | null;
   protected writesToTileMap = true;
 
   commitStart() {
-    this.sprite = this.app.getState().activeSprite.copy();
-    this.tileMap.add(this.sprite.copy(), vect(this.latest), this.layer);
+    this.sprite = this.app.getState().getActiveSprite();
+    this.tileMap.add(this.sprite, vect(this.latest), this.layer);
   }
 
   commitUpdate() {
-    this.tileMap.add(this.sprite.copy(), vect(this.latest), this.layer);
+    this.tileMap.add(this.sprite, vect(this.latest), this.layer);
   }
 
   commitEnd() {

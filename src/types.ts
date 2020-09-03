@@ -77,5 +77,6 @@ export type SpriteMap = {
   column: number;
   width: number;
   height: number;
+  type?: number;
   params?: SpriteParams; 
 }[];

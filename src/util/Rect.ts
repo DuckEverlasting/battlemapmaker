@@ -14,7 +14,6 @@ export class Rect {
   public width: number;
   public height: number;
 
-
   constructor(...args: RectArgs) {
     if (isRectArray(args)) {
       const rect = args[0];

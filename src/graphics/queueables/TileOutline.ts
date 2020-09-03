@@ -3,7 +3,7 @@ import { State, Display, Canvas, App } from "../../system";
 import { QueueableFlag } from "../../types";
 import { Vector, vect } from "../../util/Vector";
 import { Queueable } from "./Queueable";
-import { LAYER } from "../../enums";
+import { LAYER, SPRITE_TYPE } from "../../enums";
 
 export class TileOutline extends Queueable {
   protected flags: QueueableFlag[] = ["updateOnTileChange"];
@@ -20,7 +20,7 @@ export class TileOutline extends Queueable {
     outline.ctx.strokeRect(0, 0, outline.element.width, outline.element.height);
     
     const outlineSource = new ImageSource(outline.element);
-    this.sprite = new Sprite(outlineSource);
+    this.sprite = new Sprite(outlineSource, SPRITE_TYPE.EFFECT);
   }
 
   render(display: Display, props: {layer: number}) {

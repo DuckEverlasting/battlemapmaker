@@ -7,14 +7,27 @@ const toolButtons = {
   shape: document.getElementById('shape-button'),
   fill: document.getElementById('fill-button'),
   erase: document.getElementById('erase-button'),
+  move: document.getElementById('move-button'),
 };
 
 const layerButtons = [
-  document.getElementById('layer-button-1'),
-  document.getElementById('layer-button-2'),
-  document.getElementById('layer-button-3'),
+  document.getElementById('layer-button-terrain-1'),
+  document.getElementById('layer-button-terrain-2'),
+  document.getElementById('layer-button-object-1'),
+  document.getElementById('layer-button-object-2'),
 ];
+
+const palleteButtons = [
+  document.getElementById('pallete-button-0'),
+  document.getElementById('pallete-button-1'),
+  document.getElementById('pallete-button-2'),
+  document.getElementById('pallete-button-3'),
+  document.getElementById('pallete-button-4'),
+  document.getElementById('pallete-button-5'),
+  document.getElementById('pallete-button-6'),
+  document.getElementById('pallete-button-7'),
+]
 
 const activeSpriteContainer = document.getElementById('active_sprite_container');
 
-new App(container, toolButtons, layerButtons, activeSpriteContainer);
+new App(container, toolButtons, layerButtons, palleteButtons, activeSpriteContainer);

@@ -10,15 +10,12 @@ export class Sprite implements Renderable {
 
   constructor(
     public readonly imageSource: ImageSource,
+    public readonly type: number,
     public readonly rect: Rect = new Rect(0, 0, imageSource.rect.width, imageSource.rect.height),
     public readonly widthInTiles: number = 1,
-    public readonly heightInTiles: number = 1
+    public readonly heightInTiles: number = 1,
   ) {
     this.id = `${Math.random()}`;
-  }
-
-  copy() {
-    return new Sprite(this.imageSource, this.rect, this.widthInTiles, this.heightInTiles);
   }
 
   render(display: Display, props: SpriteRenderProps) {

@@ -1,11 +1,11 @@
 import { Display } from "./Display";
-import { State } from "./";
+import { State, Canvas } from "./";
 import { Renderer } from "./Renderer";
 import { EventEmitter, InputHandler } from "../input"
 import { AppType } from "../types";
-import { getToolbox, getKeyboard, attachButtons, generateRectAndMap } from "../util/helpers";
+import { getToolbox, getKeyboard, generateRectAndMap } from "../util/helpers";
 import { RenderQueue } from "./RenderQueue";
-import { testRun } from "../temp/testRun";
+import { testRun } from "../_temp/testRun";
 import { TileMap } from "../graphics";
 
 export class App implements AppType {
@@ -21,8 +21,9 @@ export class App implements AppType {
     containingElement: HTMLElement,
     toolButtons: {[key: string]: HTMLElement},
     layerButtons: HTMLElement[],
+    palleteButtons: HTMLElement[],
     activeSpriteContainer: HTMLElement,
-    layerCount: number = 7
+    layerCount: number = 8
   ) {
     const width = 960,
       height = 640,
@@ -44,11 +45,12 @@ export class App implements AppType {
     this.state.middleClickTool = this.state.toolbox.move;
     this.state.wheelTool = this.state.toolbox.move;
     this.state.altWheelTool = this.state.toolbox.zoom;
-    this.state.setActiveTool("freehand")
+    this.state.setActiveTool("freehand");
     this.renderer = new Renderer(this);
+    this.state.palleteCanvas = palleteButtons.map(element => new Canvas(element));
+    this.state.activeSpriteCanvas = new Canvas(activeSpriteContainer);
     this.inputHandler = new InputHandler(this);
-    this.eventEmitter = new EventEmitter(this.inputHandler, this.display);
-    attachButtons(toolButtons, layerButtons, activeSpriteContainer, this.state);
+    this.eventEmitter = new EventEmitter(this.inputHandler, this.display, {toolButtons, layerButtons, palleteButtons});
 
     // test run
     testRun(this);

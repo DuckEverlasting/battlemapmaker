@@ -69,34 +69,6 @@ export async function loadImage(imageSource: string) {
   return img;
 };
 
-export function attachButtons(
-  toolButtons: {[key: string]: HTMLElement},
-  layerButtons: HTMLElement[],
-  activeSpriteContainer: HTMLElement,
-  state: State
-) {
-  const toolButtonsArray = Object.entries(toolButtons);
-  toolButtonsArray.forEach(entry => {
-    entry[1].onclick = () => {
-      state.setActiveTool(entry[0]);
-      toolButtonsArray.forEach(en => {
-        en[1].classList.remove("active");
-      });
-      entry[1].classList.add("active");
-    };
-  });
-  layerButtons.forEach((element, layer) => {
-    element.onclick = () => {
-      state.setActiveLayer(layer)
-      layerButtons.forEach(el => {
-        el.classList.remove("active");
-      });
-      element.classList.add("active");
-    };
-  });
-  state.activeSpriteCanvas = new Canvas(activeSpriteContainer);
-}
-
 export function generateRectAndMap(
   width: number,
   height: number,

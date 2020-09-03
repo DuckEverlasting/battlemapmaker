@@ -14,6 +14,27 @@ export class InputHandler {
     this.state = app.getState();
   }
 
+  toolButtonClick(array: [string, HTMLElement][], index: number) {
+    this.state.setActiveTool(array[index][0]);
+    array.forEach(en => {
+      en[1].classList.remove("active");
+    });
+    array[index][1].classList.add("active");
+  }
+
+  layerButtonClick(array: HTMLElement[], index: number) {
+    this.state.setActiveLayer(index + 1)
+    array.forEach(el => {
+      el.classList.remove("active");
+    });
+    array[index].classList.add("active");
+  }
+
+  palleteButtonClick(element: HTMLElement, index: number) {
+    element.blur();
+    this.state.setActiveSprite(index);
+  }
+
   keyDown(e: KeyboardEvent) {
     const input: KeyInput = parseKeyInput(e);
     if (!!input && input in this.state.keyboard) {
@@ -22,6 +43,7 @@ export class InputHandler {
   }
 
   mouseDown(e: MouseEvent) {
+    e.preventDefault();
     const input: MouseInput = parseMouseInput(e, this.state.getTranslateData());
     if (e.button === 1) {
       this.state.middleClickTool.start(input);
