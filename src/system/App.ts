@@ -7,6 +7,8 @@ import { getToolbox, getKeyboard, generateRectAndMap } from "../util/helpers";
 import { RenderQueue } from "./RenderQueue";
 import { testRun } from "../_temp/testRun";
 import { TileMap } from "../graphics";
+import { Cursor } from "../graphics/queueables/Cursor";
+import { LAYER } from "../enums";
 
 export class App implements AppType {
   private display: Display;
@@ -14,6 +16,7 @@ export class App implements AppType {
   private state: State;
   private renderer: Renderer;
   private queue: RenderQueue;
+  private cursor: Cursor;
   private eventEmitter: EventEmitter;
   private inputHandler: InputHandler;
 
@@ -37,9 +40,11 @@ export class App implements AppType {
       rect, tileWidth, tileHeight, layerCount
     );
     this.tileMap = tileMap;
-    this.display = new Display(this.state, containingElement, layerCount);
+    this.display = new Display(this.state, containingElement, layerCount, LAYER.EFFECT_ALL);
+    this.cursor = new Cursor(this);
     this.queue = new RenderQueue(layerCount);
     this.queue.add(this.tileMap);
+    this.queue.add(this.cursor);
     this.state.toolbox = getToolbox(this);
     this.state.keyboard = getKeyboard(this);
     this.state.middleClickTool = this.state.toolbox.move;

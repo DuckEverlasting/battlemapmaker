@@ -17,6 +17,7 @@ export class InputHandler {
   toolButtonClick(array: [string, HTMLElement][], index: number) {
     this.state.setActiveTool(array[index][0]);
     array.forEach(en => {
+      en[1].blur();
       en[1].classList.remove("active");
     });
     array[index][1].classList.add("active");
@@ -25,6 +26,7 @@ export class InputHandler {
   layerButtonClick(array: HTMLElement[], index: number) {
     this.state.setActiveLayer(index + 1)
     array.forEach(el => {
+      el.blur();
       el.classList.remove("active");
     });
     array[index].classList.add("active");
@@ -74,8 +76,8 @@ export class InputHandler {
       && tool.triggersOn === "cursorMove"
     ) {
       tool.update(input);
-      this.queue.triggerFlag("updateOnCursorMove", this.state);
     }
+    this.queue.triggerFlag("updateOnCursorMove", this.state);
 
     if (tileChanged) {
       if (
@@ -99,6 +101,29 @@ export class InputHandler {
       this.state.middleClickTool.end(input);
     } else if (e.button === 0) {
       this.state.activeTool.end(input);
+    }
+  }
+
+  mouseOut(e: MouseEvent) {
+    const input: MouseInput = parseMouseInput(e, this.state.getTranslateData());
+    const tileChanged = this.state.cursorTile !== null;
+    
+    this.state.setCursorState({
+      position: null,
+      tile: null,
+      screen: null,
+      buttons: input.buttons,
+      modifiers: input.modifiers,
+    });
+
+    if (this.state.activeTool.isActive) {
+      this.state.activeTool.end(input);
+    }
+    
+    this.queue.triggerFlag("updateOnCursorMove", this.state);
+    
+    if (tileChanged) {
+      this.queue.triggerFlag("updateOnTileChange", this.state);
     }
   }
 

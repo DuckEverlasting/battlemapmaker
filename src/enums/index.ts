@@ -4,8 +4,8 @@ export const LAYER = {
   "TERRAIN_2": 2,
   "OBJECT_1": 3,
   "OBJECT_2": 4,
-  "EFFECT_1": 5,
-  "EFFECT_2": 6,
+  "EFFECT_TILEMAP": 5,
+  "EFFECT_ALL": 6,
   "CURSOR": 7
 }
 

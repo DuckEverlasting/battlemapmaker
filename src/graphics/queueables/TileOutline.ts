@@ -9,11 +9,11 @@ export class TileOutline extends Queueable {
   protected flags: QueueableFlag[] = ["updateOnTileChange"];
   private markedForRender: boolean = false; // Does not render until triggered
   private tile: Vector = null;
-  private layer = LAYER.EFFECT_2;
+  private layer = LAYER.EFFECT_TILEMAP;
   private sprite: Sprite;
 
   constructor(app: App, style?: string, width?: number) {
-    super(new Set([LAYER.EFFECT_2]));
+    super(new Set([LAYER.EFFECT_TILEMAP]));
     const outline = new Canvas("offscreen", app.getState().tileWidth, app.getState().tileHeight);
     outline.ctx.strokeStyle = style || "black";
     outline.ctx.lineWidth = width ? width * 2 : 4;
@@ -36,7 +36,7 @@ export class TileOutline extends Queueable {
     this.markedForRender = true;
   }
 
-  getPosition() {
+  getTile() {
     return vect(this.tile);
   }
 
@@ -45,7 +45,7 @@ export class TileOutline extends Queueable {
   }
 
   isMarkedForRender() {
-    return this.markedForRender ? new Set([this.layer]) : new Set<number>();
+    return this.markedForRender ? [this.layer] : [];
   }
 
   getFlags() {

@@ -1,5 +1,6 @@
 import { Canvas } from "./Canvas";
 import { State } from "./";
+import { LAYER } from "../enums";
 
 export class Display {
   public readonly id: string;
@@ -10,17 +11,24 @@ export class Display {
   constructor(
     private state: State,
     public readonly containingElement: HTMLElement,
-    public readonly layerCount: number
+    public readonly layerCount: number,
+    public readonly effectLayersAt: number
   ) {
     this.id = '_DISPLAY_';
     this.containingElement = containingElement;
-    this.layerCount = layerCount;
-    this.layers = new Array(layerCount);
-    for (let i = 0; i <= this.layerCount; i++) {
+    this.layers = new Array(this.layerCount);
+    for (let i = 0; i < this.effectLayersAt; i++) {
       this.layers[i] = new Canvas(
         'offscreen',
         this.state.rect.width,
         this.state.rect.height
+      );
+    }
+    for (let i = this.effectLayersAt; i < this.layerCount; i++) {
+      this.layers[i] = new Canvas(
+        'offscreen',
+        this.containingElement.clientWidth,
+        this.containingElement.clientHeight
       );
     }
     this.main = new Canvas(containingElement);
@@ -45,17 +53,20 @@ export class Display {
       )
       this.mainMarkedForRender = false;
     }
-    this.layers.forEach((layer, i) => {
-      if (layer.opacity !== 1) {
-        this.main.ctx.globalAlpha = layer.opacity;
+    for (let i = 0; i < this.effectLayersAt; i++) {
+      if (this.layers[i].opacity !== 1) {
+        this.main.ctx.globalAlpha = this.layers[i].opacity;
       }
       this.main.ctx.drawImage(
-        layer.element,
+        this.layers[i].element,
         t.rect.offsetX,
         t.rect.offsetY
       );
       this.main.ctx.globalAlpha = 1;
-    });
+    }
+    for (let i = this.effectLayersAt; i < this.layerCount; i++) {
+      this.main.ctx.drawImage(this.layers[i].element, 0, 0);
+    }
   }
 
   clearLayer(layer: number) {

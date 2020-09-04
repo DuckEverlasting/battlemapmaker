@@ -111,11 +111,11 @@ export class TileMap extends Queueable {
     this.markedForRender[layer] = false;
   }
 
-  public isMarkedForRender(): Set<number> {
-    const result = new Set<number>();
+  public isMarkedForRender(): number[] {
+    const result: number[] = [];
     this.markedForRender.forEach((marked, i) => {
       if (marked) {
-        result.add(i)
+        result.push(i)
       }
     })
     return result;

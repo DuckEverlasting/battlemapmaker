@@ -17,7 +17,7 @@ export abstract class Queueable {
     throw new Error('Method "clearMarkedForRender" not implemented.');
   }
 
-  isMarkedForRender(): Set<number> {
+  isMarkedForRender(): number[] {
     throw new Error('Method "isMarkedForRender" not implemented.');
   }
 

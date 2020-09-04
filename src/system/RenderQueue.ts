@@ -36,6 +36,9 @@ export class RenderQueue {
   render(display: Display, layers?: Set<number>) {
     layers.forEach(layer => {
       display.clearLayer(layer);
+      if (layer >= display.effectLayersAt) {
+        display.mainMarkedForRender = true;
+      }
       this.queue.forEach(queueable => {
         if (queueable.onLayers.has(layer)) {
           queueable.render(display, {layer})
