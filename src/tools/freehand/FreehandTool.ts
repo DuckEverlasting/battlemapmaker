@@ -1,7 +1,6 @@
 import { FreehandType } from "./FreehandType";
-import { Sprite } from "../../graphics";
+import { Sprite, SpriteInstance } from "../../graphics";
 import { vect } from "../../util/Vector";
-import { LAYER_TYPE } from "../../enums";
 
 export class FreehandTool extends FreehandType {
   private sprite: Sprite | null;
@@ -9,11 +8,12 @@ export class FreehandTool extends FreehandType {
 
   commitStart() {
     this.sprite = this.app.getState().getActiveSprite();
-    this.tileMap.add(this.sprite, vect(this.latest), this.layer);
+    console.log(this.latest)
+    this.tileMap.add(new SpriteInstance(this.sprite), vect(this.latest), this.layer);
   }
 
   commitUpdate() {
-    this.tileMap.add(this.sprite, vect(this.latest), this.layer);
+    this.tileMap.add(new SpriteInstance(this.sprite), vect(this.latest), this.layer);
   }
 
   commitEnd() {

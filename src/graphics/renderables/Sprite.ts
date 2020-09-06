@@ -3,6 +3,7 @@ import { ImageSource } from '../sources/ImageSource';
 import { Display } from '../../system';
 import { Rect } from '../../util/Rect';
 import { Queueable } from '../';
+import { Vector } from '../../util/Vector';
 
 export class Sprite implements Renderable {
   public readonly id: string;
@@ -19,23 +20,27 @@ export class Sprite implements Renderable {
   }
 
   render(display: Display, props: SpriteRenderProps) {
+    this.renderSprite(display, this.rect, props.tile, props.layer);
+  }
+
+  renderSprite(display: Display, rect: Rect, tile: Vector, layer: number) {
     const t = display.getTranslateData()
     if (
-      props.tile.x < 0
-      || props.tile.x >= t.rect.width / t.tileWidth
-      || props.tile.y < 0
-      || props.tile.y >= t.rect.height / t.tileHeight
+      tile.x < 0
+      || tile.x >= t.rect.width / t.tileWidth
+      || tile.y < 0
+      || tile.y >= t.rect.height / t.tileHeight
     ) {
       return;
     }
-    display.getLayers()[props.layer].ctx.drawImage(
+    display.getLayers()[layer].ctx.drawImage(
       this.imageSource.source,
-      this.rect.offsetX,
-      this.rect.offsetY,
-      this.rect.width,
-      this.rect.height,
-      props.tile.x * t.tileWidth,
-      props.tile.y * t.tileHeight,
+      rect.offsetX,
+      rect.offsetY,
+      rect.width,
+      rect.height,
+      tile.x * t.tileWidth,
+      tile.y * t.tileHeight,
       t.tileWidth * this.widthInTiles,
       t.tileHeight * this.heightInTiles
     );

@@ -1,16 +1,10 @@
-import { Sprite } from "../";
+import { Sprite, Autotile } from "../";
 
-export class SpriteInstance extends Sprite {
-  public readonly spriteId: string;
+export class SpriteInstance {
+  public readonly id: string;
 
-  constructor(sprite: Sprite) {
-    super(
-      sprite.imageSource,
-      sprite.type,
-      sprite.rect,
-      sprite.widthInTiles,
-      sprite.heightInTiles
-    );
-    this.spriteId = sprite.id;
+  constructor(public readonly sprite: Sprite | Autotile) {
+    this.sprite = sprite;
+    this.id = `${Math.random()}`;
   }
 }

@@ -22,7 +22,6 @@ export class Cursor extends Queueable {
 
   render(display: Display, props: {layer: number}) {
     if (!this.imageSource || LAYER.CURSOR !== props.layer) {return;}
-    console.log(this.imageSource)
     display.getLayers()[LAYER.CURSOR].ctx.drawImage(
       this.imageSource.source,
       this.position.x,

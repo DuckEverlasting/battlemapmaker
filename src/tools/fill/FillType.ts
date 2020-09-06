@@ -11,7 +11,7 @@ export class FillType extends BaseTool {
     if (target === null) {
       this.targetSpriteId = "";
     } else {
-      this.targetSpriteId = target.spriteId;
+      this.targetSpriteId = target.sprite.id;
     }
     this.tiles = new Set([input.tile])
     const visited = new Set<string>([input.tile.toString()]);
@@ -20,7 +20,7 @@ export class FillType extends BaseTool {
       const current = stack.pop();
       if (this.isEdge(current)) {continue;}
       this.tiles.add(current);
-      this.getSurrounding(current).forEach(v => {
+      this.getAdjacentVectors(current).forEach(v => {
         const vString = v.toString();
         if (!visited.has(vString)) {
           visited.add(vString);
@@ -35,11 +35,11 @@ export class FillType extends BaseTool {
 
   isEdge(v: Vector) {
     const instance = this.tileMap.get(v, this.layer);
-    const spriteId = instance === null ? "" : instance.spriteId;
+    const spriteId = instance === null ? "" : instance.sprite.id;
     return spriteId !== this.targetSpriteId;
   }
 
-  getSurrounding(v: Vector) {
+  getAdjacentVectors(v: Vector) {
     const result = [];
     if (v.x - 1 >= 0) {
       result.push(vect(v.x - 1, v.y))

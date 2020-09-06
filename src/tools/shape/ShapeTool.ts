@@ -1,5 +1,5 @@
 import { ShapeType } from "./ShapeType";
-import { Sprite } from "../../graphics";
+import { Sprite, SpriteInstance } from "../../graphics";
 import { vect } from "../../util/Vector";
 import { LAYER_TYPE } from "../../enums";
 
@@ -10,12 +10,12 @@ export class ShapeTool extends ShapeType {
 
   commitStart() {
     this.sprite = this.app.getState().getActiveSprite();
-    this.tileMap.add(this.sprite, vect(this.origin), this.layer);
+    this.tileMap.add(new SpriteInstance(this.sprite), vect(this.origin), this.layer);
   }
 
   commitUpdate() {
     this.tiles.forEach(tile => {
-      this.tileMap.add(this.sprite, tile, this.layer);
+      this.tileMap.add(new SpriteInstance(this.sprite), tile, this.layer);
     })
   }
   

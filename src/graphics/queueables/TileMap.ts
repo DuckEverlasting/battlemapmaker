@@ -1,4 +1,4 @@
-import { Sprite, SpriteInstance, SpriteManifest } from "../";
+import { SpriteInstance, SpriteManifest } from "../";
 import { Display } from "../../system"
 import { Queueable } from "./Queueable";
 import { Vector, vect } from "../../util/Vector";
@@ -26,7 +26,7 @@ export class TileMap extends Queueable {
   }
 
   public get(v: Vector, layer: number) {
-    if (!this.vectorInBounds(v)) {return;}
+    if (!this.vectorInBounds(v)) {return null;}
     return this.graph[this.getInd(v, layer)];
   }
 
@@ -46,9 +46,8 @@ export class TileMap extends Queueable {
     })
   }
 
-  public add(sprite: Sprite | SpriteInstance, v: Vector, layer: number) {
+  public add(instance: SpriteInstance, v: Vector, layer: number) {
     if (!this.vectorInBounds(v)) {return;}
-    const instance = sprite instanceof Sprite ? new SpriteInstance(sprite) : sprite;
     const index = this.getInd(v, layer);
     this.manifest.add(instance, layer, vect(v));
     if (this.graph[index] !== null) {
@@ -59,7 +58,7 @@ export class TileMap extends Queueable {
   }
 
   public remove(v: Vector, layer: number) {
-    if (!this.vectorInBounds(v)) {return;}
+    if (!this.vectorInBounds(v)) {return null;}
     const index = this.getInd(v, layer);
     const instance = this.graph[index];
     if (instance !== null) {
@@ -87,6 +86,18 @@ export class TileMap extends Queueable {
     this.add(instance, dest, destLayer);
   }
 
+  public getAdjacent(v: Vector, layer: number) {
+    const result: (SpriteInstance | null)[] = [];
+    [vect(v.x, v.y-1), vect(v.x+1, v.y), vect(v.x, v.y+1), vect(v.x-1, v.y)].forEach(v => {
+      if (this.vectorInBounds(v)) {
+        result.push(this.get(v, layer));
+      } else {
+        result.push(null);
+      }
+    })
+    return result;
+  }
+
   protected getInd(v: Vector, layer: number) {
     return (this.columns * v.y + v.x) * this.layerCount + layer;
   }
@@ -103,7 +114,7 @@ export class TileMap extends Queueable {
       v.x >= 0
       && v.y >= 0
       && v.x < this.columns
-      && v.y < this.columns
+      && v.y < this.rows
     );
   }
 
@@ -128,7 +139,7 @@ export class TileMap extends Queueable {
   render(display: Display, props: {layer: number}) {
     const data = this.manifest.getInstancesAndVectorsFrom(props.layer);
     data.forEach(tuple => {
-      tuple[0].render(display, {tile: tuple[1], layer: props.layer});
+      tuple[0].sprite.render(display, {tile: tuple[1], layer: props.layer, tileMap: this});
     })
   }
 

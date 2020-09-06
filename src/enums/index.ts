@@ -27,3 +27,10 @@ export const LAYER_TYPE: {[key: number]: number, [key: string]: number} = {
   6: 2,
   7: 3
 }
+
+export const ADJACENCY = {
+  "UP": 0,
+  "RIGHT": 1,
+  "DOWN": 2,
+  "LEFT": 3
+}

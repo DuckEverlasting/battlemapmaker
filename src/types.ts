@@ -1,6 +1,7 @@
 import { Display } from './system';
 import { Vector } from './util/Vector';
 import { Rect } from './util/Rect';
+import { TileMap } from './graphics';
 
 export type AppType = {};
 
@@ -70,7 +71,7 @@ export type SpriteParams = {
   updateOnTileChange?: boolean;
 }
 
-export type SpriteRenderProps = {tile: Vector, layer: number}
+export type SpriteRenderProps = {tile: Vector, layer: number, tileMap?: TileMap}
 
 export type SpriteMap = {
   row: number;

@@ -1,12 +1,14 @@
-import BaseChip from "../media/spritesheets/BaseChip_pipo.png"
-import Terrain_1 from "../media/spritesheets/Dirt1_pipo.png"
-import Terrain_2 from "../media/spritesheets/Dirt2_pipo.png"
-import Terrain_3 from "../media/spritesheets/Dirt4_pipo.png"
-import Terrain_4 from "../media/spritesheets/Grass1_pipo.png"
-import { ImageSource, ImageObject, TileOutline, SpriteSheet, BGImage } from "../graphics";
+import BaseChip from "../media/spritesheets/BaseChip_pipo.png";
+import Terrain_1 from "../media/spritesheets/Dirt1_pipo.png";
+import Terrain_2 from "../media/spritesheets/Dirt2_pipo.png";
+import Terrain_3 from "../media/spritesheets/Dirt4_pipo.png";
+import Terrain_4 from "../media/spritesheets/Grass1_pipo.png";
+import AutotileTest from "../media/spritesheets/A_Dirt1_pipo.png";
+import { ImageSource, ImageObject, TileOutline, SpriteSheet, BGImage, Autotile } from "../graphics";
 import { App, Canvas } from "../system";
 import { loadImage } from "../util/helpers";
 import { SPRITE_TYPE } from "../enums";
+import { Rect } from "../util/Rect";
 
 export async function testRun(app: App) {
   // make CursorOutline with Sprite using canvas imagesource
@@ -26,6 +28,24 @@ export async function testRun(app: App) {
     terrain3 = new SpriteSheet(await loadImage(Terrain_3), SPRITE_TYPE.TERRAIN, 32, 32),
     terrain4 = new SpriteSheet(await loadImage(Terrain_4), SPRITE_TYPE.TERRAIN, 32, 32),
     base = new SpriteSheet(await loadImage(BaseChip), SPRITE_TYPE.OBJECT, 32, 32);
+  const autotile = new Autotile(new ImageSource(await loadImage(AutotileTest)), SPRITE_TYPE.TERRAIN, [
+    new Rect(0, 0, 32, 32),
+    new Rect(128, 64, 32, 32),
+    new Rect(32, 0, 32, 32),
+    new Rect(160, 64, 32, 32),
+    new Rect(128, 0, 32, 32),
+    new Rect(128, 32, 32, 32),
+    new Rect(160, 0, 32, 32),
+    new Rect(160, 32, 32, 32),
+    new Rect(96, 0, 32, 32),
+    new Rect(224, 64, 32, 32),
+    new Rect(64, 0, 32, 32),
+    new Rect(192, 64, 32, 32),
+    new Rect(224, 0, 32, 32),
+    new Rect(224, 32, 32, 32),
+    new Rect(192, 0, 32, 32),
+    new Rect(192, 32, 32, 32)
+  ]);
 
     // tileMap.add(sheet.getSprite(index), vector, 2);
 
@@ -37,7 +57,7 @@ export async function testRun(app: App) {
     ...terrain4.getAllSprites()
   );
 
-  app.getState().setPalleteSprite(SPRITE_TYPE.TERRAIN, 0, terrain1.getSprite(4));
+  app.getState().setPalleteSprite(SPRITE_TYPE.TERRAIN, 0, autotile);
   app.getState().setPalleteSprite(SPRITE_TYPE.TERRAIN, 1, terrain1.getSprite(0));
   app.getState().setPalleteSprite(SPRITE_TYPE.TERRAIN, 2, terrain1.getSprite(1));
   app.getState().setPalleteSprite(SPRITE_TYPE.TERRAIN, 3, terrain1.getSprite(2));
