@@ -26,11 +26,11 @@
       margin: 0;
     }
     h1 {
+      position: absolute;
       margin: 0;
-      height: 50px;
-      padding: 20px 0 10px;
+      bottom: 10px;
+      width: 100%;
       text-align: center;
-      background: #291F1E;
       color: white;
     }
     button {
@@ -41,9 +41,14 @@
     button.active {
       background: rgb(255, 234, 48);
     }
+    .top {
+      position: relative;
+      height: 50px;
+      background: #291F1E;
+    }
     .main {
       width: 100%;
-      height: 100%;
+      height: calc(100% - 50px);
       margin: 0;
       padding: 0;
       overflow: hidden;
@@ -56,7 +61,7 @@
       align-items: stretch;
       justify-content: space-between;
       width: 100%;
-      height: calc(100% - 80px);
+      height: 100%;
     }
     .side-box {
       display: flex;
@@ -99,6 +104,28 @@
       outline: none;
       box-shadow: 0 0 2px 1px white;
     }
+    .menu-bar {
+      display: flex;
+      height: 40px;
+      align-items: flex-end;
+    }
+    .menu-bar button {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border: 2px solid black;
+      height: 20px;
+      width: 70px;
+      margin: 5px 5px 0;
+    }
+    .menu-bar button:hover {
+      border: 2px solid red;
+    }
+    .menu-bar button:active {
+      border: 2px solid blue;
+    }
+    
     #project_container {
       position: relative;
       align-self: stretch;
@@ -117,8 +144,14 @@
     }
   </style>
   <body>
+    <section class="top">
+      <div class="menu-bar">
+        <h1>PROTOTYYYYYYYYYPE</h1>
+        <button id="file-menu-button">File</button>
+        <button id="edit-menu-button">Edit</button>
+      </div>
+    </section>
     <section class="main">
-      <h1>PROTOTYYYYYYYYYPE</h1>
       <div class="main-container">
         <div class="side-box">
           <button class="tool-button active" id="freehand-button">Draw</button>

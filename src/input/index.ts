@@ -1,2 +1,2 @@
 export * from './InputHandler';
-export * from './EventEmitter';
+export * from './EventHandler';

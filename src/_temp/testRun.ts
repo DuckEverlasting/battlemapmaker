@@ -58,7 +58,7 @@ export async function testRun(app: App) {
   );
 
   app.getState().setPalleteSprite(SPRITE_TYPE.TERRAIN, 0, autotile);
-  app.getState().setPalleteSprite(SPRITE_TYPE.TERRAIN, 1, terrain1.getSprite(0));
+  app.getState().setPalleteSprite(SPRITE_TYPE.TERRAIN, 1, terrain1.getSprite(4));
   app.getState().setPalleteSprite(SPRITE_TYPE.TERRAIN, 2, terrain1.getSprite(1));
   app.getState().setPalleteSprite(SPRITE_TYPE.TERRAIN, 3, terrain1.getSprite(2));
   app.getState().setPalleteSprite(SPRITE_TYPE.TERRAIN, 4, terrain4.getSprite(4));

@@ -1,7 +1,7 @@
 import { Display } from "../system/Display";
 import { InputHandler } from "./InputHandler";
 
-export class EventEmitter {
+export class EventHandler {
   target: HTMLElement;
 
   constructor(private handler: InputHandler, display: Display, buttons: {
@@ -77,6 +77,7 @@ export class EventEmitter {
     this.target.removeEventListener("mousedown", this.handleMouseDown.bind(this));
     this.target.removeEventListener("mouseup", this.handleMouseUp.bind(this));
     this.target.removeEventListener("mousemove", this.handleMouseUp.bind(this));
+    this.target.removeEventListener("mouseout", this.handleMouseOut.bind(this));
     this.target.removeEventListener("wheel", this.handleMouseWheel.bind(this));
     this.target.removeEventListener("contextmenu", this.handleContextMenu.bind(this));
   }

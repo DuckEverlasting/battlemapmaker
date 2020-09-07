@@ -1,7 +1,7 @@
 import { Display } from "./Display";
 import { State, Canvas } from "./";
 import { Renderer } from "./Renderer";
-import { EventEmitter, InputHandler } from "../input"
+import { EventHandler, InputHandler } from "../input"
 import { AppType } from "../types";
 import { getToolbox, getKeyboard, generateRectAndMap } from "../util/helpers";
 import { RenderQueue } from "./RenderQueue";
@@ -17,7 +17,7 @@ export class App implements AppType {
   private renderer: Renderer;
   private queue: RenderQueue;
   private cursor: Cursor;
-  private eventEmitter: EventEmitter;
+  private eventEmitter: EventHandler;
   private inputHandler: InputHandler;
 
   constructor(
@@ -55,7 +55,7 @@ export class App implements AppType {
     this.state.palleteCanvas = palleteButtons.map(element => new Canvas(element));
     this.state.activeSpriteCanvas = new Canvas(activeSpriteContainer);
     this.inputHandler = new InputHandler(this);
-    this.eventEmitter = new EventEmitter(this.inputHandler, this.display, {toolButtons, layerButtons, palleteButtons});
+    this.eventEmitter = new EventHandler(this.inputHandler, this.display, {toolButtons, layerButtons, palleteButtons});
 
     // test run
     testRun(this);
