@@ -1,15 +1,22 @@
 import { Display } from "../system/Display";
 import { InputHandler } from "./InputHandler";
+import { buildMenu } from "../util/buildMenu";
+import { MenuHandler } from "../menu";
+import { App } from "../system";
 
 export class EventHandler {
+  private inputHandler: InputHandler;
   target: HTMLElement;
 
-  constructor(private handler: InputHandler, display: Display, buttons: {
+  constructor(app: App, buttons: {
     toolButtons: {[key: string]: HTMLElement},
     layerButtons: HTMLElement[],
     palleteButtons: HTMLElement[],
+    menuButtons: {[key: string]: HTMLElement},
+    menuHandler: MenuHandler
   }) {
-    this.target = display.containingElement;
+    this.inputHandler = app.getInputHandler();
+    this.target = app.getDisplay().containingElement;
     window.addEventListener("keydown", this.handleKeyDown.bind(this));
     this.target.addEventListener("mousedown", this.handleMouseDown.bind(this));
     this.target.addEventListener("mouseup", this.handleMouseUp.bind(this));
@@ -30,42 +37,44 @@ export class EventHandler {
     buttons.palleteButtons.forEach((element, i) => {
       element.onclick = () => this.handlePalleteButtonClick(element, i);
     });
+
+    buildMenu(app, buttons.menuButtons, buttons.menuHandler);
   }
 
   handleToolButtonClick(array: [string, HTMLElement][], index: number) {
-    this.handler.toolButtonClick(array, index);
+    this.inputHandler.toolButtonClick(array, index);
   }
 
   handleLayerButtonClick(array: HTMLElement[], index: number) {
-    this.handler.layerButtonClick(array, index);
+    this.inputHandler.layerButtonClick(array, index);
   }
 
   handlePalleteButtonClick(element: HTMLElement, index: number) {
-    this.handler.palleteButtonClick(element, index);
+    this.inputHandler.palleteButtonClick(element, index);
   }
 
   handleKeyDown(e: KeyboardEvent) {
-    this.handler.keyDown(e);
+    this.inputHandler.keyDown(e);
   }
 
   handleMouseDown(e: MouseEvent) {
-    this.handler.mouseDown(e);
+    this.inputHandler.mouseDown(e);
   }
 
   handleMouseUp(e: MouseEvent) {
-    this.handler.mouseUp(e);
+    this.inputHandler.mouseUp(e);
   }
 
   handleMouseMove(e: MouseEvent) {
-    this.handler.mouseMove(e);
+    this.inputHandler.mouseMove(e);
   }
 
   handleMouseOut(e: MouseEvent) {
-    this.handler.mouseOut(e);
+    this.inputHandler.mouseOut(e);
   }
 
   handleMouseWheel(e: WheelEvent) {
-    this.handler.mouseWheel(e);
+    this.inputHandler.mouseWheel(e);
   }
 
   handleContextMenu(e: MouseEvent) {

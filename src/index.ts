@@ -28,6 +28,12 @@ const palleteButtons = [
   document.getElementById('pallete-button-7'),
 ]
 
-const activeSpriteContainer = document.getElementById('active_sprite_container');
+const menuButtons = {
+  file: document.getElementById('file-menu-button'),
+  edit: document.getElementById('edit-menu-button'),
+}
 
-new App(container, toolButtons, layerButtons, palleteButtons, activeSpriteContainer);
+const menuContainer = document.getElementById('menu-container');
+const activeSpriteContainer = document.getElementById('active-sprite-container');
+
+new App(container, toolButtons, layerButtons, palleteButtons, menuButtons, menuContainer, activeSpriteContainer);

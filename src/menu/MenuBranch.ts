@@ -1,13 +1,12 @@
 import { MenuItem, MenuItemType } from "./MenuItem";
 import { Menu } from "./Menu";
-import { Vector, vect } from "../util/Vector";
+import { vect } from "../util/Vector";
 
 export class MenuBranch extends MenuItem implements MenuItemType {
   public active = false;
 
   constructor(
     name: string,
-    public parent: Menu,
     public child: Menu,
     public childPosition:
       | ["right", "top"]
@@ -18,12 +17,26 @@ export class MenuBranch extends MenuItem implements MenuItemType {
     super(name);
     this.addTextNode(">");
     this.element.className = "menu-branch";
-    this.element.onmouseenter = (e) => {
-      this.parent.closeAll();
-      this.child.setPosition(this.getChildVector());
-      this.element.appendChild(this.child.element);
-      this.active = true;
+    this.child.element = this.element;
+    this.child.initialize();
+    this.element.onclick = (e) => {
+      this.open();
+      e.stopPropagation();
+    }
+    this.element.onmouseenter = e => {
+      setTimeout(() => {
+        if (!this.active) {
+          this.open();
+        }
+      }, 300)
     };
+  }
+
+  open() {
+    this.parent.closeAll();
+    this.child.setPosition(this.getChildVector());
+    this.element.appendChild(this.child.element);
+    this.active = true;
   }
 
   close() {
@@ -35,19 +48,9 @@ export class MenuBranch extends MenuItem implements MenuItemType {
   }
 
   getChildVector() {
-    const rect = this.element.getBoundingClientRect();
-    if (this.childPosition[0] === "right") {
-      if (this.childPosition[1] === "top") {
-        return vect(rect.right, rect.top);
-      } else {
-        return vect(rect.right, rect.bottom);
-      }
-    } else {
-      if (this.childPosition[1] === "top") {
-        return vect(rect.left, rect.top);
-      } else {
-        return vect(rect.left, rect.bottom);
-      }
-    }
+    return vect(
+      this.childPosition[0] === "right" ? this.element.clientWidth : 0,
+      this.childPosition[1] === "bottom" ? this.element.clientHeight : 0
+    )
   }
 }

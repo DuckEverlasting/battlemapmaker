@@ -1,11 +1,15 @@
+import { Menu } from "./Menu";
+
 export interface MenuItemType {
   name: string;
   element: HTMLElement;
+  parent: Menu;
   appendTo(containingElement: HTMLElement): void;
 }
 
 export abstract class MenuItem implements MenuItemType {
   public element: HTMLElement;
+  public parent: Menu;
 
   constructor(
     public name: string,

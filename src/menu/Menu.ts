@@ -4,13 +4,20 @@ import { Vector } from "../util/Vector";
 export class Menu {
   constructor(
     public readonly name: string,
-    public element: HTMLElement,
-    private items: MenuItem[]
+    private children: MenuItem[],
+    public element?: HTMLElement
   ) {
+    if (element) {
+      this.initialize();
+    }
+  }
+
+  initialize() {
     this.element = document.createElement("div");
     this.element.className = "menu";
-    this.items.forEach(item => {
-      item.appendTo(this.element);
+    this.children.forEach(child => {
+      child.parent = this;
+      child.appendTo(this.element);
     });
   }
 
@@ -22,6 +29,6 @@ export class Menu {
   }
 
   closeAll() {
-    this.items.forEach(item => item.close());
+    this.children.forEach(child => child.close());
   }
 }

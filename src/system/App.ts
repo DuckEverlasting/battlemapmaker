@@ -9,6 +9,7 @@ import { testRun } from "../_temp/testRun";
 import { TileMap } from "../graphics";
 import { Cursor } from "../graphics/queueables/Cursor";
 import { LAYER } from "../enums";
+import { MenuHandler } from "../menu/MenuHandler";
 
 export class App implements AppType {
   private display: Display;
@@ -17,7 +18,8 @@ export class App implements AppType {
   private renderer: Renderer;
   private queue: RenderQueue;
   private cursor: Cursor;
-  private eventEmitter: EventHandler;
+  private menuHandler: MenuHandler;
+  private eventHandler: EventHandler;
   private inputHandler: InputHandler;
 
   constructor(
@@ -25,6 +27,8 @@ export class App implements AppType {
     toolButtons: {[key: string]: HTMLElement},
     layerButtons: HTMLElement[],
     palleteButtons: HTMLElement[],
+    menuButtons: {[key: string]: HTMLElement},
+    menuContainer: HTMLElement,
     activeSpriteContainer: HTMLElement,
     layerCount: number = 8
   ) {
@@ -54,8 +58,15 @@ export class App implements AppType {
     this.renderer = new Renderer(this);
     this.state.palleteCanvas = palleteButtons.map(element => new Canvas(element));
     this.state.activeSpriteCanvas = new Canvas(activeSpriteContainer);
+    this.menuHandler = new MenuHandler(this, menuContainer);
     this.inputHandler = new InputHandler(this);
-    this.eventEmitter = new EventHandler(this.inputHandler, this.display, {toolButtons, layerButtons, palleteButtons});
+    this.eventHandler = new EventHandler(this, {
+      toolButtons,
+      layerButtons,
+      palleteButtons,
+      menuButtons,
+      menuHandler: this.menuHandler,
+    });
 
     // test run
     testRun(this);
@@ -87,5 +98,13 @@ export class App implements AppType {
 
   getQueue() {
     return this.queue;
+  }
+
+  getInputHandler() {
+    return this.inputHandler;
+  }
+
+  callRender() {
+    this.display.mainMarkedForRender = true;
   }
 }

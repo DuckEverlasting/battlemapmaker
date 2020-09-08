@@ -56,7 +56,7 @@
     .layer-canvas {
       position: absolute;
     }
-    .main-container {
+    #main-container {
       display: flex;
       align-items: stretch;
       justify-content: space-between;
@@ -64,6 +64,7 @@
       height: 100%;
     }
     .side-box {
+      position: relative;
       display: flex;
       flex-direction: column;
       padding-top: 5px;
@@ -106,7 +107,7 @@
     }
     .menu-bar {
       display: flex;
-      height: 40px;
+      height: 100%;
       align-items: flex-end;
     }
     .menu-bar button {
@@ -114,16 +115,61 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      border: 2px solid black;
+      border: none;
+      border-right: 2px solid black;
+      border-bottom: 1px solid black;
       height: 20px;
-      width: 70px;
-      margin: 5px 5px 0;
+      width: 150px;
+      margin: 0;
+      z-index: 1;
+      outline: none;
     }
-    .menu-bar button:hover {
-      border: 2px solid red;
+    .menu-bar button:hover, .menu-bar button:focus {
+      background: rgb(211, 211, 211);
     }
     .menu-bar button:active {
-      border: 2px solid blue;
+      background: rgb(190, 190, 190);
+    }
+    .menu {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: rgb(245, 245, 245);
+      padding-bottom: 5px;
+      box-shadow: 0 0 10px -5px black;
+      font-size: 14px;
+      z-index: 2;
+    }
+    .menu-action, .menu-branch {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      min-width: 100px;
+      padding: 10px;
+      height: 30px;
+      user-select: none;
+    }
+
+    .menu-action:hover, .menu-branch:hover {
+      background: rgb(211, 211, 211);
+    }
+    .modal-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: fixed;
+      width: 100vw;
+      height: 100vh;
+      top: 0;
+      left: 0;
+      background: rgba(0, 0, 0, .7);
+      z-index: 3;
+    }
+    .modal-main {
+      width: 75vw;
+      height: 75vh;
+      background: white;
     }
     
     #project_container {
@@ -135,16 +181,22 @@
       flex-grow: 1;
       cursor: none;
     }
-    #active_sprite_container {
+    #active-sprite-container {
       width: 80px;
       height: 80px;
       margin: 10px 0;
       border: 1px solid #291F1E;
       background: #291F1E;
     }
+    #menu-container {
+      position: absolute;
+      width: 100vw;
+      height: 100vh;
+    }
   </style>
   <body>
     <section class="top">
+      <div id="menu-container"></div>
       <div class="menu-bar">
         <h1>PROTOTYYYYYYYYYPE</h1>
         <button id="file-menu-button">File</button>
@@ -152,14 +204,14 @@
       </div>
     </section>
     <section class="main">
-      <div class="main-container">
+      <div id="main-container">
         <div class="side-box">
           <button class="tool-button active" id="freehand-button">Draw</button>
           <button class="tool-button" id="shape-button">Box</button>
           <button class="tool-button" id="fill-button">Fill</button>
           <button class="tool-button" id="erase-button">Erase</button>
           <button class="tool-button" id="move-button">Move</button>
-          <div id="active_sprite_container"></div>
+          <div id="active-sprite-container"></div>
         </div>
         <div class="center-box">
           <div id="project_container"></div>
