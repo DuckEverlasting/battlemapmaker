@@ -26,6 +26,7 @@ export class State {
   public altWheelTool: PanZoomTool;
   public toolbox: Toolbox;
   public keyboard: Keyboard;
+  public currentModal: HTMLElement = null;
 
   mouseIsInside: boolean;
 

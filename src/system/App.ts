@@ -107,4 +107,17 @@ export class App implements AppType {
   callRender() {
     this.display.mainMarkedForRender = true;
   }
+
+  setModal(modal: HTMLElement) {
+    if (this.state.currentModal) {
+      this.clearModal();
+    }
+    document.getElementById("main-container").appendChild(modal);
+    this.state.currentModal = modal;
+  }
+
+  clearModal() {
+    document.getElementById("main-container").removeChild(this.state.currentModal);
+    this.state.currentModal = null;
+  }
 }

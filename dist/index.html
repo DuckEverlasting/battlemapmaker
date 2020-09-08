@@ -167,11 +167,32 @@
       z-index: 3;
     }
     .modal-main {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
       width: 75vw;
-      height: 75vh;
+      height: 85vh;
       background: white;
     }
-    
+    .modal-scrollbox {
+      width: auto;
+      max-height: 75%;
+      overflow: auto;
+      border: 2px solid black;
+    }
+    #modal-canvas-container {
+      position: relative;
+      min-width: 40vw;
+      max-width: 70vw;
+    }
+    #modal-close {
+      width: 60px;
+    }
+    #modal-canvas-container canvas{
+      width: 100%;
+      height: 100%;
+    }
     #project_container {
       position: relative;
       align-self: stretch;

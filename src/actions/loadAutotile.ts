@@ -14,10 +14,9 @@ export function loadAutotile(app: App) {
   async function resolve() {
     const image = await loadImage(URL.createObjectURL(fileInput.files[0]));
     const spriteSheet = new SpriteSheet(image, SPRITE_TYPE.TERRAIN, 32, 32);
-    const creator = new AutotileCreator();
-    document.getElementById("main-container").appendChild(creator.element)
+    const creator = new AutotileCreator(app);
+    app.setModal(creator.element);
     creator.load(spriteSheet);
-    creator.active = true;
     fileInput.removeEventListener("change", resolve, false);
   }
 }

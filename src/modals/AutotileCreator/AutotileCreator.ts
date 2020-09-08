@@ -1,12 +1,11 @@
 import { SpriteSheet } from "../../graphics";
-import { Canvas } from "../../system";
+import { Canvas, App } from "../../system";
 
 export class AutotileCreator {
-  active: boolean = false;
   element: HTMLElement;
   canvas: Canvas;
 
-  constructor() {
+  constructor(private app: App) {
     this.element = document.createElement("div");
     this.element.innerHTML = `
       <div class="modal-container">
@@ -22,6 +21,7 @@ export class AutotileCreator {
             </select>
             <div id="autotile-type-preview"></div>
           </div>
+          <button id="modal-close">Close</button>
         </div>
       </div>
     `;
@@ -29,11 +29,19 @@ export class AutotileCreator {
 
   load(file: SpriteSheet) {
     const canvasContainer = document.getElementById("modal-canvas-container");
+    if (!canvasContainer) {return;}
+    const closeButton = document.getElementById("modal-close");
+    closeButton.onclick = () => this.app.clearModal();
     canvasContainer.style.width = `${file.rect.width}px`;
-    canvasContainer.style.height = `${file.rect.height}px`;
-    console.log(file)
-    console.log(file.rect)
+    console.log(file.rect.width / file.rect.height)
+    canvasContainer.style.height = `
+      ${canvasContainer.clientWidth * (file.rect.height / file.rect.width)}px
+    `;
     this.canvas = new Canvas(canvasContainer);
-    this.canvas.ctx.drawImage(file.source, 0, 0);
+    this.canvas.ctx.drawImage(
+      file.source,
+      0, 0, file.source.width, file.source.height,
+      0, 0, canvasContainer.clientWidth, canvasContainer.clientHeight
+    );
   }
 }
