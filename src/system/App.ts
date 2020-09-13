@@ -34,8 +34,8 @@ export class App implements AppType {
   ) {
     const width = 960,
       height = 640,
-      tileWidth = 64,
-      tileHeight = 64;
+      tileWidth = 32,
+      tileHeight = 32;
 
     const [rect, tileMap] = generateRectAndMap(
       width, height, tileWidth, tileHeight, layerCount

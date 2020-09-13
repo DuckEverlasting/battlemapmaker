@@ -8,12 +8,15 @@ export class FreehandTool extends FreehandType {
 
   commitStart() {
     this.sprite = this.app.getState().getActiveSprite();
-    console.log(this.latest)
-    this.tileMap.add(new SpriteInstance(this.sprite), vect(this.latest), this.layer);
+    this.commitUpdate();
   }
 
   commitUpdate() {
-    this.tileMap.add(new SpriteInstance(this.sprite), vect(this.latest), this.layer);
+    const offset = vect(
+      Math.round(Math.random() * this.sprite.maxOffsetX),
+      Math.round(Math.random() * this.sprite.maxOffsetY),
+    );
+    this.tileMap.add(new SpriteInstance(this.sprite, offset), vect(this.latest), this.layer);
   }
 
   commitEnd() {

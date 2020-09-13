@@ -12,7 +12,7 @@ export class Renderer {
   constructor(app: App) {
     this.display = app.getDisplay();
     this.queue = app.getQueue();
-    this.frameRate = 1000 / 60;
+    this.frameRate = 1000 / 90;
     this.render();
     requestAnimationFrame(this.renderLoop.bind(this));
   }

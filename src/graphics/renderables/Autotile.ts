@@ -1,10 +1,8 @@
 import { Sprite, ImageSource, TileMap } from "..";
-import { Renderable } from "../../types";
 import { Display } from "../../system";
 import { Vector } from "../../util/Vector";
 import { SpriteInstance } from "./SpriteInstance";
 import { Rect } from "../../util/Rect";
-import { LAYER } from "../../enums";
 
 export class Autotile extends Sprite {
   constructor(

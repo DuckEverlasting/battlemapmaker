@@ -3,8 +3,9 @@ import Terrain_1 from "../media/spritesheets/Dirt1_pipo.png";
 import Terrain_2 from "../media/spritesheets/Dirt2_pipo.png";
 import Terrain_3 from "../media/spritesheets/Dirt4_pipo.png";
 import Terrain_4 from "../media/spritesheets/Grass1_pipo.png";
-import AutotileTest from "../media/spritesheets/A_Dirt1_pipo.png";
-import { ImageSource, ImageObject, TileOutline, SpriteSheet, BGImage, Autotile } from "../graphics";
+import Autotile_Test from "../media/spritesheets/A_Dirt1_pipo.png";
+import Small_Dead_Tree from "../media/spritesheets/Small_Dead_Tree.png";
+import { ImageSource, ImageObject, TileOutline, SpriteSheet, BGImage, Autotile, Sprite } from "../graphics";
 import { App, Canvas } from "../system";
 import { loadImage } from "../util/helpers";
 import { SPRITE_TYPE } from "../enums";
@@ -28,7 +29,7 @@ export async function testRun(app: App) {
     terrain3 = new SpriteSheet(await loadImage(Terrain_3), SPRITE_TYPE.TERRAIN, 32, 32),
     terrain4 = new SpriteSheet(await loadImage(Terrain_4), SPRITE_TYPE.TERRAIN, 32, 32),
     base = new SpriteSheet(await loadImage(BaseChip), SPRITE_TYPE.OBJECT, 32, 32);
-  const autotile = new Autotile(new ImageSource(await loadImage(AutotileTest)), SPRITE_TYPE.TERRAIN, [
+  const autotile = new Autotile(new ImageSource(await loadImage(Autotile_Test)), SPRITE_TYPE.TERRAIN, [
     new Rect(0, 0, 32, 32),
     new Rect(128, 64, 32, 32),
     new Rect(32, 0, 32, 32),
@@ -46,6 +47,7 @@ export async function testRun(app: App) {
     new Rect(192, 0, 32, 32),
     new Rect(192, 32, 32, 32)
   ]);
+  const offsetSprite = new Sprite(new ImageSource(await loadImage(Small_Dead_Tree)), SPRITE_TYPE.OBJECT, new Rect(0, 0, 32, 32), 1, 1, 10, 10);
 
     // tileMap.add(sheet.getSprite(index), vector, 2);
 
@@ -67,7 +69,7 @@ export async function testRun(app: App) {
   app.getState().setPalleteSprite(SPRITE_TYPE.TERRAIN, 7, terrain4.getSprite(2));
 
   app.getState().setPalleteSprite(SPRITE_TYPE.OBJECT, 0, base.getSprite(41));
-  app.getState().setPalleteSprite(SPRITE_TYPE.OBJECT, 1, base.getSprite(43));
+  app.getState().setPalleteSprite(SPRITE_TYPE.OBJECT, 1, offsetSprite);
   app.getState().setPalleteSprite(SPRITE_TYPE.OBJECT, 2, base.getSprite(45));
   app.getState().setPalleteSprite(SPRITE_TYPE.OBJECT, 3, base.getSprite(53));
   app.getState().setPalleteSprite(SPRITE_TYPE.OBJECT, 4, base.getSprite(54));

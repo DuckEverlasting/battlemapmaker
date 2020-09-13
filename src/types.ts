@@ -71,7 +71,7 @@ export type SpriteParams = {
   updateOnTileChange?: boolean;
 }
 
-export type SpriteRenderProps = {tile: Vector, layer: number, tileMap?: TileMap}
+export type SpriteRenderProps = {tile: Vector, layer: number, gridOffset?: Vector, tileMap?: TileMap}
 
 export type SpriteMap = {
   row: number;

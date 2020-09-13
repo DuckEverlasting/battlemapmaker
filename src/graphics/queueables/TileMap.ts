@@ -139,7 +139,7 @@ export class TileMap extends Queueable {
   render(display: Display, props: {layer: number}) {
     const data = this.manifest.getInstancesAndVectorsFrom(props.layer);
     data.forEach(tuple => {
-      tuple[0].sprite.render(display, {tile: tuple[1], layer: props.layer, tileMap: this});
+      tuple[0].sprite.render(display, {tile: tuple[1], layer: props.layer, gridOffset:tuple[0].gridOffset, tileMap: this});
     })
   }
 
