@@ -1,10 +1,10 @@
-import { Renderable, SpriteRenderProps } from '../../types';
+import { ISprite, Renderable, SpriteRenderProps } from '../../types';
 import { ImageSource } from '../sources/ImageSource';
 import { Display } from '../../system';
 import { Rect } from '../../util/Rect';
 import { Vector, vect } from '../../util/Vector';
 
-export class Sprite implements Renderable {
+export class Sprite implements ISprite {
   public id: string;
 
   constructor(
@@ -23,6 +23,10 @@ export class Sprite implements Renderable {
     this.id = newID; // TEMPORARY!!! set id back to readonly when done
   }
 
+  getSource() {
+    return this.imageSource.source;
+  }
+
   render(display: Display, props: SpriteRenderProps) {
     this.renderSprite(display, this.rect, props.tile, props.layer, props.gridOffset);
   }
@@ -38,7 +42,7 @@ export class Sprite implements Renderable {
       return;
     }
     display.getLayers()[layer].ctx.drawImage(
-      this.imageSource.source,
+      this.getSource(),
       rect.offsetX,
       rect.offsetY,
       rect.width,

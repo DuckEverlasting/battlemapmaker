@@ -1,7 +1,7 @@
-import { Tool, PanZoomTool, Keyboard, Toolbox, TranslateData, MouseInput } from "../types";
+import { Tool, PanZoomTool, Keyboard, Toolbox, TranslateData, MouseInput, ISprite } from "../types";
 import { vect, Vector } from "../util/Vector";
 import { Rect } from "../util/Rect";
-import { ImageSource, Sprite, Autotile } from "../graphics";
+import { ImageSource } from "../graphics";
 import { Canvas } from ".";
 import { LAYER_TYPE } from "../enums";
 import { Modal } from "../modals/Modal";
@@ -9,14 +9,14 @@ import { Modal } from "../modals/Modal";
 export class State {
   public zoom: number = 1;
   public media: {[key: string]: ImageSource};
-  public sprites: {[key: string]: Sprite}[] = [{}, {}, {}];
+  public sprites: {[key: string]: ISprite}[] = [{}, {}, {}];
   public cursorPosition = vect(0, 0);
   public cursorTile: Vector = null;
   public cursorButtons = [false, false, false];
   public activeTool: Tool | null = null;
   public activeLayer: number = 4;
   public activeSprite: number[] = [0, 0];
-  public pallete: (Sprite | Autotile | null)[][] = [[], []];
+  public pallete: (ISprite | null)[][] = [[], []];
   public activeSpriteCanvas: Canvas;
   public palleteCanvas: Canvas[];
   public isDrawing = false;
@@ -75,7 +75,7 @@ export class State {
     this.activeLayer = num;
   }
 
-  loadSprites(...sprites: Sprite[]) {
+  loadSprites(...sprites: ISprite[]) {
     sprites.forEach(sprite => {
       this.sprites[sprite.type][sprite.id] = sprite;
     })
@@ -90,14 +90,14 @@ export class State {
     return null;
   }
 
-  setPalleteSprite(type: number, index: number, sprite: Sprite | Autotile) {
+  setPalleteSprite(type: number, index: number, sprite: ISprite) {
     this.pallete[type][index] = sprite;
     if (sprite.type === LAYER_TYPE[this.activeLayer]) {
       this.setPalleteImage(index, sprite);
     }
   }
 
-  setPalleteImage(index: number, sprite: Sprite | Autotile) {
+  setPalleteImage(index: number, sprite: ISprite) {
     this.palleteCanvas[index].ctx.clearRect(
       0,
       0,
@@ -123,7 +123,7 @@ export class State {
     this.activeSprite[type] = index;
   }
 
-  setActiveSpriteImage(sprite: Sprite | Autotile) {
+  setActiveSpriteImage(sprite: ISprite) {
     this.activeSpriteCanvas.ctx.clearRect(
       0,
       0,

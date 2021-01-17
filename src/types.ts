@@ -1,7 +1,7 @@
 import { Display } from './system';
 import { Vector } from './util/Vector';
 import { Rect } from './util/Rect';
-import { TileMap } from './graphics';
+import { ImageSource, TileMap } from './graphics';
 
 export type AppType = {};
 
@@ -52,10 +52,22 @@ export type Callable = {
   run(params?: object): void;
 };
 
-export type Renderable = {
+export interface Renderable {
   id: string;
   render(display?: Display, props?: RenderProps): void;
 };
+
+export interface ISprite extends Renderable {
+  imageSource: ImageSource
+  type: number
+  rect: Rect
+  widthInTiles: number
+  heightInTiles: number
+  maxOffsetX: number
+  maxOffsetY: number
+  getSource(): CanvasSource;
+  renderSprite(display: Display, rect: Rect, tile: Vector, layer: number, gridOffset?: Vector): void;
+}
 
 export type QueueableFlag = "updateOnTileChange"|"updateOnCursorMove";
 
