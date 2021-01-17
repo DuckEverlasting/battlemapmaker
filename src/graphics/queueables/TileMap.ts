@@ -116,7 +116,7 @@ export class TileMap extends Queueable {
       if (this.vectorInBounds(v)) {
         result.push(this.get(v, layer));
       } else {
-        result.push(null);
+        result.push(undefined);
       }
     })
     return result;

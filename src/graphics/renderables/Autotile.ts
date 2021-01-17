@@ -22,7 +22,7 @@ export class Autotile extends Sprite {
   getAdjValue(array: (SpriteInstance | null)[]) {
     let result = 0;
     [1, 2, 4, 8].forEach((val, i) => {
-      if (array[i] !== null && array[i].sprite.id === this.id) {
+      if (array[i] === undefined || (array[i] !== null && array[i].sprite.id === this.id)) {
         result |= val;
       }
     })
@@ -98,3 +98,4 @@ export class Autotile extends Sprite {
     X X X   15
       X  
   */
+ 
