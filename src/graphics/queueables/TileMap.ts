@@ -1,8 +1,19 @@
 import { SpriteInstance, SpriteManifest } from "../";
-import { Display } from "../../system"
+import { App, Display } from "../../system"
 import { Queueable } from "./Queueable";
 import { Vector, vect } from "../../util/Vector";
 import { getRange } from "../../util/helpers";
+import { vect3 } from "../../util/Vector3";
+
+type SeedObject = {
+  id: string; // Sprite ID
+  index: number; // Index
+  transform?: {
+    scale?: number;
+    rotation?: number;
+    offset?: number[];
+  }
+}
 
 export class TileMap extends Queueable {
   protected graph: (SpriteInstance | null)[];
@@ -17,12 +28,25 @@ export class TileMap extends Queueable {
   constructor(
     public readonly rows: number,
     public readonly columns: number,
-    public readonly layerCount: number,
+    public readonly layerCount: number
   ) {
     super(new Set(getRange(0, layerCount)));
     this.graph = new Array<SpriteInstance | null>(rows * columns * layerCount).fill(null);
     this.manifest = new SpriteManifest(layerCount);
     this.markedForRender = new Array(layerCount).fill(false);
+  }
+
+  public buildFromSeed(data: any, app: App) {
+    const seed: SeedObject[] = data.sprites;
+    seed.forEach(el => {
+      const sprite = app.getState().findSprite(`${el.id}`);
+      if (!sprite) {
+        throw new Error(`No sprite found with ID ${el.id}`);
+      }
+      const instance = new SpriteInstance(sprite);
+      const vec3 = this.getVec3(el.index, data.layer_count);
+      this.add(instance, vec3.vec(), vec3.z + 1);
+    });
   }
 
   public get(v: Vector, layer: number) {
@@ -31,7 +55,7 @@ export class TileMap extends Queueable {
   }
 
   public getLayerGraph(layer: number): (SpriteInstance | null)[] {
-    return this.graph.filter((tile, i) => i % this.layerCount === layer);
+    return this.graph.filter((_, i) => i % this.layerCount === layer);
   }
 
   public replaceLayer(layer: number, graph: (SpriteInstance | null)[]) {
@@ -107,6 +131,13 @@ export class TileMap extends Queueable {
       x = layerInd % this.columns,
       y = Math.floor(layerInd / this.columns);
     return vect(x, y);
+  }
+
+  protected getVec3(i: number, layerCount = this.layerCount) {
+    const layerInd = (i - i % layerCount) / layerCount,
+      x = layerInd % this.columns,
+      y = Math.floor(layerInd / this.columns);
+    return vect3(x, y, i % layerCount);
   }
 
   protected vectorInBounds(v: Vector) {

@@ -10,12 +10,12 @@ export class ShapeTool extends ShapeType {
 
   commitStart() {
     this.sprite = this.app.getState().getActiveSprite();
-    this.tileMap.add(new SpriteInstance(this.sprite), vect(this.origin), this.layer);
+    this.app.getTileMap().add(new SpriteInstance(this.sprite), vect(this.origin), this.layer);
   }
 
   commitUpdate() {
     this.tiles.forEach(tile => {
-      this.tileMap.add(new SpriteInstance(this.sprite), tile, this.layer);
+      this.app.getTileMap().add(new SpriteInstance(this.sprite), tile, this.layer);
     })
   }
   

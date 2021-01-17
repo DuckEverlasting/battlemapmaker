@@ -10,6 +10,8 @@ import { TileMap } from "../graphics";
 import { Cursor } from "../graphics/queueables/Cursor";
 import { LAYER } from "../enums";
 import { MenuHandler } from "../menu/MenuHandler";
+import { Modal } from "../modals/Modal";
+import { WelcomeModal } from "../modals/WelcomeModal";
 
 export class App implements AppType {
   private display: Display;
@@ -21,33 +23,50 @@ export class App implements AppType {
   private menuHandler: MenuHandler;
   private eventHandler: EventHandler;
   private inputHandler: InputHandler;
+  private layerCount = 8;
+  private loadingElement: HTMLElement;
 
   constructor(
-    containingElement: HTMLElement,
+    private containingElement: HTMLElement,
     toolButtons: {[key: string]: HTMLElement},
     layerButtons: HTMLElement[],
     palleteButtons: HTMLElement[],
     menuButtons: {[key: string]: HTMLElement},
     menuContainer: HTMLElement,
     activeSpriteContainer: HTMLElement,
-    layerCount: number = 8
   ) {
+    this.loadingElement = document.createElement("div");
+    Object.assign(this.loadingElement.style, {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      position: "fixed",
+      width: "100vw",
+      height: "100vh",
+      top: 0,
+      left: 0,
+      background: "rgba(0, 0, 0, .7)",
+      zIndex: 4
+    });
+    const spinner = document.createElement("div");
+    spinner.className = "loader";
+    this.loadingElement.appendChild(spinner);
     const width = 960,
       height = 640,
       tileWidth = 32,
       tileHeight = 32;
 
     const [rect, tileMap] = generateRectAndMap(
-      width, height, tileWidth, tileHeight, layerCount
+      width, height, tileWidth, tileHeight, this.layerCount
     );
     this.state = new State(
-      rect, tileWidth, tileHeight, layerCount
+      rect, tileWidth, tileHeight, this.layerCount
     );
     this.tileMap = tileMap;
-    this.display = new Display(this.state, containingElement, layerCount, LAYER.EFFECT_ALL);
-    this.cursor = new Cursor(this);
-    this.queue = new RenderQueue(layerCount);
+    this.display = new Display(this.state, this.containingElement, this.layerCount, LAYER.EFFECT_ALL);
+    this.queue = new RenderQueue(this.layerCount);
     this.queue.add(this.tileMap);
+    this.cursor = new Cursor(this);
     this.queue.add(this.cursor);
     this.state.toolbox = getToolbox(this);
     this.state.keyboard = getKeyboard(this);
@@ -70,6 +89,7 @@ export class App implements AppType {
 
     // test run
     testRun(this);
+    this.setModal(new WelcomeModal(this));
   }
 
   getDisplay() {
@@ -82,6 +102,23 @@ export class App implements AppType {
 
   getTileMap() {
     return this.tileMap;
+  }
+
+  loadTileMap(json: string) {
+    const data: any = JSON.parse(json);
+    this.queue.remove(this.tileMap);
+    const [ rect, tileMap ] = generateRectAndMap(
+      data.width * this.state.tileWidth,
+      data.height * this.state.tileHeight,
+      this.state.tileWidth,
+      this.state.tileHeight,
+      this.state.layerCount
+    );
+    this.display.resize(rect.width, rect.height);
+    this.state.rect = rect;
+    tileMap.buildFromSeed(data, this);
+    this.tileMap = tileMap;
+    this.queue.add(this.tileMap);
   }
 
   getMedia() {
@@ -108,16 +145,36 @@ export class App implements AppType {
     this.display.mainMarkedForRender = true;
   }
 
-  setModal(modal: HTMLElement) {
+  setModal(modal: Modal) {
     if (this.state.currentModal) {
       this.clearModal();
     }
-    document.getElementById("main-container").appendChild(modal);
+    const { element } = modal;
+    document.getElementById("main-container").appendChild(element);
     this.state.currentModal = modal;
   }
 
   clearModal() {
-    document.getElementById("main-container").removeChild(this.state.currentModal);
+    if (!this.state.currentModal) {
+      return;
+    }
+    document.getElementById("main-container").removeChild(this.state.currentModal.element);
     this.state.currentModal = null;
+  }
+
+  startLoading() {
+    if (this.state.isLoading) {
+      return;
+    }
+    document.getElementById("main-container").appendChild(this.loadingElement);
+    this.state.isLoading = true;
+  }
+
+  stopLoading() {
+    if (!this.state.isLoading) {
+      return;
+    }
+    document.getElementById("main-container").removeChild(this.loadingElement);
+    this.state.isLoading = false;
   }
 }

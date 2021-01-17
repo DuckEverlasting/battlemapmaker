@@ -49,9 +49,14 @@ export async function testRun(app: App) {
   ]);
   const offsetSprite = new Sprite(new ImageSource(await loadImage(Small_Dead_Tree)), SPRITE_TYPE.OBJECT, new Rect(0, 0, 32, 32), 1, 1, 10, 10);
 
+  autotile.setId("2");
+  terrain4.getSprite(4).setId("1");
+  base.getSprite(41).setId("3");
+
     // tileMap.add(sheet.getSprite(index), vector, 2);
 
   app.getState().loadSprites(
+    autotile,
     ...base.getAllSprites(),
     ...terrain1.getAllSprites(),
     ...terrain2.getAllSprites(),

@@ -33,7 +33,6 @@ export class AutotileCreator {
     const closeButton = document.getElementById("modal-close");
     closeButton.onclick = () => this.app.clearModal();
     canvasContainer.style.width = `${file.rect.width}px`;
-    console.log(file.rect.width / file.rect.height)
     canvasContainer.style.height = `
       ${canvasContainer.clientWidth * (file.rect.height / file.rect.width)}px
     `;

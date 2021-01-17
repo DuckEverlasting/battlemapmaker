@@ -5,11 +5,11 @@ export class EraseTool extends FreehandType {
   protected writesToTileMap = true;
 
   commitStart() {
-    this.tileMap.remove(vect(this.latest), this.layer);
+    this.app.getTileMap().remove(vect(this.latest), this.layer);
   }
 
   commitUpdate() {
-    this.tileMap.remove(vect(this.latest), this.layer);
+    this.app.getTileMap().remove(vect(this.latest), this.layer);
   }
 
   commitEnd() {

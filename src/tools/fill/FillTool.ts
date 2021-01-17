@@ -8,7 +8,7 @@ export class FillTool extends FillType {
   commitStart() {
     this.sprite = this.app.getState().getActiveSprite();
     this.tiles.forEach(v => {
-      this.tileMap.add(new SpriteInstance(this.sprite), v, this.layer);
+      this.app.getTileMap().add(new SpriteInstance(this.sprite), v, this.layer);
     })
     this.sprite = null;
   }

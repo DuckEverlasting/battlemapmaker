@@ -5,7 +5,7 @@ import { Rect } from '../../util/Rect';
 import { Vector, vect } from '../../util/Vector';
 
 export class Sprite implements Renderable {
-  public readonly id: string;
+  public id: string;
 
   constructor(
     public readonly imageSource: ImageSource,
@@ -17,6 +17,10 @@ export class Sprite implements Renderable {
     public readonly maxOffsetY: number = 0
   ) {
     this.id = `${Math.random()}`;
+  }
+
+  setId(newID: string) {
+    this.id = newID; // TEMPORARY!!! set id back to readonly when done
   }
 
   render(display: Display, props: SpriteRenderProps) {

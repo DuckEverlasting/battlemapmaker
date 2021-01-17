@@ -13,22 +13,21 @@ export abstract class BaseTool implements Tool {
 
   constructor(app: App) {
     this.app = app;
-    this.tileMap = app.getTileMap();
     this.layer = this.app.getState().activeLayer;
   }
 
   start(input: MouseInput) {
     this.layer = this.app.getState().activeLayer;
     if (this.writesToTileMap) {
-      this.tileMap.save();
+      this.app.getTileMap().save();
     }
     this.onStart(input);
     this.isActive = true;
   };
   update(input: MouseInput) {
     if (this.writesToTileMap && this.clearsOnUpdate) {
-      this.tileMap.undo();
-      this.tileMap.save();
+      this.app.getTileMap().undo();
+      this.app.getTileMap().save();
     }
     this.onUpdate(input);
   };

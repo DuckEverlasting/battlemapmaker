@@ -30,6 +30,7 @@ export class InputHandler {
       el.classList.remove("active");
     });
     array[index].classList.add("active");
+    this.app.callRender();
   }
 
   palleteButtonClick(element: HTMLElement, index: number) {

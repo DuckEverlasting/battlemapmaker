@@ -7,7 +7,7 @@ export class FillType extends BaseTool {
   protected targetSpriteId: string;
 
   onStart(input: MouseInput) {
-    const target = this.tileMap.get(input.tile, this.layer);
+    const target = this.app.getTileMap().get(input.tile, this.layer);
     if (target === null) {
       this.targetSpriteId = "";
     } else {
@@ -34,7 +34,7 @@ export class FillType extends BaseTool {
   }
 
   isEdge(v: Vector) {
-    const instance = this.tileMap.get(v, this.layer);
+    const instance = this.app.getTileMap().get(v, this.layer);
     const spriteId = instance === null ? "" : instance.sprite.id;
     return spriteId !== this.targetSpriteId;
   }
@@ -44,13 +44,13 @@ export class FillType extends BaseTool {
     if (v.x - 1 >= 0) {
       result.push(vect(v.x - 1, v.y))
     }
-    if (v.x + 1 < this.tileMap.columns) {
+    if (v.x + 1 < this.app.getTileMap().columns) {
       result.push(vect(v.x + 1, v.y))
     }
     if (v.y - 1 >= 0) {
       result.push(vect(v.x, v.y - 1))
     }
-    if (v.y + 1 < this.tileMap.rows) {
+    if (v.y + 1 < this.app.getTileMap().rows) {
       result.push(vect(v.x, v.y + 1))
     }
     return result;

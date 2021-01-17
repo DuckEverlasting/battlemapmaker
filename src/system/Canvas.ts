@@ -26,7 +26,7 @@ export class Canvas {
   }
 
   resize(width?: number, height?: number) {
-    this.ctx.canvas.width = width;
-    this.ctx.canvas.height = height;
+    this.element.width = width;
+    this.element.height = height;
   }
 }

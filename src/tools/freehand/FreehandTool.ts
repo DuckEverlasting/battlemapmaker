@@ -16,7 +16,7 @@ export class FreehandTool extends FreehandType {
       Math.round(Math.random() * this.sprite.maxOffsetX),
       Math.round(Math.random() * this.sprite.maxOffsetY),
     );
-    this.tileMap.add(new SpriteInstance(this.sprite, offset), vect(this.latest), this.layer);
+    this.app.getTileMap().add(new SpriteInstance(this.sprite, offset), vect(this.latest), this.layer);
   }
 
   commitEnd() {

@@ -3,4 +3,4 @@ export * from './Canvas';
 export * from './Display';
 export * from './RenderQueue';
 export * from './Renderer';
-export * from './AppState';
+export * from './State';

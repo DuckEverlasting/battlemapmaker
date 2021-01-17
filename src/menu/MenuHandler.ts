@@ -6,8 +6,7 @@ export class MenuHandler {
   private currentMenu: Menu = null;
 
   constructor(private app: App, private element: HTMLElement) {
-    element.onclick = e => {
-      console.log("CLICK")
+    element.onclick = () => {
       this.clearMenu();
     }
   }

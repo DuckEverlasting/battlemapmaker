@@ -4,6 +4,7 @@ import { Rect } from "../util/Rect";
 import { ImageSource, Sprite, Autotile } from "../graphics";
 import { Canvas } from ".";
 import { LAYER_TYPE } from "../enums";
+import { Modal } from "../modals/Modal";
 
 export class State {
   public zoom: number = 1;
@@ -13,7 +14,7 @@ export class State {
   public cursorTile: Vector = null;
   public cursorButtons = [false, false, false];
   public activeTool: Tool | null = null;
-  public activeLayer = 1;
+  public activeLayer: number = 4;
   public activeSprite: number[] = [0, 0];
   public pallete: (Sprite | Autotile | null)[][] = [[], []];
   public activeSpriteCanvas: Canvas;
@@ -26,7 +27,8 @@ export class State {
   public altWheelTool: PanZoomTool;
   public toolbox: Toolbox;
   public keyboard: Keyboard;
-  public currentModal: HTMLElement = null;
+  public currentModal: Modal = null;
+  public isLoading = false;
 
   mouseIsInside: boolean;
 
@@ -77,6 +79,15 @@ export class State {
     sprites.forEach(sprite => {
       this.sprites[sprite.type][sprite.id] = sprite;
     })
+  }
+
+  findSprite(id: string) {
+    for (let i = 0; i < this.sprites.length; i++) {
+      if (this.sprites[i][id]) {
+        return this.sprites[i][id];
+      }
+    }
+    return null;
   }
 
   setPalleteSprite(type: number, index: number, sprite: Sprite | Autotile) {
