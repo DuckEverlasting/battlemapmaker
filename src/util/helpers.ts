@@ -76,19 +76,35 @@ export function generateRectAndMap(
   tileWidth: number,
   layerCount: number
 ): [Rect, TileMap] {
-  const clientRect = document
-      .getElementById('project_container')
-      .getBoundingClientRect(),
-    rect: Rect = new Rect(
-      Math.floor((clientRect.width - width) / 2),
-      Math.floor((clientRect.height - height) / 2),
-      width,
-      height
-    ),
-    tileMap: TileMap = new TileMap(
-      Math.floor(rect.height / tileHeight),
-      Math.floor(rect.width / tileWidth),
-      layerCount - 2
-    )
+  const rect: Rect = new Rect(
+    0,
+    0,
+    width,
+    height
+  );
+  const tileMap: TileMap = new TileMap(
+    Math.floor(rect.height / tileHeight),
+    Math.floor(rect.width / tileWidth),
+    layerCount - 2
+  );
   return [rect, tileMap];
+}
+
+export function getToolIconKey(name: string, params: any = {}) {
+  switch(name) {
+    case "freehand":
+      return "arrow";
+    case "shape":
+      return "arrow";
+    case "fill":
+      return "arrow";
+    case "erase":
+      return "arrow";
+    case "move":
+      return "arrow";
+    case "zoom":
+      return params.alt ? "zoomOut" : "zoomIn";
+    default:
+      return "default";
+  }
 }

@@ -8,18 +8,16 @@ export class ZoomTool extends BaseTool implements PanZoomTool {
   }
 
   onStart(input: MouseInput) {
-
+    this.setZoom(input.modifiers.alt ? -1 : 1);
   }
 
-  onUpdate(input: MouseInput) {
-
+  wheel(_input: MouseInput, direction: 1 | -1) {
+    this.setZoom(direction);
   }
 
-  onEnd(input: MouseInput) {
-
-  }
-
-  wheel(input: MouseInput) {
-    
+  setZoom(direction: 1 | -1) {
+    this.app.getState().zoom *= direction > 0 ? 2 : .5;
+    this.app.getState().zoom = Math.max(0.0625, Math.min(this.app.getState().zoom, 32));
+    this.app.getDisplay().mainMarkedForRender = true;
   }
 }

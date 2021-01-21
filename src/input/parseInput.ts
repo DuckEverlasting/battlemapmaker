@@ -32,22 +32,22 @@ export function parseMouseInput(e: MouseEvent, t: TranslateData) {
   }
 
   const isInside = (
-    e.offsetX >= t.rect.offsetX
-    && e.offsetX < t.rect.offsetX + t.rect.width
-    && e.offsetY >= t.rect.offsetY
-    && e.offsetY < t.rect.offsetY + t.rect.height
+    e.offsetX >= t.rect.offsetX + t.marginLeft
+    && e.offsetX < t.rect.offsetX + t.marginLeft + t.rect.width * t.zoom
+    && e.offsetY >= t.rect.offsetY + t.marginTop
+    && e.offsetY < t.rect.offsetY + t.marginTop + t.rect.height * t.zoom
   ),
-    x = Math.floor((e.offsetX - t.rect.offsetX) / t.tileWidth),
-    y = Math.floor((e.offsetY - t.rect.offsetY) / t.tileHeight),
-    position = vect(Math.floor(e.offsetX), Math.floor(e.offsetY)),
-    tile = isInside ? vect(x, y) : null,
-    modifiers = {
-      shift: e.shiftKey,
-      alt: e.altKey,
-      mod: modKey(e)
-    },
-    screen = vect(e.screenX, e.screenY),
-    result: MouseInput = { position, tile, buttons, modifiers, screen };
+  x = Math.floor((e.offsetX - t.rect.offsetX - t.marginLeft) / (t.tileWidth * t.zoom)),
+  y = Math.floor((e.offsetY - t.rect.offsetY - t.marginTop) / (t.tileHeight * t.zoom)),
+  position = vect(Math.floor(e.offsetX), Math.floor(e.offsetY)),
+  tile = isInside ? vect(x, y) : null,
+  modifiers = {
+    shift: e.shiftKey,
+    alt: e.altKey,
+    mod: modKey(e)
+  },
+  screen = vect(e.screenX, e.screenY),
+  result: MouseInput = { position, tile, buttons, modifiers, screen };
   return result;
 }
 

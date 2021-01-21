@@ -1,8 +1,9 @@
 import { FillType } from "./FillType";
-import { Sprite, SpriteInstance } from "../../graphics";
+import { SpriteInstance } from "../../graphics";
+import { ISprite } from "../../types";
 
 export class FillTool extends FillType {
-  private sprite: Sprite | null;
+  private sprite: ISprite;
   protected writesToTileMap = true;
 
   commitStart() {

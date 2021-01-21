@@ -1,9 +1,10 @@
 import { FreehandType } from "./FreehandType";
-import { Sprite, SpriteInstance } from "../../graphics";
+import { SpriteInstance } from "../../graphics";
 import { vect } from "../../util/Vector";
+import { ISprite } from "../../types";
 
 export class FreehandTool extends FreehandType {
-  private sprite: Sprite | null;
+  private sprite: ISprite;
   protected writesToTileMap = true;
 
   commitStart() {

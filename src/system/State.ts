@@ -8,6 +8,8 @@ import { Modal } from "../modals/Modal";
 
 export class State {
   public zoom: number = 1;
+  public displayWidth: number = 0;
+  public displayHeight: number = 0;
   public media: {[key: string]: ImageSource};
   public sprites: {[key: string]: ISprite}[] = [{}, {}, {}];
   public cursorPosition = vect(0, 0);
@@ -45,6 +47,8 @@ export class State {
     return {
       zoom: this.zoom,
       rect: this.rect,
+      marginLeft: (this.displayWidth - this.rect.width * this.zoom) / 2,
+      marginTop: (this.displayHeight - this.rect.height * this.zoom) / 2,
       tileWidth: this.tileWidth,
       tileHeight: this.tileHeight,
     }

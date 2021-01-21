@@ -13,7 +13,7 @@ export type MouseInput = {
   position: Vector;
   tile: Vector;
   buttons: boolean[];
-  modifiers: {[key: string]: boolean};
+  modifiers: {shift: boolean, alt: boolean, mod: boolean};
   screen: Vector;
 };
 
@@ -22,6 +22,8 @@ export type KeyInput = string;
 export type TranslateData = {
   rect: Rect;
   zoom: number;
+  marginLeft: number;
+  marginTop: number;
   tileWidth: number;
   tileHeight: number;
 };
@@ -65,6 +67,7 @@ export interface ISprite extends Renderable {
   heightInTiles: number
   maxOffsetX: number
   maxOffsetY: number
+  setId?: (newId: string) => void
   getSource(): CanvasSource;
   renderSprite(display: Display, rect: Rect, tile: Vector, layer: number, gridOffset?: Vector): void;
 }

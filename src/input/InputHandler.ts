@@ -2,6 +2,7 @@ import { App } from "../system/App";
 import { KeyInput, MouseInput } from "../types";
 import { parseKeyInput, parseMouseInput } from "./parseInput";
 import { RenderQueue, State } from "../system";
+import { getToolIconKey } from "../util/helpers";
 
 export class InputHandler {
   private app: App;
@@ -15,12 +16,14 @@ export class InputHandler {
   }
 
   toolButtonClick(array: [string, HTMLElement][], index: number) {
-    this.state.setActiveTool(array[index][0]);
+    const [ name, element ] = array[index];
+    this.state.setActiveTool(name);
     array.forEach(en => {
       en[1].blur();
       en[1].classList.remove("active");
     });
-    array[index][1].classList.add("active");
+    element.classList.add("active");
+    this.app.getCursor().setCursor(getToolIconKey(name));
   }
 
   layerButtonClick(array: HTMLElement[], index: number) {

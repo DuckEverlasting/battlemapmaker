@@ -8,7 +8,7 @@ import { RenderQueue } from "./RenderQueue";
 import { testRun } from "../_temp/testRun";
 import { TileMap } from "../graphics";
 import { Cursor } from "../graphics/queueables/Cursor";
-import { LAYER } from "../enums";
+import { LAYER, LAYER_COUNT } from "../enums";
 import { MenuHandler } from "../menu/MenuHandler";
 import { Modal } from "../modals/Modal";
 import { WelcomeModal } from "../modals/WelcomeModal";
@@ -23,7 +23,7 @@ export class App implements AppType {
   private menuHandler: MenuHandler;
   private eventHandler: EventHandler;
   private inputHandler: InputHandler;
-  private layerCount = 8;
+  private layerCount = LAYER_COUNT;
   private loadingElement: HTMLElement;
 
   constructor(
@@ -127,6 +127,10 @@ export class App implements AppType {
 
   getSprites() {
     return { ...this.state.sprites };
+  }
+
+  getCursor() {
+    return this.cursor;
   }
 
   getRenderer() {

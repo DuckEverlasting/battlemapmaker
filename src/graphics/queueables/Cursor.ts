@@ -1,9 +1,9 @@
 import { ImageSource } from "..";
-import { State, Display, Canvas, App } from "../../system";
+import { State, Display, App } from "../../system";
 import { QueueableFlag } from "../../types";
-import { Vector, vect } from "../../util/Vector";
+import { vect } from "../../util/Vector";
 import { Queueable } from "./Queueable";
-import { LAYER } from "../../enums";
+import { getCursors, LAYER } from "../../enums";
 
 import defaultCursor from "../../media/cursors/arrow-basic.png";
 import { loadImage } from "../../util/helpers";
@@ -12,12 +12,17 @@ export class Cursor extends Queueable {
   protected flags: QueueableFlag[] = ["updateOnCursorMove"];
   private markedForRender: boolean = false; // Does not render until triggered
   private position = vect(-1, -1);
+  private icons: {[key: string]: ImageSource} = {};
 
   constructor(app: App, private imageSource?: ImageSource) {
     super(new Set([LAYER.CURSOR]));
-    if (!imageSource) {
-      this.setCursorFromImage(defaultCursor);
+    if (imageSource) {
+      this.loadCursor("default", imageSource);
+    } else {
+      this.loadCursorFromImage("default", defaultCursor);
     }
+    this.setCursor("default");
+    getCursors().then(icons => this.icons = {...this.icons, ...icons});
   }
 
   render(display: Display, props: {layer: number}) {
@@ -44,13 +49,17 @@ export class Cursor extends Queueable {
     this.position.y = -1;
   }
 
-  setCursor(source: ImageSource) {
-    this.imageSource = source;
+  setCursor(key: string) {
+    this.imageSource = this.icons[key] || this.icons.default;
   }
 
-  async setCursorFromImage(uri: string) {
+  loadCursor(key: string, source: ImageSource) {
+    this.icons[key] = source;
+  }
+
+  async loadCursorFromImage(key: string, uri: string) {
     const source = await loadImage(uri);
-    this.imageSource = new ImageSource(source);
+    this.icons[key] = source;
   }
 
   clearMarkedForRender() {

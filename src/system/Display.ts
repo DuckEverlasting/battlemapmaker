@@ -1,6 +1,5 @@
 import { Canvas } from "./Canvas";
 import { State } from "./";
-import { LAYER } from "../enums";
 
 export class Display {
   public readonly id: string;
@@ -38,7 +37,10 @@ export class Display {
       this.state.rect.width,
       this.state.rect.height
     );
+    this.transparent.opacity = .5;
     this.state = state;
+    this.state.displayWidth = this.main.element.width;
+    this.state.displayHeight = this.main.element.height;
   }
 
   getLayers() {
@@ -52,58 +54,26 @@ export class Display {
   print() {
     const t = this.state.getTranslateData();
     if (this.mainMarkedForRender) {
-      this.main.ctx.clearRect(
-        0, 0,
-        this.containingElement.clientWidth,
-        this.containingElement.clientHeight
-      )
+      this.main.clear();
       this.mainMarkedForRender = false;
     }
     for (let i = 0; i <= this.state.activeLayer; i++) {
-      if (this.layers[i].opacity !== 1) {
-        this.main.ctx.globalAlpha = this.layers[i].opacity;
-      }
-      this.main.ctx.drawImage(
-        this.layers[i].element,
-        t.rect.offsetX,
-        t.rect.offsetY
-      );
-      this.main.ctx.globalAlpha = 1;
+      this.layers[i].printTo(this.main, t.rect.offsetX + t.marginLeft, t.rect.offsetY + t.marginTop, t.zoom);
     }
     if (this.state.activeLayer < this.effectLayersAt - 1) {
-      this.transparent.ctx.clearRect(
-        0, 0,
-        this.transparent.element.width,
-        this.transparent.element.height
-      )
+      this.transparent.clear();
       for (let i = this.state.activeLayer + 1; i < this.effectLayersAt; i++) {
-        if (this.layers[i].opacity !== 1) {
-          this.transparent.ctx.globalAlpha = this.layers[i].opacity;
-        }
-        this.transparent.ctx.drawImage(
-          this.layers[i].element, 0, 0
-        );
-        this.transparent.ctx.globalAlpha = 1;
+        this.layers[i].printTo(this.transparent);
       }
-      this.main.ctx.globalAlpha = .5;
-      this.main.ctx.drawImage(
-        this.transparent.element,
-        t.rect.offsetX,
-        t.rect.offsetY
-      );
-      this.main.ctx.globalAlpha = 1;
+      this.transparent.printTo(this.main, t.rect.offsetX + t.marginLeft, t.rect.offsetY + t.marginTop, t.zoom);
     }
     for (let i = this.effectLayersAt; i < this.layerCount; i++) {
-      this.main.ctx.drawImage(this.layers[i].element, 0, 0);
+      this.layers[i].printTo(this.main);
     }
   }
 
   clearLayer(layer: number) {
-    this.layers[layer].ctx.clearRect(
-      0, 0,
-      this.layers[layer].element.width,
-      this.layers[layer].element.height
-    )
+    this.layers[layer].clear();
   }
 
   resize(width: number, height: number, includeEffectLayers = false) {
@@ -112,6 +82,8 @@ export class Display {
     }
     if (includeEffectLayers) {
       this.main.resize(width, height);
+      this.state.displayWidth = this.main.element.width;
+      this.state.displayHeight = this.main.element.height;
     }
   }
 

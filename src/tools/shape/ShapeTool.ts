@@ -1,10 +1,10 @@
 import { ShapeType } from "./ShapeType";
-import { Sprite, SpriteInstance } from "../../graphics";
+import { SpriteInstance } from "../../graphics";
 import { vect } from "../../util/Vector";
-import { LAYER_TYPE } from "../../enums";
+import { ISprite } from "../../types";
 
 export class ShapeTool extends ShapeType {
-  private sprite: Sprite | null;
+  private sprite: ISprite;
   protected writesToTileMap = true;
   protected clearsOnUpdate = true;
 

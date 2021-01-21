@@ -8,6 +8,7 @@ const toolButtons = {
   fill: document.getElementById('fill-button'),
   erase: document.getElementById('erase-button'),
   move: document.getElementById('move-button'),
+  zoom: document.getElementById('zoom-button')
 };
 
 const layerButtons = [

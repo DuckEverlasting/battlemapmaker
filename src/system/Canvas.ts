@@ -1,5 +1,6 @@
 import { DisplayCanvas } from "../types";
 import { getOffscreenCanvas } from "../util/helpers";
+import { Rect } from "../util/Rect";
 
 export class Canvas {
   public readonly ctx: CanvasRenderingContext2D|OffscreenCanvasRenderingContext2D;
@@ -28,5 +29,26 @@ export class Canvas {
   resize(width?: number, height?: number) {
     this.element.width = width;
     this.element.height = height;
+  }
+
+  printTo(dest: Canvas, offX = 0, offY = 1, zoom = 1) {
+    dest.ctx.globalAlpha = this.opacity;
+    dest.ctx.drawImage(
+      this.element,
+      offX,
+      offY,
+      this.element.width * zoom,
+      this.element.height * zoom,
+    );
+    dest.ctx.globalAlpha = 1;
+  }
+
+  clear() {
+    this.ctx.clearRect(
+      0,
+      0,
+      this.element.width,
+      this.element.height
+    )
   }
 }
