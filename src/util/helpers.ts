@@ -1,13 +1,13 @@
 import { App } from "../system/App";
 import * as Tools from '../tools';
-import { Toolbox, Keyboard } from "../types";
+import { Toolbox } from "../types";
 import { MoveTool } from "../tools";
 import { ZoomTool } from "../tools/zoom/ZoomTool";
-import { State, Canvas } from "../system";
 import { TileMap } from "../graphics";
 import { Rect } from "./Rect";
 import { undo } from "../actions/undo";
 import { redo } from "../actions/redo";
+import { Keyboard } from "../system/Keyboard";
 
 export function modKey(e: KeyboardEvent | MouseEvent) {
   return navigator.appVersion.indexOf("Mac") !== -1
@@ -30,14 +30,6 @@ export function getToolbox(app: App) {
     shapeSelect: new Tools.ShapeSelectTool(app)
   };
   return toolbox;
-}
-
-export function getKeyboard(app: App) {
-  const keyboard: Keyboard = {
-    'mod-z': () => undo(app),
-    'mod-shift-z': () => redo(app)
-  }
-  return keyboard; 
 }
 
 export function getOffscreenCanvas(width: number, height: number) {

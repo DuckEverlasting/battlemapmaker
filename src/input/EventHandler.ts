@@ -57,6 +57,10 @@ export class EventHandler {
     this.inputHandler.keyDown(e);
   }
 
+  handleKeyUp(e: KeyboardEvent) {
+    this.inputHandler.keyUp(e);
+  }
+
   handleMouseDown(e: MouseEvent) {
     this.inputHandler.mouseDown(e);
   }

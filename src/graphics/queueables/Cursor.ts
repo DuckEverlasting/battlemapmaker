@@ -7,6 +7,7 @@ import { getCursors, LAYER } from "../../enums";
 
 import defaultCursor from "../../media/cursors/arrow-basic.png";
 import { loadImage } from "../../util/helpers";
+import { Keyboard } from "../../system/Keyboard";
 
 export class Cursor extends Queueable {
   protected flags: QueueableFlag[] = ["updateOnCursorMove"];

@@ -1,6 +1,6 @@
 import { App } from "../system/App";
-import { KeyInput, MouseInput } from "../types";
-import { parseKeyInput, parseMouseInput } from "./parseInput";
+import { MouseInput } from "../types";
+import { parseMouseInput } from "./parseInput";
 import { RenderQueue, State } from "../system";
 
 export class InputHandler {
@@ -40,10 +40,11 @@ export class InputHandler {
   }
 
   keyDown(e: KeyboardEvent) {
-    const input: KeyInput = parseKeyInput(e);
-    if (!!input && input in this.state.keyboard) {
-      this.state.keyboard[input](this.app);
-    }
+    this.state.keyboard.parseKeyDown(e);
+  }
+
+  keyUp(e: KeyboardEvent) {
+    this.state.keyboard.parseKeyUp(e);
   }
 
   mouseDown(e: MouseEvent) {
