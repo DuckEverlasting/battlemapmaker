@@ -49,3 +49,12 @@ export const getCursors = async () => ({
   zoomIn: (new ImageSource(await loadImage(zoomIn))),
   zoomOut: (new ImageSource(await loadImage(zoomOut)))
 });
+
+export const TOOL_ICON = {
+  freehand: ,
+  shape: ,
+  fill: ,
+  erase: ,
+  move: ,
+  zoom: 
+}

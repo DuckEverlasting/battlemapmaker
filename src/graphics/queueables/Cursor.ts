@@ -7,14 +7,15 @@ import { getCursors, LAYER } from "../../enums";
 
 import defaultCursor from "../../media/cursors/arrow-basic.png";
 import { loadImage } from "../../util/helpers";
+import { Keyboard } from "../../system/Keyboard";
 
 export class Cursor extends Queueable {
   protected flags: QueueableFlag[] = ["updateOnCursorMove"];
   private markedForRender: boolean = false; // Does not render until triggered
   private position = vect(-1, -1);
-  private icons: {[key: string]: ImageSource} = {};
+  private icons: {[key: string]: ImageSource | ((keyboard: Keyboard) => ImageSource)} = {};
 
-  constructor(app: App, private imageSource?: ImageSource) {
+  constructor(private app: App, private imageSource?: ImageSource | ((keyboard: Keyboard) => ImageSource)) {
     super(new Set([LAYER.CURSOR]));
     if (imageSource) {
       this.loadCursor("default", imageSource);
@@ -27,8 +28,11 @@ export class Cursor extends Queueable {
 
   render(display: Display, props: {layer: number}) {
     if (!this.imageSource || LAYER.CURSOR !== props.layer) {return;}
+    const source = typeof this.imageSource === "function" ?
+      this.imageSource(this.app.getState().keyboard).source :
+      this.imageSource.source;
     display.getLayers()[LAYER.CURSOR].ctx.drawImage(
-      this.imageSource.source,
+      source,
       this.position.x,
       this.position.y
     );
@@ -53,7 +57,7 @@ export class Cursor extends Queueable {
     this.imageSource = this.icons[key] || this.icons.default;
   }
 
-  loadCursor(key: string, source: ImageSource) {
+  loadCursor(key: string, source: ImageSource | ((keyboard: Keyboard) => ImageSource)) {
     this.icons[key] = source;
   }
 

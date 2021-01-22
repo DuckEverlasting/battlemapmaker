@@ -1,6 +1,6 @@
 import { modKey } from "../util/helpers";
-import { MouseInput, KeyInput, TranslateData } from "../types";
-import { Vector, vect } from "../util/Vector";
+import { MouseInput, TranslateData } from "../types";
+import { vect } from "../util/Vector";
 
 export function parseMouseInput(e: MouseEvent, t: TranslateData) {
   let buttons: boolean[];
@@ -48,17 +48,5 @@ export function parseMouseInput(e: MouseEvent, t: TranslateData) {
   },
   screen = vect(e.screenX, e.screenY),
   result: MouseInput = { position, tile, buttons, modifiers, screen };
-  return result;
-}
-
-export function parseKeyInput(e: KeyboardEvent): KeyInput | null {
-  if (["Alt", "Shift", "Control", "Meta"].includes(e.key)) {
-    return null;
-  }
-  let result: KeyInput = "";
-  if (modKey(e)) result += "mod-";
-  if (e.shiftKey) result += "shift-";
-  if (e.altKey) result += "alt-";
-  result += e.key.toLowerCase();
   return result;
 }

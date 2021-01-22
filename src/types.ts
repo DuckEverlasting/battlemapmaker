@@ -2,6 +2,7 @@ import { Display } from './system';
 import { Vector } from './util/Vector';
 import { Rect } from './util/Rect';
 import { ImageSource, TileMap } from './graphics';
+import { Keyboard } from './system/Keyboard';
 
 export type AppType = {};
 
@@ -17,8 +18,6 @@ export type MouseInput = {
   screen: Vector;
 };
 
-export type KeyInput = string;
-
 export type TranslateData = {
   rect: Rect;
   zoom: number;
@@ -26,10 +25,6 @@ export type TranslateData = {
   marginTop: number;
   tileWidth: number;
   tileHeight: number;
-};
-
-export type Keyboard = {
-  [key: string]: Function;
 };
 
 export type Tool = {

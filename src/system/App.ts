@@ -3,7 +3,7 @@ import { State, Canvas } from "./";
 import { Renderer } from "./Renderer";
 import { EventHandler, InputHandler } from "../input"
 import { AppType } from "../types";
-import { getToolbox, getKeyboard, generateRectAndMap } from "../util/helpers";
+import { getToolbox, generateRectAndMap } from "../util/helpers";
 import { RenderQueue } from "./RenderQueue";
 import { testRun } from "../_temp/testRun";
 import { TileMap } from "../graphics";
@@ -12,6 +12,7 @@ import { LAYER, LAYER_COUNT } from "../enums";
 import { MenuHandler } from "../menu/MenuHandler";
 import { Modal } from "../modals/Modal";
 import { WelcomeModal } from "../modals/WelcomeModal";
+import { Keyboard } from "./Keyboard";
 
 export class App implements AppType {
   private display: Display;
@@ -69,7 +70,7 @@ export class App implements AppType {
     this.cursor = new Cursor(this);
     this.queue.add(this.cursor);
     this.state.toolbox = getToolbox(this);
-    this.state.keyboard = getKeyboard(this);
+    this.state.keyboard = new Keyboard(this);
     this.state.middleClickTool = this.state.toolbox.move;
     this.state.wheelTool = this.state.toolbox.move;
     this.state.altWheelTool = this.state.toolbox.zoom;

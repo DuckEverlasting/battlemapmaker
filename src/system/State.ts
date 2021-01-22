@@ -1,10 +1,11 @@
-import { Tool, PanZoomTool, Keyboard, Toolbox, TranslateData, MouseInput, ISprite } from "../types";
+import { Tool, PanZoomTool, Toolbox, TranslateData, MouseInput, ISprite } from "../types";
 import { vect, Vector } from "../util/Vector";
 import { Rect } from "../util/Rect";
 import { ImageSource } from "../graphics";
 import { Canvas } from ".";
 import { LAYER_TYPE } from "../enums";
 import { Modal } from "../modals/Modal";
+import { Keyboard } from "./Keyboard";
 
 export class State {
   public zoom: number = 1;
