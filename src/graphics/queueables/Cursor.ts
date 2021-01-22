@@ -13,31 +13,50 @@ export class Cursor extends Queueable {
   private markedForRender: boolean = false; // Does not render until triggered
   private position = vect(-1, -1);
   private icons: {[key: string]: ImageSource} = {};
+  private isLoaded = false;
 
-  constructor(app: App, private imageSource?: ImageSource) {
+  constructor(private app: App) {
     super(new Set([LAYER.CURSOR]));
-    if (imageSource) {
-      this.loadCursor("default", imageSource);
-    } else {
-      this.loadCursorFromImage("default", defaultCursor);
-    }
-    this.setCursor("default");
+    this.loadCursorFromImage("default", defaultCursor).then(() => this.isLoaded = true);
     getCursors().then(icons => this.icons = {...this.icons, ...icons});
   }
 
   render(display: Display, props: {layer: number}) {
-    if (!this.imageSource || LAYER.CURSOR !== props.layer) {return;}
+    if (!this.isLoaded || LAYER.CURSOR !== props.layer) {return;}
+    const toolName = this.app.getState().activeTool.name;
+    const imageSource = this.icons[this.getToolIconKey(toolName)] || this.icons.default;
     display.getLayers()[LAYER.CURSOR].ctx.drawImage(
-      this.imageSource.source,
+      imageSource.source,
       this.position.x,
       this.position.y
     );
   }
 
   update(state: State) {
-    if (!this.imageSource) {return;}
+    if (!this.isLoaded) {return;}
     this.position = vect(state.cursorPosition);
     this.markedForRender = true;
+  }
+
+  getToolIconKey(name: string) {
+    const keyboard = this.app.getState().keyboard;
+    console.log(keyboard.alt)
+    switch(name) {
+      case "freehand":
+        return "arrow";
+      case "shape":
+        return "arrow";
+      case "fill":
+        return "arrow";
+      case "erase":
+        return "arrow";
+      case "move":
+        return "arrow";
+      case "zoom":
+        return keyboard.alt ? "zoomOut" : "zoomIn";
+      default:
+        return "default";
+    }
   }
 
   getPosition() {
@@ -47,10 +66,6 @@ export class Cursor extends Queueable {
   clearPosition() {
     this.position.x = -1;
     this.position.y = -1;
-  }
-
-  setCursor(key: string) {
-    this.imageSource = this.icons[key] || this.icons.default;
   }
 
   loadCursor(key: string, source: ImageSource) {

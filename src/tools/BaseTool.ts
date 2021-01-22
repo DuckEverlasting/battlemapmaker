@@ -3,6 +3,7 @@ import { App } from "../system/App";
 import { TileMap } from "../graphics";
 
 export abstract class BaseTool implements Tool {
+  public name: string;
   public isActive: boolean;
   public triggersOn: "cursorMove" | "tileChange" = "tileChange";
   protected app: App;

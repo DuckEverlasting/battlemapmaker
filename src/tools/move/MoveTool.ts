@@ -1,12 +1,18 @@
 import { BaseTool } from "../BaseTool";
 import { MouseInput, PanZoomTool } from "../../types";
 import { Vector, vect } from "../../util/Vector";
+import { App } from "../../system";
 
 export class MoveTool extends BaseTool implements PanZoomTool {
   private origin: Vector;
   private originOffsetX: number;
   private originOffsetY: number;
   public triggersOn: "tileChange" | "cursorMove" = "cursorMove";
+
+  constructor(app: App) {
+    super(app);
+    this.name = "move";
+  }
 
   onStart(input: MouseInput) {
     this.origin = input.position;

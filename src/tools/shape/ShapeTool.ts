@@ -2,11 +2,17 @@ import { ShapeType } from "./ShapeType";
 import { SpriteInstance } from "../../graphics";
 import { vect } from "../../util/Vector";
 import { ISprite } from "../../types";
+import { App } from "../../system";
 
 export class ShapeTool extends ShapeType {
   private sprite: ISprite;
   protected writesToTileMap = true;
   protected clearsOnUpdate = true;
+
+  constructor(app: App) {
+    super(app);
+    this.name = "shape";
+  }
 
   commitStart() {
     this.sprite = this.app.getState().getActiveSprite();

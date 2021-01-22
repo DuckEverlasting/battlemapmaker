@@ -33,6 +33,7 @@ export type Keyboard = {
 };
 
 export type Tool = {
+  name: string;
   isActive: boolean;
   triggersOn: "cursorMove" | "tileChange";
   start(input: MouseInput): void;

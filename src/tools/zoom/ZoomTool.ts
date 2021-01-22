@@ -5,6 +5,7 @@ import { MouseInput, PanZoomTool } from "../../types";
 export class ZoomTool extends BaseTool implements PanZoomTool {
   constructor(app: App) {
     super(app);
+    this.name = "zoom";
   }
 
   onStart(input: MouseInput) {

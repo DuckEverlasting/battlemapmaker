@@ -2,7 +2,6 @@ import { App } from "../system/App";
 import { KeyInput, MouseInput } from "../types";
 import { parseKeyInput, parseMouseInput } from "./parseInput";
 import { RenderQueue, State } from "../system";
-import { getToolIconKey } from "../util/helpers";
 
 export class InputHandler {
   private app: App;
@@ -23,7 +22,6 @@ export class InputHandler {
       en[1].classList.remove("active");
     });
     element.classList.add("active");
-    this.app.getCursor().setCursor(getToolIconKey(name));
   }
 
   layerButtonClick(array: HTMLElement[], index: number) {

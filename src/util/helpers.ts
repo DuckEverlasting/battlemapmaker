@@ -89,22 +89,3 @@ export function generateRectAndMap(
   );
   return [rect, tileMap];
 }
-
-export function getToolIconKey(name: string, params: any = {}) {
-  switch(name) {
-    case "freehand":
-      return "arrow";
-    case "shape":
-      return "arrow";
-    case "fill":
-      return "arrow";
-    case "erase":
-      return "arrow";
-    case "move":
-      return "arrow";
-    case "zoom":
-      return params.alt ? "zoomOut" : "zoomIn";
-    default:
-      return "default";
-  }
-}
