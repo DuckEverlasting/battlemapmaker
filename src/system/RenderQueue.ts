@@ -1,26 +1,35 @@
-import { QueueableFlag } from "../types";
+import { Subscription } from "../types";
 import { State, Display } from ".";
 import { Queueable } from "../graphics";
 
 export class RenderQueue {
   private queue = new Set<Queueable>();
+  private listeners: {[key in Subscription]: Set<Queueable>} = {
+    click: new Set(),
+    keyDown: new Set(),
+    keyUp: new Set(),
+    cursorMove: new Set(),
+    tileChange: new Set()
+  }
 
   constructor(public readonly layerCount: number) {}
 
   add(...args: Queueable[]) {
-    args.forEach(queueable => this.queue.add(queueable));
+    args.forEach(queueable => {
+      this.queue.add(queueable);
+      queueable.subscriptions.forEach(key => this.listeners[key].add(queueable))
+    });
   }
 
   remove(queueable: Queueable) {
     this.queue.delete(queueable);
+    queueable.subscriptions.forEach(key => this.listeners[key].delete(queueable));
   }
 
-  triggerFlag(flag: QueueableFlag, state: State) {
-    this.queue.forEach(queueable => {
-      if (queueable.getFlags().includes(flag)) {
-        queueable.update(state)
-      }
-    })
+  triggerEvent(event: keyof RenderQueue["listeners"] , state: State) {
+    this.listeners[event].forEach(queueable => {
+      queueable.update(state)
+    });
   }
 
   getMarkedForRender() {

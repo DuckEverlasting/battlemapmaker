@@ -174,10 +174,6 @@ export class TileMap extends Queueable {
     })
   }
 
-  getFlags() {
-    return [...this.flags]
-  }
-
   save() {
     this.manifest.save();
     this.redoStack = [];

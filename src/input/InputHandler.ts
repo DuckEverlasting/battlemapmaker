@@ -40,11 +40,15 @@ export class InputHandler {
   }
 
   keyDown(e: KeyboardEvent) {
+    console.log("KEYDOWN")
     this.state.keyboard.parseKeyDown(e);
+    this.queue.triggerEvent("keyDown", this.state);
   }
 
   keyUp(e: KeyboardEvent) {
     this.state.keyboard.parseKeyUp(e);
+    this.queue.triggerEvent("keyUp", this.state);
+    console.log("KEYDOWN")
   }
 
   mouseDown(e: MouseEvent) {
@@ -56,6 +60,7 @@ export class InputHandler {
       if (this.state.activeTool === null) {return;}
       this.state.activeTool.start(input);
     }
+    this.queue.triggerEvent("click", this.state);
   }
 
   mouseMove(e: MouseEvent) {
@@ -80,7 +85,7 @@ export class InputHandler {
     ) {
       tool.update(input);
     }
-    this.queue.triggerFlag("updateOnCursorMove", this.state);
+    this.queue.triggerEvent("cursorMove", this.state);
 
     if (tileChanged) {
       if (
@@ -90,7 +95,7 @@ export class InputHandler {
       ) {
         tool.update(input);
       }
-      this.queue.triggerFlag("updateOnTileChange", this.state);
+      this.queue.triggerEvent("tileChange", this.state);
     }
   }
 
@@ -123,10 +128,10 @@ export class InputHandler {
       this.state.activeTool.end(input);
     }
     
-    this.queue.triggerFlag("updateOnCursorMove", this.state);
+    this.queue.triggerEvent("cursorMove", this.state);
     
     if (tileChanged) {
-      this.queue.triggerFlag("updateOnTileChange", this.state);
+      this.queue.triggerEvent("tileChange", this.state);
     }
   }
 

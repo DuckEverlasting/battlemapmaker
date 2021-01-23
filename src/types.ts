@@ -68,7 +68,7 @@ export interface ISprite extends Renderable {
   renderSprite(display: Display, rect: Rect, tile: Vector, layer: number, gridOffset?: Vector): void;
 }
 
-export type QueueableFlag = "updateOnTileChange"|"updateOnCursorMove";
+export type Subscription = "tileChange"|"cursorMove"|"keyDown"|"keyUp"|"click";
 
 export type CanvasSource = HTMLImageElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas;
 

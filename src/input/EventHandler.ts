@@ -1,4 +1,3 @@
-import { Display } from "../system/Display";
 import { InputHandler } from "./InputHandler";
 import { buildMenu } from "../util/buildMenu";
 import { MenuHandler } from "../menu";
@@ -18,6 +17,7 @@ export class EventHandler {
     this.inputHandler = app.getInputHandler();
     this.target = app.getDisplay().containingElement;
     window.addEventListener("keydown", this.handleKeyDown.bind(this));
+    window.addEventListener("keyup", this.handleKeyUp.bind(this));
     this.target.addEventListener("mousedown", this.handleMouseDown.bind(this));
     this.target.addEventListener("mouseup", this.handleMouseUp.bind(this));
     this.target.addEventListener("mousemove", this.handleMouseMove.bind(this));

@@ -5,9 +5,6 @@ import { MoveTool } from "../tools";
 import { ZoomTool } from "../tools/zoom/ZoomTool";
 import { TileMap } from "../graphics";
 import { Rect } from "./Rect";
-import { undo } from "../actions/undo";
-import { redo } from "../actions/redo";
-import { Keyboard } from "../system/Keyboard";
 
 export function modKey(e: KeyboardEvent | MouseEvent) {
   return navigator.appVersion.indexOf("Mac") !== -1
@@ -18,7 +15,6 @@ export function modKey(e: KeyboardEvent | MouseEvent) {
 export function getToolbox(app: App) {
   const toolbox: Toolbox = {
     move: new MoveTool(app),
-    zoom: new ZoomTool(app),
     fill: new Tools.FillTool(app),
     fillSelect: new Tools.FillSelectTool(app),
     freehand: new Tools.FreehandTool(app),
@@ -27,7 +23,8 @@ export function getToolbox(app: App) {
     polygon: new Tools.PolygonTool(app),
     polygonSelect: new Tools.PolygonSelectTool(app),
     shape: new Tools.ShapeTool(app),
-    shapeSelect: new Tools.ShapeSelectTool(app)
+    shapeSelect: new Tools.ShapeSelectTool(app),
+    zoom: new ZoomTool(app),
   };
   return toolbox;
 }

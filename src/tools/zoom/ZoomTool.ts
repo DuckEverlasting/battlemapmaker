@@ -9,7 +9,7 @@ export class ZoomTool extends BaseTool implements PanZoomTool {
   }
 
   onStart(input: MouseInput) {
-    this.setZoom(input.modifiers.alt ? -1 : 1);
+    this.setZoom(input.modifiers.shift ? -1 : 1);
   }
 
   wheel(_input: MouseInput, direction: 1 | -1) {

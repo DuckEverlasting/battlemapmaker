@@ -27,8 +27,4 @@ export class BGImage extends Queueable {
   isMarkedForRender(): number[] {
     return this.markedForRender ? [this.layer] : [];
   }
-
-  getFlags() {
-    return [...this.flags]
-  }
 }

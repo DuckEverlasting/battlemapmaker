@@ -1,9 +1,9 @@
-import { QueueableFlag } from "../../types";
 import { Display, State } from "../../system";
+import { Subscription } from "../../types";
 
 export abstract class Queueable {
   public readonly id = `${Math.random()}`;
-  protected flags: QueueableFlag[] = [];
+  public readonly subscriptions: Subscription[] = [];
 
   constructor(public readonly onLayers: Set<number>){}
 
@@ -19,9 +19,5 @@ export abstract class Queueable {
 
   isMarkedForRender(): number[] {
     throw new Error('Method "isMarkedForRender" not implemented.');
-  }
-
-  getFlags(): QueueableFlag[] {
-    return [...this.flags]
   }
 }

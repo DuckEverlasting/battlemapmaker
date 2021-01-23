@@ -1,12 +1,12 @@
 import { Sprite, ImageSource } from "..";
 import { State, Display, Canvas, App } from "../../system";
-import { QueueableFlag } from "../../types";
+import { Subscription } from "../../types";
 import { Vector, vect } from "../../util/Vector";
 import { Queueable } from "./Queueable";
 import { LAYER, SPRITE_TYPE } from "../../enums";
 
 export class TileOutline extends Queueable {
-  protected flags: QueueableFlag[] = ["updateOnTileChange"];
+  public subscriptions: Subscription[] = ["tileChange"];
   private markedForRender: boolean = false; // Does not render until triggered
   private tile: Vector = null;
   private layer = LAYER.EFFECT_TILEMAP;
@@ -46,9 +46,5 @@ export class TileOutline extends Queueable {
 
   isMarkedForRender() {
     return this.markedForRender ? [this.layer] : [];
-  }
-
-  getFlags() {
-    return [...this.flags]
   }
 }

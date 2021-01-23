@@ -1,6 +1,6 @@
 import { ImageSource } from "..";
 import { State, Display, App } from "../../system";
-import { QueueableFlag } from "../../types";
+import { Subscription } from "../../types";
 import { vect } from "../../util/Vector";
 import { Queueable } from "./Queueable";
 import { getCursors, LAYER } from "../../enums";
@@ -10,7 +10,7 @@ import { loadImage } from "../../util/helpers";
 import { Keyboard } from "../../system/Keyboard";
 
 export class Cursor extends Queueable {
-  protected flags: QueueableFlag[] = ["updateOnCursorMove"];
+  public readonly subscriptions: Subscription[] = ["cursorMove", "keyDown", "keyUp"];
   private markedForRender: boolean = false; // Does not render until triggered
   private position = vect(-1, -1);
   private icons: {[key: string]: ImageSource} = {};
@@ -41,7 +41,6 @@ export class Cursor extends Queueable {
 
   getToolIconKey(name: string) {
     const keyboard = this.app.getState().keyboard;
-    console.log(keyboard.alt)
     switch(name) {
       case "freehand":
         return "arrow";
@@ -54,7 +53,7 @@ export class Cursor extends Queueable {
       case "move":
         return "arrow";
       case "zoom":
-        return keyboard.alt ? "zoomOut" : "zoomIn";
+        return keyboard.shift ? "zoomOut" : "zoomIn";
       default:
         return "default";
     }
@@ -84,9 +83,5 @@ export class Cursor extends Queueable {
 
   isMarkedForRender(): number[] {
     return this.markedForRender ? [LAYER.CURSOR] : [];
-  }
-
-  getFlags() {
-    return [...this.flags]
   }
 }
