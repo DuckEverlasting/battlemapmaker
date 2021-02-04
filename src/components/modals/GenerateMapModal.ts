@@ -1,5 +1,5 @@
-import { GenerateMap } from "../actions/GenerateMap";
-import { App } from "../system";
+import { GenerateMap } from "../../actions/GenerateMap";
+import { App } from "../../system";
 import { Modal } from "./Modal";
 
 export class GenerateMapModal extends Modal {

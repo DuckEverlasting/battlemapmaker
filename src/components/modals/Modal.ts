@@ -1,4 +1,4 @@
-import { Canvas, App } from "../system";
+import { Canvas, App } from "../../system";
 
 type ModalButton = {
   onClick: (this: GlobalEventHandlers, ev: MouseEvent) => any;

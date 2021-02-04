@@ -9,265 +9,29 @@
     <link href="https://fonts.googleapis.com/css2?family=Carter+One&family=Roboto&display=swap" rel="stylesheet">
     <title>Battle Map Generation Prototype</title>
   </head>
-  <style>
-    /*
-    black - 291F1E
-    blue - 477998
-    redorange - F64740
-    pink - D8838A
-    green - 7DA253
-    */
-    html, section, div {
-      box-sizing: border-box;
-    }
-    a, p, span, ul, ol, li, button {
-      font-family: 'Roboto', sans-serif;
-    }
-    h1, h2, h3, h4, h5 {
-      font-family: 'Carter One', cursive;
-      font-weight: normal;
-    }
-    html {
-      background: white;
-    }
-    body {
-      width: 100%;
-      height: 100vh;
-      margin: 0;
-    }
-    h1 {
-      position: absolute;
-      margin: 0;
-      bottom: 10px;
-      width: 100%;
-      text-align: center;
-      color: white;
-    }
-    button {
-      width: 80%;
-      padding: 10px;
-      margin: 2px 0;
-    }
-    button.active {
-      background: rgb(255, 234, 48);
-    }
-    .top {
-      position: relative;
-      height: 50px;
-      background: #291F1E;
-    }
-    .main {
-      width: 100%;
-      height: calc(100% - 50px);
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-    }
-    .layer-canvas {
-      position: absolute;
-    }
-    #main-container {
-      display: flex;
-      align-items: stretch;
-      justify-content: space-between;
-      width: 100%;
-      height: 100%;
-    }
-    .side-box {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      padding-top: 5px;
-      align-items: center;
-      background: #7DA253;
-      width: 100px;
-    }
-    .center-box {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      margin: 0;
-      padding: 0;
-      flex-grow: 1;
-    }
-    .pallete {
-      position: absolute;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      bottom: 0;
-      height: 120px;
-      padding: 10px 10px 0;
-      background: #291F1E;
-    }
-    .pallete-button {
-      margin: 10px 5px;
-      width: 75px;
-      height: 75px;
-      border: 1px solid white;
-      background: #291F1E;
-      cursor: pointer;
-    }
-    .pallete-button:hover {
-      box-shadow: 0 0 2px 1px white;
-    }
-    .pallete-button:focus {
-      outline: none;
-      box-shadow: 0 0 2px 1px white;
-    }
-    .menu-bar {
-      display: flex;
-      height: 100%;
-      align-items: flex-end;
-    }
-    .menu-bar button {
-      position: relative;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border: none;
-      border-right: 2px solid black;
-      border-bottom: 1px solid black;
-      height: 20px;
-      width: 150px;
-      margin: 0;
-      z-index: 1;
-      outline: none;
-    }
-    .menu-bar button:hover, .menu-bar button:focus {
-      background: rgb(211, 211, 211);
-    }
-    .menu-bar button:active {
-      background: rgb(190, 190, 190);
-    }
-    .menu {
-      position: absolute;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      background: rgb(245, 245, 245);
-      padding-bottom: 5px;
-      box-shadow: 0 0 10px -5px black;
-      font-size: 14px;
-      z-index: 2;
-    }
-    .menu-action, .menu-branch {
-      display: flex;
-      justify-content: space-between;
-      position: relative;
-      min-width: 100px;
-      padding: 10px;
-      height: 30px;
-      user-select: none;
-    }
-
-    .menu-action:hover, .menu-branch:hover {
-      background: rgb(211, 211, 211);
-    }
-    .modal-scrollbox {
-      width: auto;
-      max-height: 75%;
-      overflow: auto;
-      border: 2px solid black;
-    }
-    .loader,
-    .loader:after {
-      border-radius: 50%;
-      width: 12em;
-      height: 12em;
-    }
-    .loader {
-      margin: 60px auto;
-      font-size: 5px;
-      position: relative;
-      text-indent: -9999em;
-      border-top: 1.1em solid rgba(255, 255, 255, 0.2);
-      border-right: 1.1em solid rgba(255, 255, 255, 0.2);
-      border-bottom: 1.1em solid rgba(255, 255, 255, 0.2);
-      border-left: 1.1em solid #ffffff;
-      -webkit-transform: translateZ(0);
-      -ms-transform: translateZ(0);
-      transform: translateZ(0);
-      -webkit-animation: load8 1.1s infinite linear;
-      animation: load8 1.1s infinite linear;
-    }
-    @-webkit-keyframes load8 {
-      0% {
-        -webkit-transform: rotate(0deg);
-        transform: rotate(0deg);
-      }
-      100% {
-        -webkit-transform: rotate(360deg);
-        transform: rotate(360deg);
-      }
-    }
-    @keyframes load8 {
-      0% {
-        -webkit-transform: rotate(0deg);
-        transform: rotate(0deg);
-      }
-      100% {
-        -webkit-transform: rotate(360deg);
-        transform: rotate(360deg);
-      }
-    }
-    #modal-canvas-container {
-      position: relative;
-      min-width: 40vw;
-      max-width: 70vw;
-    }
-    #modal-close {
-      width: 60px;
-    }
-    #modal-canvas-container canvas{
-      width: 100%;
-      height: 100%;
-    }
-    #project_container {
-      position: relative;
-      align-self: stretch;
-      background: #477998;
-      margin: 0;
-      padding: 0;
-      flex-grow: 1;
-      cursor: none;
-    }
-    #active-sprite-container {
-      width: 80px;
-      height: 80px;
-      margin: 10px 0;
-      border: 1px solid #291F1E;
-      background: #291F1E;
-    }
-    #menu-container {
-      position: absolute;
-      width: 100vw;
-      height: 100vh;
-    }
-  </style>
   <body>
-    <section class="top">
-      <div id="menu-container"></div>
-      <div class="menu-bar">
+    <div id="menu-container"></div>
+    <div id="top-bar">
         <h1>Battle Map Maker (Prototype)</h1>
         <button id="file-menu-button">File</button>
         <button id="edit-menu-button">Edit</button>
-      </div>
-    </section>
-    <section class="main">
+    </div>
+    <div class="main">
       <div id="main-container">
         <div class="side-box">
-          <button class="tool-button active" id="freehand-button">Draw</button>
-          <button class="tool-button" id="shape-button">Box</button>
-          <button class="tool-button" id="fill-button">Fill</button>
-          <button class="tool-button" id="erase-button">Erase</button>
-          <button class="tool-button" id="move-button">Move</button>
-          <button class="tool-button" id="zoom-button">Zoom</button>
+          <div id="tool-box">
+            <button class="tool-button active" id="freehand-button">Draw</button>
+            <button class="tool-button" id="shape-button">Box</button>
+            <button class="tool-button" id="fill-button">Fill</button>
+            <button class="tool-button" id="erase-button">Erase</button>
+            <button class="tool-button" id="move-button">Move</button>
+            <button class="tool-button" id="zoom-button">Zoom</button>
+          </div>
           <div id="active-sprite-container"></div>
         </div>
         <div class="center-box">
-          <div id="project_container"></div>
-          <div class="pallete">
+          <div id="display_container"></div>
+          <div id="pallete">
             <div class="pallete-button" id="pallete-button-0" tabindex="0"></div>
             <div class="pallete-button" id="pallete-button-1" tabindex="0"></div>
             <div class="pallete-button" id="pallete-button-2" tabindex="0"></div>
@@ -279,10 +43,12 @@
           </div>
         </div>
         <div class="side-box">
-          <button class="layer-button" id="layer-button-terrain-1">Terrain Layer 1</button>
-          <button class="layer-button" id="layer-button-terrain-2">Terrain Layer 2</button>
-          <button class="layer-button" id="layer-button-object-1">Object Layer 1</button>
-          <button class="layer-button active" id="layer-button-object-2">Object Layer 2</button>
+          <div id="layer-button-box">
+            <button class="layer-button" id="layer-button-terrain-1">Terrain Layer 1</button>
+            <button class="layer-button" id="layer-button-terrain-2">Terrain Layer 2</button>
+            <button class="layer-button" id="layer-button-object-1">Object Layer 1</button>
+            <button class="layer-button active" id="layer-button-object-2">Object Layer 2</button>
+          </div>
         </div>
       </div>
     </section>

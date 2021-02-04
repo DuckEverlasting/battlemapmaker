@@ -1,0 +1,49 @@
+.menu-bar {
+  display: flex;
+  height: 100%;
+  align-items: flex-end;
+}
+.menu-bar button {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border-right: 2px solid black;
+  border-bottom: 1px solid black;
+  height: 20px;
+  width: 150px;
+  margin: 0;
+  z-index: 1;
+  outline: none;
+}
+.menu-bar button:hover, .menu-bar button:focus {
+  background: rgb(211, 211, 211);
+}
+.menu-bar button:active {
+  background: rgb(190, 190, 190);
+}
+.menu {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgb(245, 245, 245);
+  padding-bottom: 5px;
+  box-shadow: 0 0 10px -5px black;
+  font-size: 14px;
+  z-index: 2;
+}
+.menu-action, .menu-branch {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  min-width: 100px;
+  padding: 10px;
+  height: 30px;
+  user-select: none;
+}
+
+.menu-action:hover, .menu-branch:hover {
+  background: rgb(211, 211, 211);
+}

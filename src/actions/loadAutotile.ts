@@ -2,7 +2,7 @@ import { App } from "../system";
 import { loadImage } from "../util/helpers";
 import { SpriteSheet } from "../graphics";
 import { SPRITE_TYPE } from "../enums";
-import { AutotileCreator } from "../modals/AutotileCreator/AutotileCreator";
+import { AutotileCreator } from "../components/modals/AutotileCreator";
 
 export function loadAutotile(app: App) {
   // const fileInput = document.createElement("input");

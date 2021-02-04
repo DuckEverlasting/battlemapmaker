@@ -18,6 +18,8 @@ export const LAYER = {
 
 export const LAYER_COUNT = Object.keys(LAYER).length;
 
+export const PALLETE_BUTTON_COUNT = 8;
+
 export const SPRITE_TYPE = {
   "TERRAIN": 0,
   "OBJECT": 1,

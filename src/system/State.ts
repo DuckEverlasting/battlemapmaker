@@ -4,10 +4,18 @@ import { Rect } from "../util/Rect";
 import { ImageSource } from "../graphics";
 import { Canvas } from ".";
 import { LAYER_TYPE } from "../enums";
-import { Modal } from "../modals/Modal";
+import { Modal } from "../components/modals/Modal";
 import { Keyboard } from "./Keyboard";
+import { ToolButton } from "../components/buttons";
+import { PalleteButton } from "../components/buttons";
+import { LayerButton } from "../components/buttons";
 
 export class State {
+  public ui: {
+    toolButtons: ToolButton[],
+    palleteButtons: PalleteButton[],
+    layerButtons: LayerButton[]
+  } = {toolButtons: [], palleteButtons: [], layerButtons: []}
   public zoom: number = 1;
   public displayWidth: number = 0;
   public displayHeight: number = 0;

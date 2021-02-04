@@ -10,9 +10,12 @@ import { TileMap } from "../graphics";
 import { Cursor } from "../graphics/queueables/Cursor";
 import { LAYER, LAYER_COUNT } from "../enums";
 import { MenuHandler } from "../menu/MenuHandler";
-import { Modal } from "../modals/Modal";
-import { WelcomeModal } from "../modals/WelcomeModal";
+import { Modal } from "../components/modals/Modal";
+import { WelcomeModal } from "../components/modals/WelcomeModal";
 import { Keyboard } from "./Keyboard";
+import styles from "./app.module.css"
+import { buildMenu } from "../util/buildMenu";
+import { getPallete } from "../util/getPallete";
 
 export class App implements AppType {
   private display: Display;
@@ -28,29 +31,12 @@ export class App implements AppType {
   private loadingElement: HTMLElement;
 
   constructor(
-    private containingElement: HTMLElement,
-    toolButtons: {[key: string]: HTMLElement},
-    layerButtons: HTMLElement[],
-    palleteButtons: HTMLElement[],
-    menuButtons: {[key: string]: HTMLElement},
-    menuContainer: HTMLElement,
-    activeSpriteContainer: HTMLElement,
+    uiElements: {[key: string]: HTMLElement},
   ) {
     this.loadingElement = document.createElement("div");
-    Object.assign(this.loadingElement.style, {
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      position: "fixed",
-      width: "100vw",
-      height: "100vh",
-      top: 0,
-      left: 0,
-      background: "rgba(0, 0, 0, .7)",
-      zIndex: 4
-    });
+    this.loadingElement.className = styles["loading-element"];
     const spinner = document.createElement("div");
-    spinner.className = "loader";
+    spinner.className = styles["loader"];
     this.loadingElement.appendChild(spinner);
     const width = 960,
       height = 640,
@@ -64,8 +50,9 @@ export class App implements AppType {
       rect, tileWidth, tileHeight, this.layerCount
     );
     this.tileMap = tileMap;
-    this.display = new Display(this.state, this.containingElement, this.layerCount, LAYER.EFFECT_ALL);
-    this.queue = new RenderQueue(this.layerCount);
+    this.display = new Display(this.state, uiElements.displayContainer, this.layerCount, LAYER.EFFECT_ALL);
+    this.eventHandler = new EventHandler();
+    this.queue = new RenderQueue(this.layerCount, this.eventHandler);
     this.queue.add(this.tileMap);
     this.cursor = new Cursor(this);
     this.queue.add(this.cursor);
@@ -75,21 +62,21 @@ export class App implements AppType {
     this.state.wheelTool = this.state.toolbox.move;
     this.state.altWheelTool = this.state.toolbox.zoom;
     this.state.setActiveTool("freehand");
+    this.state.ui = {
+      palleteButtons: getPallete(this, uiElements.pallete),
+      layerButtons: getLayerButtons(uiElements.layerButtonBox),
+      toolButtons: getToolButtons(uiElements.toolBox)
+    }
+    this.state.activeSpriteCanvas = new Canvas(uiElements.activeSpriteContainer);
     this.renderer = new Renderer(this);
-    this.state.palleteCanvas = palleteButtons.map(element => new Canvas(element));
-    this.state.activeSpriteCanvas = new Canvas(activeSpriteContainer);
-    this.menuHandler = new MenuHandler(this, menuContainer);
+    // palleteButtons.map(element => new Canvas(element));
+    this.menuHandler = new MenuHandler(this, uiElements.menuContainer);
+    buildMenu(this);
     this.inputHandler = new InputHandler(this);
-    this.eventHandler = new EventHandler(this, {
-      toolButtons,
-      layerButtons,
-      palleteButtons,
-      menuButtons,
-      menuHandler: this.menuHandler,
-    });
 
     // test run
     testRun(this);
+
     this.setModal(new WelcomeModal(this));
   }
 
@@ -144,6 +131,10 @@ export class App implements AppType {
 
   getInputHandler() {
     return this.inputHandler;
+  }
+
+  getEventHandler() {
+    return this.eventHandler;
   }
 
   callRender() {

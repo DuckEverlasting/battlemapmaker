@@ -7,7 +7,7 @@ import { MenuHandler } from "../menu/MenuHandler";
 import { vect } from "./Vector";
 import { App } from "../system";
 import { loadAutotile } from "../actions/loadAutotile";
-import { GenerateMapModal } from "../modals/GenerateMapModal";
+import { GenerateMapModal } from "../components/modals/GenerateMapModal";
 
 export function buildMenu(app: App, menuButtons: {[key: string]: HTMLElement}, menuHandler: MenuHandler) {
   const fileButtonRect = menuButtons.file.getBoundingClientRect();

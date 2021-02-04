@@ -1,0 +1,127 @@
+/*
+black - 291F1E
+blue - 477998
+redorange - F64740
+pink - D8838A
+green - 7DA253
+*/
+
+html, section, div {
+  box-sizing: border-box;
+}
+a, p, span, ul, ol, li, button {
+  font-family: 'Roboto', sans-serif;
+}
+h1, h2, h3, h4, h5 {
+  font-family: 'Carter One', cursive;
+  font-weight: normal;
+}
+html {
+  background: white;
+}
+body {
+  width: 100%;
+  height: 100vh;
+  margin: 0;
+}
+h1 {
+  position: absolute;
+  margin: 0;
+  bottom: 10px;
+  width: 100%;
+  text-align: center;
+  color: white;
+}
+button {
+  width: 80%;
+  padding: 10px;
+  margin: 2px 0;
+}
+button.active {
+  background: rgb(255, 234, 48);
+}
+.top {
+  position: relative;
+  height: 50px;
+  background: #291F1E;
+}
+.main {
+  width: 100%;
+  height: calc(100% - 50px);
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+.layer-canvas {
+  position: absolute;
+}
+#main-container {
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+}
+.side-box {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding-top: 5px;
+  align-items: center;
+  background: #7DA253;
+  width: 100px;
+}
+.center-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  flex-grow: 1;
+}
+.pallete-button {
+  margin: 10px 5px;
+  width: 75px;
+  height: 75px;
+  border: 1px solid white;
+  background: #291F1E;
+  cursor: pointer;
+}
+.pallete-button:hover {
+  box-shadow: 0 0 2px 1px white;
+}
+.pallete-button:focus {
+  outline: none;
+  box-shadow: 0 0 2px 1px white;
+}
+#project_container {
+  position: relative;
+  align-self: stretch;
+  background: #477998;
+  margin: 0;
+  padding: 0;
+  flex-grow: 1;
+  cursor: none;
+}
+#pallete {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  bottom: 0;
+  height: 120px;
+  padding: 10px 10px 0;
+  background: #291F1E;
+}
+#active-sprite-container {
+  width: 80px;
+  height: 80px;
+  margin: 10px 0;
+  border: 1px solid #291F1E;
+  background: #291F1E;
+}
+#menu-container {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+}

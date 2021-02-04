@@ -1,7 +1,7 @@
 import { Display, State } from "../../system";
-import { Subscription } from "../../types";
+import { Observer, Subscription } from "../../types";
 
-export abstract class Queueable {
+export abstract class Queueable implements Observer {
   public readonly id = `${Math.random()}`;
   public readonly subscriptions: Subscription[] = [];
 

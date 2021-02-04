@@ -1,0 +1,8 @@
+button {
+  width: 80%;
+  padding: 10px;
+  margin: 2px 0;
+}
+button.active {
+  background: rgb(255, 234, 48);
+}

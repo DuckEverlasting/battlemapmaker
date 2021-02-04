@@ -1,4 +1,4 @@
-import { Display } from './system';
+import { Display, State } from './system';
 import { Vector } from './util/Vector';
 import { Rect } from './util/Rect';
 import { ImageSource, TileMap } from './graphics';
@@ -50,6 +50,11 @@ export type Callable = {
   run(params?: object): void;
 };
 
+export interface Observer {
+  subscriptions: Subscription[];
+  update(state: State): void;
+}
+
 export interface Renderable {
   id: string;
   render(display?: Display, props?: RenderProps): void;
@@ -68,7 +73,7 @@ export interface ISprite extends Renderable {
   renderSprite(display: Display, rect: Rect, tile: Vector, layer: number, gridOffset?: Vector): void;
 }
 
-export type Subscription = "tileChange"|"cursorMove"|"keyDown"|"keyUp"|"click";
+export type Subscription = "tileChange"|"cursorMove"|"keyDown"|"keyUp"|"click"|"palleteChange";
 
 export type CanvasSource = HTMLImageElement | HTMLCanvasElement | ImageBitmap | OffscreenCanvas;
 
